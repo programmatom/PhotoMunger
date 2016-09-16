@@ -1,0 +1,14 @@
+# application compilation intermediate files
+
+/PhotoMunger/.vs
+/PhotoMunger/PhotoMunger/bin
+/PhotoMunger/PhotoMunger/obj
+/PhotoMunger/PhotoMunger/PhotoMunger.csproj.user
+/PhotoMunger/packages
+
+# local utility scripts, etc.
+
+Sync.cmd
+Diff.cmd
+
+link.URL
