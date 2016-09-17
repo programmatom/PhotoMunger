@@ -88,7 +88,7 @@ In lieu of a scanner, one might use a point-and-shoot camera to photograph pages
 >
 >The edge detector used for normalizing geometry and auto-cropping relies on differences in brightness and color between the material outside the page and the page itself. Because these photos tend to be dark it has to be fairly permissive about the brightness levels; it isn't able to detect the page edges on some surfaces.
 >
->You can improve recognition by photographic pages on dark, color-saturated surface, such as a wood tabletop.
+>You can improve recognition by photographing pages on dark, color-saturated surface, such as a wood tabletop.
 
 Here is our initial document (click [here][6] for the full-sized sample file):
 
