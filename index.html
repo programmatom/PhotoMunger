@@ -91,7 +91,120 @@
 
 
 
+<h1 id="todo-rotation-setting-shrink-in-file-list"><strong>TODO: rotation; setting shrink in file list</strong></h1>
+
+
+
 <h2 id="workflow-2-enhancing-images-scanned-via-point-and-shoot-camera">Workflow 2: Enhancing Images “Scanned” via Point-and-Shoot Camera</h2>
+
+<p>In lieu of a scanner, one might use a point-and-shoot camera to photograph pages of a document. It can be quick, but the quality of the images is usually well below that of scans made with a document scanner since cameras are designed for taking photographs rather than scanning printed pages and therefore make processing decisions that are inappropriate for print documents. Workflow 2 will demonstrate how to correct the various problems in a photographed document.</p>
+
+<p>Here is our initial document (click <a href="SampleScanFullSize.JPG">here</a> for the full-sized sample file):</p>
+
+<p><img src="SampleScanSmall.JPG" alt="Original document image" title=""></p>
+
+<p>This tutorial will walk through enabling processing options one by one. Note that once the program is running it is not necessary to quit and restart the program to get back to the global options dialog. Instead, select the global options button on the toolbar:</p>
+
+<p><img src="image13.png" alt="Global options" title=""></p>
+
+<p>After changes to the dialog are accepted by pressing <em>OK</em>, the program will reanalyze the images and display the updated results.</p>
+
+<h3 id="1-bulk-rotation">1. Bulk rotation</h3>
+
+<p>If all images were photographed with the same incorrect orientation, it can be fixed for all images at one time by setting the desired degree of clockwise rotation in the global options dialog:</p>
+
+<p><img src="image12.png" alt="Bulk rotation" title=""></p>
+
+<p><img src="image14.jpg" alt="Viewer with rotated image" title=""></p>
+
+<h3 id="2-geometry-correction">2. Geometry correction</h3>
+
+<p>Photographed documents are often geometrically skewed because it is difficult to achieve perfect alignment with a hand-held camera. PhotoMunger will attempt to detect and correct the geometry when the following processing option is enabled in the options dialog:</p>
+
+<p><img src="image8.png" alt="enter image description here" title=""></p>
+
+<p>If the measurements of all pages are the same and are known, the width and height can be specified as the desired aspect ratio. Otherwise the analysis will determine an aspect ratio that is approximate.</p>
+
+<p>The page with corrected geometry is displayed in the viewer pane:</p>
+
+<p><img src="image9.jpg" alt="Corrected geometry" title=""></p>
+
+<p>If the geometry is not detected correctly it can be manually adjusted by the following steps.</p>
+
+<ul>
+<li>Enter the geometry adjustment mode.</li>
+</ul>
+
+<p><img src="image10.png" alt="Geometry adjustment tool" title=""></p>
+
+<p>The main view panel will now display the original image with edge guides.</p>
+
+<p><img src="image11.jpg" alt="Geometry edge guides" title=""></p>
+
+<ul>
+<li><p>Adjust the edges to match the page. The corners (1) can be dragged to appropriate locations. The line position can be shifted by dragging the rectangular widget shown at (2). Finally, the angle of the line change changed by dragging the circular widget shown at (3).</p></li>
+<li><p>Exit the geometry adjustment mode by pressing the same button used to enter it. After a couple of seconds the display will be updated with the new geometry adjustment.</p></li>
+</ul>
+
+
+
+<h3 id="3-removing-borders">3. Removing borders</h3>
+
+<p>The auto-crop function can be used to find a crop rectangle that removes the surface under the page while retaining the page itself:</p>
+
+<p><img src="image15.png" alt="Enabling auto-crop" title=""></p>
+
+<p>After reanalysis, a crop rectangle will appear around the page.</p>
+
+<p><img src="image16.jpg" alt="Cropped image" title=""></p>
+
+<p>If auto-crop generates an incorrect rectangle, it can be adjusted by entering crop mode from the toolbar and moving the edges of the rectangle.</p>
+
+<h3 id="4-improving-contrast-and-whiteness">4. Improving contrast and whiteness</h3>
+
+<p>Most cameras center the distribution of intensity (brightness) around 50%, which is much too dark for scanned documents. To automatically correct the brightness and contrast of all images, enable the <em>Bright Adjust</em> setting in the global options. There is also an option to remove a color bias from the page background.</p>
+
+<p><img src="image17.png" alt="Brightness adjustment" title=""></p>
+
+<p><img src="image18.jpg" alt="Brightness adjusted" title=""></p>
+
+<h3 id="5-flattening-uneven-lighting">5. Flattening uneven lighting</h3>
+
+<p>The displayed page from the previous step shows a noticable darkening towards one corner. Uneven lighting is a common problem with photographed documents. To try to correct uneven lighting, enable the <em>Unbias</em> processor.</p>
+
+<p><img src="image19.png" alt="Enabling unbias" title=""></p>
+
+<p><img src="image20.jpg" alt="After unbias" title=""></p>
+
+
+
+<h3 id="6-oversaturating">6. Oversaturating</h3>
+
+<p>In some cases, light shading can be removed by oversaturating the bright end of the image, and darkness of text can be improved by oversaturating on the dark end. To do this, enable the <em>Static Saturation</em> option. The white threshhold determines what brightness value will now become 1 (maximum brightness). The black threshhold determines what brightness value will now become 0 (minimum brightness, or black). The exponent can apply a curve to the distribution of brightness: 1 applies no curve, greater than 1 brightens midtones, less than 1 darkens midtones.</p>
+
+<p><img src="image21.png" alt="Enabling static saturation" title=""></p>
+
+<p><img src="image22.jpg" alt="Saturated" title=""></p>
+
+
+
+<h3 id="7-converting-to-black-and-white">7. Converting to black and white</h3>
+
+<p>In some cases it may be desirable to convert the image to black-and-white, stored as one bit per pixel. When stored in PNG format in this way, scanned image files are often much smaller than the equivalent JPEG file. They are also more suitable to printing on a black-and-white printer, if called for. To convert to black-and-white image, enable <em>Monochrome Bitmap Output</em>.</p>
+
+<p><img src="image23.png" alt="Enabling monochrome bitmap output" title=""></p>
+
+<p><img src="image24.jpg" alt="Monochrome" title=""></p>
+
+
+
+<h3 id="8-generate">8. Generate</h3>
+
+<p>Press <em>Apply</em> on the toolbar to generate the final output image.</p>
+
+<h3 id="final-notes">Final notes</h3>
+
+<p>Although this tutorial walked through each image processing step separately, usually the settings would be chosen all at once based on the specific condition of the photograph collection. If the results are unsatisfactory, it might be necessary to tweak certain threshholds or other settings. Fortunately, most images in a batch will tend to have the same defects and biases, allowing batch processing with global parameters to do a good job on all of the images.</p>
 
 <hr>
 

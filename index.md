@@ -66,9 +66,107 @@ To flip the aspect ratio relative to the overall image's aspect ratio, select th
 To select a specific aspect ratio (for example, for targeting a specific shape for making prints), click the preset/custom aspect ratio button to open a dialog allowing the aspect ratio to be chosen. In addition to common print/page shapes it is possible to enter the width and height for a custom aspect ratio.
 ![Custom aspect ratio](image7.png)
 
+#**TODO: rotation; setting shrink in file list**
+
 Workflow 2: Enhancing Images "Scanned" via Point-and-Shoot Camera
 ---
 
+In lieu of a scanner, one might use a point-and-shoot camera to photograph pages of a document. It can be quick, but the quality of the images is usually well below that of scans made with a document scanner since cameras are designed for taking photographs rather than scanning printed pages and therefore make processing decisions that are inappropriate for print documents. Workflow 2 will demonstrate how to correct the various problems in a photographed document.
+
+Here is our initial document (click [here][6] for the full-sized sample file):
+
+![Original document image](SampleScanSmall.JPG)
+
+This tutorial will walk through enabling processing options one by one. Note that once the program is running it is not necessary to quit and restart the program to get back to the global options dialog. Instead, select the global options button on the toolbar:
+
+![Global options](image13.png)
+
+After changes to the dialog are accepted by pressing *OK*, the program will reanalyze the images and display the updated results.
+
+###1. Bulk rotation
+
+If all images were photographed with the same incorrect orientation, it can be fixed for all images at one time by setting the desired degree of clockwise rotation in the global options dialog:
+
+![Bulk rotation](image12.png)
+
+![Viewer with rotated image](image14.jpg)
+
+###2. Geometry correction
+Photographed documents are often geometrically skewed because it is difficult to achieve perfect alignment with a hand-held camera. PhotoMunger will attempt to detect and correct the geometry when the following processing option is enabled in the options dialog:
+
+![enter image description here](image8.png)
+
+If the measurements of all pages are the same and are known, the width and height can be specified as the desired aspect ratio. Otherwise the analysis will determine an aspect ratio that is approximate.
+
+The page with corrected geometry is displayed in the viewer pane:
+
+![Corrected geometry](image9.jpg)
+
+If the geometry is not detected correctly it can be manually adjusted by the following steps.
+
+- Enter the geometry adjustment mode.
+
+![Geometry adjustment tool](image10.png)
+
+The main view panel will now display the original image with edge guides.
+
+![Geometry edge guides](image11.jpg)
+
+- Adjust the edges to match the page. The corners (1) can be dragged to appropriate locations. The line position can be shifted by dragging the rectangular widget shown at (2). Finally, the angle of the line change changed by dragging the circular widget shown at (3).
+
+- Exit the geometry adjustment mode by pressing the same button used to enter it. After a couple of seconds the display will be updated with the new geometry adjustment.
+
+###3. Removing borders
+
+The auto-crop function can be used to find a crop rectangle that removes the surface under the page while retaining the page itself:
+
+![Enabling auto-crop](image15.png)
+
+After reanalysis, a crop rectangle will appear around the page.
+
+![Cropped image](image16.jpg)
+
+If auto-crop generates an incorrect rectangle, it can be adjusted by entering crop mode from the toolbar and moving the edges of the rectangle.
+
+###4. Improving contrast and whiteness
+
+Most cameras center the distribution of intensity (brightness) around 50%, which is much too dark for scanned documents. To automatically correct the brightness and contrast of all images, enable the *Bright Adjust* setting in the global options. There is also an option to remove a color bias from the page background.
+
+![Brightness adjustment](image17.png)
+
+![Brightness adjusted](image18.jpg)
+
+###5. Flattening uneven lighting
+
+The displayed page from the previous step shows a noticable darkening towards one corner. Uneven lighting is a common problem with photographed documents. To try to correct uneven lighting, enable the *Unbias* processor.
+
+![Enabling unbias](image19.png)
+
+![After unbias](image20.jpg)
+
+###6. Oversaturating
+
+In some cases, light shading can be removed by oversaturating the bright end of the image, and darkness of text can be improved by oversaturating on the dark end. To do this, enable the *Static Saturation* option. The white threshhold determines what brightness value will now become 1 (maximum brightness). The black threshhold determines what brightness value will now become 0 (minimum brightness, or black). The exponent can apply a curve to the distribution of brightness: 1 applies no curve, greater than 1 brightens midtones, less than 1 darkens midtones.
+
+![Enabling static saturation](image21.png)
+
+![Saturated](image22.jpg)
+
+###7. Converting to black and white
+
+In some cases it may be desirable to convert the image to black-and-white, stored as one bit per pixel. When stored in PNG format in this way, scanned image files are often much smaller than the equivalent JPEG file. They are also more suitable to printing on a black-and-white printer, if called for. To convert to black-and-white image, enable *Monochrome Bitmap Output*.
+
+![Enabling monochrome bitmap output](image23.png)
+
+![Monochrome](image24.jpg)
+
+###8. Generate
+
+Press *Apply* on the toolbar to generate the final output image.
+
+###Final notes
+
+Although this tutorial walked through each image processing step separately, usually the settings would be chosen all at once based on the specific condition of the photograph collection. If the results are unsatisfactory, it might be necessary to tweak certain threshholds or other settings. Fortunately, most images in a batch will tend to have the same defects and biases, allowing batch processing with global parameters to do a good job on all of the images.
 
 ---
 [1]: http://www.gimp.org/
@@ -76,6 +174,7 @@ Workflow 2: Enhancing Images "Scanned" via Point-and-Shoot Camera
 [3]: http://jpegclub.org/
 [4]: https://stackedit.io/editor
 [5]: https://github.com/programmatom/PhotoMunger
+[6]: SampleScanFullSize.JPG
 
 Last updated September 2016. Authored using [stackedit][2].
 
