@@ -89,11 +89,11 @@
       <DependentUpon>CacheView.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageServer.cs" />
-    <Compile Include="GlobalOptions.cs">
+    <Compile Include="GlobalOptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GlobalOptions.Designer.cs">
-      <DependentUpon>GlobalOptions.cs</DependentUpon>
+    <Compile Include="GlobalOptionsDialog.Designer.cs">
+      <DependentUpon>GlobalOptionsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FileSizeText.cs" />
     <Compile Include="Histogram.cs" />
@@ -146,8 +146,8 @@
     <EmbeddedResource Include="CacheView.resx">
       <DependentUpon>CacheView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GlobalOptions.resx">
-      <DependentUpon>GlobalOptions.cs</DependentUpon>
+    <EmbeddedResource Include="GlobalOptionsDialog.resx">
+      <DependentUpon>GlobalOptionsDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LoggingWindow.resx">
@@ -193,6 +193,7 @@
     <Content Include="jpegtran.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\RotateLeft90.png" />
     <None Include="Resources\GeometryCorners.png" />
     <None Include="Resources\ResetNormalizeGeometryToGlobal.png" />
     <None Include="Resources\ResetNormalizeGeometryAspect.png" />

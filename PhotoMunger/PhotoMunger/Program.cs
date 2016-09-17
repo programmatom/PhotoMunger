@@ -39,7 +39,7 @@ namespace AdaptiveImageSizeReducer
         public static bool ProfileMode; // true == single-threaded for stable timing
         public readonly static int MainThreadId = Thread.CurrentThread.ManagedThreadId;
         public static bool UseGDIResize = false;
-        public static bool EnableSwap = true; // TODO: put this OFF by default
+        public static bool EnableSwap = false;
         public readonly static Dispatcher MainThreadDispatcher = Dispatcher.CurrentDispatcher;
 
         public static ParallelOptions GetProcessorConstrainedParallelOptions(CancellationToken cancel)

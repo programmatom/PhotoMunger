@@ -854,12 +854,21 @@ namespace AdaptiveImageSizeReducer
             PreloadNearbyCacheItems();
         }
 
+        private void toolStripButtonRotateLeft90_Click(object sender, EventArgs e)
+        {
+            Item item = CurrentItem;
+            if (item != null)
+            {
+                item.RightRotations = (item.RightRotations - 1) & 3;
+            }
+        }
+
         private void toolStripButtonRotateRight90_Click(object sender, EventArgs e)
         {
             Item item = CurrentItem;
             if (item != null)
             {
-                item.RightRotations = (item.RightRotations + 1) % 4;
+                item.RightRotations = (item.RightRotations + 1) & 3;
             }
         }
 

@@ -203,6 +203,16 @@ namespace AdaptiveImageSizeReducer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RotateLeft90 {
+            get {
+                object obj = ResourceManager.GetObject("RotateLeft90", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RotateRight90 {
             get {
                 object obj = ResourceManager.GetObject("RotateRight90", resourceCulture);

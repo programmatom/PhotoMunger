@@ -75,15 +75,15 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonCropKeepAspectRatio = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonInvertAspectRatioForCrop = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCustomAspectRatio = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonNormalizeGeometryCorners = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSetNormalizedGeometryAspectRatioExplicitly = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetNormalizedGeometryAspectRatio = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetAllNormalizedGeometry = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
             this.pictureBoxDetail1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxDetail2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelStats = new System.Windows.Forms.TableLayoutPanel();
@@ -108,6 +108,7 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage = new System.Windows.Forms.Label();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripButtonRotateLeft90 = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -273,6 +274,7 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetNormalizedGeometryAspectRatio,
             this.toolStripButtonResetAllNormalizedGeometry,
             this.toolStripSeparator3,
+            this.toolStripButtonRotateLeft90,
             this.toolStripButtonRotateRight90,
             this.toolStripButtonOptions,
             this.toolStripButtonGlobalOptions});
@@ -411,41 +413,6 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonCustomAspectRatio.ToolTipText = "Select preset or custom aspect ratio for crop";
             this.toolStripButtonCustomAspectRatio.Click += new System.EventHandler(this.toolStripButtonCustomAspectRatio_Click);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
-            // 
-            // toolStripButtonOptions
-            // 
-            this.toolStripButtonOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonOptions.Image = global::AdaptiveImageSizeReducer.Properties.Resources.OpenOptionsDialog;
-            this.toolStripButtonOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonOptions.Name = "toolStripButtonOptions";
-            this.toolStripButtonOptions.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonOptions.ToolTipText = "Change processing options for this image";
-            this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
-            // 
-            // toolStripButtonGlobalOptions
-            // 
-            this.toolStripButtonGlobalOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonGlobalOptions.Image = global::AdaptiveImageSizeReducer.Properties.Resources.OpenGlobalOptionsDialog;
-            this.toolStripButtonGlobalOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonGlobalOptions.Name = "toolStripButtonGlobalOptions";
-            this.toolStripButtonGlobalOptions.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonGlobalOptions.ToolTipText = "Change global processing options and analyze again";
-            this.toolStripButtonGlobalOptions.Click += new System.EventHandler(this.toolStripButtonGlobalOptions_Click);
-            // 
-            // toolStripButtonRotateRight90
-            // 
-            this.toolStripButtonRotateRight90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRotateRight90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateRight90;
-            this.toolStripButtonRotateRight90.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRotateRight90.Name = "toolStripButtonRotateRight90";
-            this.toolStripButtonRotateRight90.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonRotateRight90.ToolTipText = "Rotate clockwise 90 degrees";
-            this.toolStripButtonRotateRight90.Click += new System.EventHandler(this.toolStripButtonRotateRight90_Click);
-            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
@@ -490,6 +457,41 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetAllNormalizedGeometry.Size = new System.Drawing.Size(23, 20);
             this.toolStripButtonResetAllNormalizedGeometry.ToolTipText = "Reset normalized geometry to automatically detected values";
             this.toolStripButtonResetAllNormalizedGeometry.Click += new System.EventHandler(this.toolStripButtonResetAllNormalizedGeometry_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripButtonRotateRight90
+            // 
+            this.toolStripButtonRotateRight90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRotateRight90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateRight90;
+            this.toolStripButtonRotateRight90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRotateRight90.Name = "toolStripButtonRotateRight90";
+            this.toolStripButtonRotateRight90.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonRotateRight90.ToolTipText = "Rotate clockwise 90 degrees";
+            this.toolStripButtonRotateRight90.Click += new System.EventHandler(this.toolStripButtonRotateRight90_Click);
+            // 
+            // toolStripButtonOptions
+            // 
+            this.toolStripButtonOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOptions.Image = global::AdaptiveImageSizeReducer.Properties.Resources.OpenOptionsDialog;
+            this.toolStripButtonOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOptions.Name = "toolStripButtonOptions";
+            this.toolStripButtonOptions.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonOptions.ToolTipText = "Change processing options for this image";
+            this.toolStripButtonOptions.Click += new System.EventHandler(this.toolStripButtonOptions_Click);
+            // 
+            // toolStripButtonGlobalOptions
+            // 
+            this.toolStripButtonGlobalOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonGlobalOptions.Image = global::AdaptiveImageSizeReducer.Properties.Resources.OpenGlobalOptionsDialog;
+            this.toolStripButtonGlobalOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonGlobalOptions.Name = "toolStripButtonGlobalOptions";
+            this.toolStripButtonGlobalOptions.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonGlobalOptions.ToolTipText = "Change global processing options and analyze again";
+            this.toolStripButtonGlobalOptions.Click += new System.EventHandler(this.toolStripButtonGlobalOptions_Click);
             // 
             // pictureBoxDetail1
             // 
@@ -747,6 +749,16 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage.TabIndex = 7;
             this.labelMessage.UseMnemonic = false;
             // 
+            // toolStripButtonRotateLeft90
+            // 
+            this.toolStripButtonRotateLeft90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRotateLeft90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateLeft90;
+            this.toolStripButtonRotateLeft90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRotateLeft90.Name = "toolStripButtonRotateLeft90";
+            this.toolStripButtonRotateLeft90.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonRotateLeft90.ToolTipText = "Rotate counter-clockwise 90 degrees";
+            this.toolStripButtonRotateLeft90.Click += new System.EventHandler(this.toolStripButtonRotateLeft90_Click);
+            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -843,6 +855,7 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripButton toolStripButtonResetNormalizedGeometryAspectRatio;
         private System.Windows.Forms.ToolStripButton toolStripButtonResetAllNormalizedGeometry;
         private System.Windows.Forms.ToolStripButton toolStripButtonNormalizeGeometryCorners;
+        private System.Windows.Forms.ToolStripButton toolStripButtonRotateLeft90;
     }
 }
 
