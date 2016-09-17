@@ -5,7 +5,7 @@ Introduction
 ---
 PhotoMunger applies batch processing to a set of photos. It is designed to automate two specific workflows: 1) reducing the size of images, but only when down-scaling will not appreciably lose detail, and 2) enhancing document "scans" made with a point-and-shoot camera in lieu of a proper scanner.
 
-I wrote PhotoMunger to help me automate the two tasks mentioned above, which I've found myself needing to do on a regular basis. I published it in case there are others who also need to do these tasks and might find the tool helpful. Because of its focused purpose there are a number of things that PhotoMunger *won't* do, including most of the various filters found in programs like [GIMP][1] or [Photoshop][2]. There may be cause to add a feature or two to PhotoMunger, but because those other tools do their jobs very well, I don't envision it becoming a full-featured general purpose image editor.
+I wrote PhotoMunger to help me automate the two tasks mentioned above which I've found myself needing to do on a regular basis. I published it in case there are others who also need to do these tasks and might find the tool helpful. Because of its focused purpose there are a number of things that PhotoMunger *won't* do, including most of the various filters found in programs like [GIMP][1] or [Photoshop][2]. There may be cause to add a feature or two to PhotoMunger, but because those other tools do their jobs very well, I don't envision it becoming a full-featured general purpose image editor.
 
 PhotoMunger is open source and is licensed under the GPL (GNU Public License). The source can be found on GitHub [here][5].
 
@@ -40,13 +40,13 @@ Workflow 1: Reducing Image Size
 
 ###Motivation
 
-Today's cameras have a huge number of pixels (for example, my Sony DSC-HX90V has 18.2 megapixels) but are often not able to utilize all of that resolution. When condition are right, meaning bright light, no zooming, and both subject and camera stationary and stabilized, the camera may be able to make use of all of those pixels. However, adverse conditions can reduce the quality of the image, including lower light levels, movement of subject or shaking of camera (which is exacerbated by increased zoom), as well as imperfections in lens focal registration that become more pronounced as zoom increases. The megapixels are still there, but there is no significance to the high-frequencies - they are noise. For example, it is easy to visualize how a blurry image can be shrunk significantly without loss of sharpness. With photos from an 18mpix camera weighing in at 5 to 7 megabytes each, a 2-week trip to Hawaii can easily chew up 10 gigabytes. One would like to reduce the storage used, but without destroying highly detailed images.
+Today's cameras have a huge number of pixels (for example, my Sony DSC-HX90V has 18.2 megapixels) but are often not able to utilize all of that resolution. When conditions are right, meaning bright light, no zooming, and both subject and camera stationary and stabilized, the camera may be able to make use of all of those pixels. However, adverse conditions can reduce the quality of the image, including lower light levels, movement of subject or shaking of camera (which is exacerbated by increased zoom), as well as imperfections in lens focal registration that become more pronounced as zoom increases. The megapixels are still there, but there is no significance to the high frequencies stored in the file - they are noise. For example, it is easy to visualize how a blurry image can be shrunk significantly without loss of sharpness. With photos from an 18mpix camera weighing in at 5 to 7 megabytes each, a 2-week trip to Hawaii can easily chew up 10 gigabytes. One would like to reduce the storage used, but without destroying highly detailed images.
 
 ###Procedure
 
 To work on image size reduction for a photo collection, launch the program on the directory to be processed and accept the defaults in the options dialog by pressing *OK*. The main window will appear and the program will begin analysis of the photos.
 
-By default, the program displays the result of an analysis that identifies regions of an image that contain a high degree of detail that would be lost if the image is *shrunk* (down-scaled) by a factor of 2. These areas are highlighted by a mesh of yellow boxes. The computation is tuned to detect the degree of loss that a typical person might notice, but it is approximate. For important images, move the mouse over critical areas and use the side-by-side inspection panel to see how much detail would be lost.
+By default, the program displays the result of an analysis that identifies regions of an image that contain a high degree of detail that would be lost if the image were *shrunk* (down-scaled) by a factor of 2. These areas are highlighted by a mesh of yellow boxes. The computation is tuned to detect the degree of loss that a typical person might notice, but it is approximate. For important images, move the mouse over critical areas and use the side-by-side inspection panel to see how much detail would be lost.
 
 ![Inspecting an image for loss of detail](image2.jpg)
 
@@ -54,10 +54,10 @@ In this example, the left panel shows the yellow mesh identifying an automatical
 
 Cropping
 ---
-PhotoMunger supports lossless JPEG cropping via [`jpegtran.exe`][3]. To crop an image, first enable the cropping tool by making sure the crop button is enabled on the toolbar:
+PhotoMunger supports lossless JPEG cropping via [`jpegtran.exe`][3]. To crop an image, first enable the cropping tool by making sure the crop button is selected on the toolbar:
 ![Crop tool](image3.png)
 
-Once the crop tool is enabled, clicking and dragging anywhere in the image will create a crop rectangle. The portion of the image inside the rectangle will be retained and that outside will be discarded.
+Once the crop tool is selected, clicking and dragging anywhere in the image will create a crop rectangle. The portion of the image inside the rectangle will be retained and that outside will be discarded.
 
 ![Modifying existing crop rectangle](image25.jpg)
 
@@ -82,7 +82,13 @@ To select a specific aspect ratio (for example, for targeting a specific shape f
 Workflow 2: Enhancing Images "Scanned" via Point-and-Shoot Camera
 ---
 
-In lieu of a scanner, one might use a point-and-shoot camera to photograph pages of a document. It can be quick, but the quality of the images is usually well below that of scans made with a document scanner since cameras are designed for taking photographs rather than scanning printed pages and therefore make processing decisions that are inappropriate for print documents. Workflow 2 will demonstrate how to correct the various problems in a photographed document.
+In lieu of a scanner, one might use a point-and-shoot camera to photograph pages of a document. It can be quick, but the quality of the images is usually well below that of scans made with a document scanner since cameras are designed for taking photographs rather than scanning printed pages and therefore make processing decisions that are inappropriate for print documents. Workflow 2 demonstrates how to correct the various problems in a photographed document.
+
+>**About Edge Detection:**
+>
+>The edge detector used for normalizing geometry and auto-cropping relies on differences in brightness and color between the material outside the page and the page itself. Because these photos tend to be dark it has to be fairly permissive about the brightness levels; it isn't able to detect the page edges on some surfaces.
+>
+>You can improve recognition by photographic pages on dark, color-saturated surface, such as a wood tabletop.
 
 Here is our initial document (click [here][6] for the full-sized sample file):
 
@@ -123,7 +129,7 @@ The main view panel will now display the original image with edge guides.
 
 ![Geometry edge guides](image11.jpg)
 
-- Adjust the edges to match the page. The corners (1) can be dragged to appropriate locations. The line position can be shifted by dragging the rectangular widget shown at (2). Finally, the angle of the line change changed by dragging the circular widget shown at (3).
+- Adjust the edges to match the page. The corners (1) can be dragged to appropriate locations. The line position can be shifted by dragging the rectangular widget shown at (2). Finally, the angle of the line can be changed by dragging the circular widget shown at (3).
 
 - Exit the geometry adjustment mode by pressing the same button used to enter it. After a couple of seconds the display will be updated with the new geometry adjustment.
 
