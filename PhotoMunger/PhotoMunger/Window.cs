@@ -836,7 +836,7 @@ namespace AdaptiveImageSizeReducer
 
         private void toolStripButtonGlobalOptions_Click(object sender, EventArgs e)
         {
-            using (GlobalOptionsDialog dialog = new GlobalOptionsDialog(this.options, null))
+            using (GlobalOptionsDialog dialog = new GlobalOptionsDialog(this.options, directory))
             {
                 if (dialog.ShowDialog() != DialogResult.OK)
                 {

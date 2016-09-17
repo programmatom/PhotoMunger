@@ -78,6 +78,13 @@ namespace AdaptiveImageSizeReducer
         }
         public static LoggingWindow logWindow;
 
+        public static string GetScanDirectoryFromTargetDirectory(string directory)
+        {
+            string sourceDirectory = directory + Window.SourceDirectorySuffix;
+            string scanDirectory = Directory.Exists(sourceDirectory) ? sourceDirectory : directory;
+            return scanDirectory;
+        }
+
 
         private static void ShiftArgs(ref string[] args, int count)
         {
@@ -170,8 +177,7 @@ namespace AdaptiveImageSizeReducer
                 ImageCache cache = new ImageCache();
 
                 string directory = Path.GetFullPath(args[0]);
-                string sourceDirectory = directory + Window.SourceDirectorySuffix;
-                string scanDirectory = Directory.Exists(sourceDirectory) ? sourceDirectory : directory;
+                string scanDirectory = GetScanDirectoryFromTargetDirectory(directory);
 
                 if (!Directory.Exists(directory))
                 {
@@ -181,7 +187,7 @@ namespace AdaptiveImageSizeReducer
 
                 XmlDocument settings = new XmlDocument();
                 {
-                    string settingsPath = Path.Combine(Directory.Exists(sourceDirectory) ? sourceDirectory : directory, SettingsFile);
+                    string settingsPath = Path.Combine(scanDirectory, SettingsFile);
                     if (File.Exists(settingsPath))
                     {
                         settings.Load(settingsPath);
@@ -190,16 +196,7 @@ namespace AdaptiveImageSizeReducer
 
                 GlobalOptions options = new GlobalOptions(settings.CreateNavigator().SelectSingleNode("/*/options"));
                 {
-                    string[] files = Directory.GetFiles(scanDirectory);
-                    string sampleFile = Array.Find(
-                        files,
-                        delegate (string candidate)
-                        {
-                            return !String.Equals(candidate, SettingsFile)
-                                && (String.Equals(Path.GetExtension(candidate), ".jpg", StringComparison.OrdinalIgnoreCase)
-                                    || String.Equals(Path.GetExtension(candidate), ".jpeg", StringComparison.OrdinalIgnoreCase));
-                        });
-                    using (GlobalOptionsDialog dialog = new GlobalOptionsDialog(options, sampleFile))
+                    using (GlobalOptionsDialog dialog = new GlobalOptionsDialog(options, directory))
                     {
                         Application.Run(dialog);
                         if (dialog.DialogResult != DialogResult.OK)
@@ -238,7 +235,7 @@ namespace AdaptiveImageSizeReducer
                     }
                 }
 
-                window = new Window(args[0], items, cache, options);
+                window = new Window(directory, items, cache, options);
                 window.Show();
 
                 window.LastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(items, window);

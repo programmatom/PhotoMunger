@@ -36,7 +36,7 @@ namespace AdaptiveImageSizeReducer
         private readonly GlobalOptions originalOptions;
         private readonly GlobalOptions options;
 
-        public GlobalOptionsDialog(GlobalOptions originalOptions, string samplePath)
+        public GlobalOptionsDialog(GlobalOptions originalOptions, string directory)
         {
             this.originalOptions = originalOptions;
             this.options = new GlobalOptions(originalOptions);
@@ -59,9 +59,18 @@ namespace AdaptiveImageSizeReducer
             this.comboBoxNormalizeGeometryPreviewResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryPreviewInterp;
             this.comboBoxNormalizeGeometryFinalResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryFinalInterp;
 
-            if (!String.IsNullOrEmpty(samplePath) && File.Exists(samplePath))
+            string[] files = Directory.GetFiles(Program.GetScanDirectoryFromTargetDirectory(directory));
+            string sampleFile = Array.Find(
+                files,
+                delegate (string candidate)
+                {
+                    return !String.Equals(candidate, Program.SettingsFile)
+                        && (String.Equals(Path.GetExtension(candidate), ".jpg", StringComparison.OrdinalIgnoreCase)
+                            || String.Equals(Path.GetExtension(candidate), ".jpeg", StringComparison.OrdinalIgnoreCase));
+                });
+            if (!String.IsNullOrEmpty(sampleFile) && File.Exists(sampleFile))
             {
-                pictureBox.ImageLocation = samplePath;
+                pictureBox.ImageLocation = sampleFile;
             }
         }
 
