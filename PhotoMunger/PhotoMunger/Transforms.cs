@@ -1932,7 +1932,7 @@ namespace AdaptiveImageSizeReducer
                 }
                 diagnostics = diagnostics.SetChiSq(lastPoly.chiSq);
                 profile.Pop();
-                profile.Add(new Stopwatch(), "[Degree = {0}]", poly != null ? poly.factory.degree.ToString() : "failed");
+                profile.Add(new Stopwatch(), "[Degree = {0}, ChiSq = {1}/{2}]", poly != null ? poly.factory.degree.ToString() : "failed", lastPoly.chiSq, unbiasParams.MaxChiSq);
 
                 const float ModeToPeakTop = 1 + (float)CompactnessWindowRadius / NumBins;
                 float baseline = ApproximatelyPreserveOverallPageBrightness ? medcwv : 1 / ModeToPeakTop;

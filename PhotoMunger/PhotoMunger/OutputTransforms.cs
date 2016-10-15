@@ -241,25 +241,6 @@ namespace AdaptiveImageSizeReducer
 
                 // following lossy transforms phase
 
-                if (item.BrightAdjust)
-                {
-                    if (bitmap == null)
-                    {
-                        bitmap = new SmartBitmap(Transforms.LoadAndOrientGDI(tempFile, profile));
-                    }
-
-                    Transforms.ApplyBrightAdjust(
-                        profile,
-                        item.RenamedFileName,
-                        bitmap.AsManaged(profile),
-                        Rectangle.Empty/*already cropped*/,
-                        new Transforms.BrightAdjustParameters(item.BrightAdjustMinClusterFrac, item.BrightAdjustWhiteCorrect),
-                        null,
-                        cancel);
-
-                    Interlocked.Increment(ref stats.brightAdjust);
-                }
-
                 if (item.Unbias)
                 {
                     if (bitmap == null)
@@ -279,6 +260,25 @@ namespace AdaptiveImageSizeReducer
                         cancel);
 
                     Interlocked.Increment(ref stats.polyUnbias);
+                }
+
+                if (item.BrightAdjust)
+                {
+                    if (bitmap == null)
+                    {
+                        bitmap = new SmartBitmap(Transforms.LoadAndOrientGDI(tempFile, profile));
+                    }
+
+                    Transforms.ApplyBrightAdjust(
+                        profile,
+                        item.RenamedFileName,
+                        bitmap.AsManaged(profile),
+                        Rectangle.Empty/*already cropped*/,
+                        new Transforms.BrightAdjustParameters(item.BrightAdjustMinClusterFrac, item.BrightAdjustWhiteCorrect),
+                        null,
+                        cancel);
+
+                    Interlocked.Increment(ref stats.brightAdjust);
                 }
 
                 if (item.StaticSaturate)
