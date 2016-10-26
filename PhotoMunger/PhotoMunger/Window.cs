@@ -1349,11 +1349,17 @@ namespace AdaptiveImageSizeReducer
                 return;
             }
 
+            // clear cache before backup so that backup copying has more system file cache space to work with
+
+            this.cache.TryClear(); // free up memory for processing that follows
+
             // backup to source directory, if needed
             if (!Directory.Exists(sourceDirectory))
             {
                 Directory.CreateDirectory(sourceDirectory);
-                foreach (string source in Directory.GetFiles(directory))
+                string[] files = Directory.GetFiles(directory);
+                Array.Reverse(files); // last to first, so firsts are likely to be resident in system file cache
+                foreach (string source in files)
                 {
                     if (String.Equals(Path.GetFileName(source), Program.SettingsFile, StringComparison.OrdinalIgnoreCase))
                     {
@@ -1374,8 +1380,6 @@ namespace AdaptiveImageSizeReducer
                     File.Move(Path.Combine(directory, Program.SettingsFile), Path.Combine(sourceDirectory, Program.SettingsFile));
                 }
             }
-
-            this.cache.TryClear(); // free up memory for processing that follows
 
 
             // modify files
@@ -1815,6 +1819,7 @@ namespace AdaptiveImageSizeReducer
                 else if (toolStripButtonCrop.Checked)
                 {
                     moveBox = false;
+                    dragFloatOverrideX = dragFloatOverrideY = null;
                     CropCorner corner = HitTestCropCorner(e.Location);
                     if (corner == CropCorner.None)
                     {
@@ -1824,7 +1829,6 @@ namespace AdaptiveImageSizeReducer
                     {
                         Point cropRectTL = ImageToWindowPosition(item.CropRect.Location, pictureBoxMain, item.Width, item.Height, null);
                         Point cropRectBR = ImageToWindowPosition(item.CropRect.Location + item.CropRect.Size, pictureBoxMain, item.Width, item.Height, null);
-                        dragFloatOverrideX = dragFloatOverrideY = null;
                         switch (corner)
                         {
                             default:
