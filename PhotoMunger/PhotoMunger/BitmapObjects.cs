@@ -200,7 +200,7 @@ namespace AdaptiveImageSizeReducer
             // Generic implementation - override for optimized versions
 
             // constrain crop
-            rect.Intersect(new Rectangle(new Point(), this.Size));
+            rect.Intersect(new Rectangle(Point.Empty, this.Size));
 
             ManagedBitmap result = this.NewCompatible(rect.Width, rect.Height);
 
@@ -683,7 +683,7 @@ namespace AdaptiveImageSizeReducer
         public override Bitmap GetSectionEnslaved(Rectangle rect)
         {
             Rectangle rect2 = rect;
-            rect2.Intersect(new Rectangle(new Point(), this.Size));
+            rect2.Intersect(new Rectangle(Point.Empty, this.Size));
             if (rect2 == rect)
             {
                 return new Bitmap(rect.Width, rect.Height, this.stride, Format, new IntPtr(Row(rect.Top) + 4 * rect.Left));

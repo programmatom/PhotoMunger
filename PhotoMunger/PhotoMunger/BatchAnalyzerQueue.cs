@@ -32,12 +32,10 @@ namespace AdaptiveImageSizeReducer
         private readonly int total;
         private readonly List<Item> queue;
         private readonly CancellationTokenSource cancel = new CancellationTokenSource();
-        private readonly ISuspendResumeFormatting suspendResumeFormatting;
         private Task<bool> task;
 
-        private BatchAnalyzerQueue(IList<Item> items, ISuspendResumeFormatting suspendResumeFormatting)
+        private BatchAnalyzerQueue(IList<Item> items)
         {
-            this.suspendResumeFormatting = suspendResumeFormatting;
             this.total = items.Count;
 
             this.queue = new List<Item>(items.Count);
@@ -50,13 +48,11 @@ namespace AdaptiveImageSizeReducer
 
         private void Start()
         {
-            suspendResumeFormatting.SuspendDataGridViewReformatting();
             for (int i = 0; i < queue.Count; i++)
             {
                 Item item = queue[i];
                 item.ResetAnalyzeTask(true/*invalidateCurrentView*/);
             }
-            suspendResumeFormatting.ResumeDataGridViewReformatting();
 
             this.task = new Task<bool>(
                 delegate ()
@@ -123,9 +119,9 @@ namespace AdaptiveImageSizeReducer
             this.cancel.Cancel();
         }
 
-        public static BatchAnalyzerQueue BeginAnalyzeBatch(IList<Item> items, ISuspendResumeFormatting suspendResumeFormatting)
+        public static BatchAnalyzerQueue BeginAnalyzeBatch(IList<Item> items)
         {
-            BatchAnalyzerQueue queue = new BatchAnalyzerQueue(items, suspendResumeFormatting);
+            BatchAnalyzerQueue queue = new BatchAnalyzerQueue(items);
             queue.Start();
             return queue;
         }

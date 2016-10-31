@@ -81,6 +81,7 @@ namespace AdaptiveImageSizeReducer
         private int cornerRotation;
         private float? normalizedGeometryAspectRatio;
 
+        private Status status;
         private Task<bool> validateTask;
         private CancellationTokenSource validateTaskCancel;
         private bool permitCurrentViewDuringReanalysis;
@@ -305,24 +306,7 @@ namespace AdaptiveImageSizeReducer
         }
 
         [Bindable(true)]
-        public Status Status
-        {
-            get
-            {
-                if (!this.validateTask.IsCompleted)
-                {
-                    return Status.Pending;
-                }
-                else if (this.validateTask.Result)
-                {
-                    return Status.Valid;
-                }
-                else
-                {
-                    return Status.Invalid;
-                }
-            }
-        }
+        public Status Status { get { return this.status; } }
 
         [Bindable(true)]
         public int Width { get { return width; } }
@@ -1117,9 +1101,9 @@ namespace AdaptiveImageSizeReducer
                         {
                             if (source != null)
                             {
-                                if ((cornerTL == new Point()) && (cornerTR == new Point()) && (cornerBL == new Point()) && (cornerBR == new Point()))
+                                if ((cornerTL == Point.Empty) && (cornerTR == Point.Empty) && (cornerBL == Point.Empty) && (cornerBR == Point.Empty))
                                 {
-                                    //cornerTL = new Point();
+                                    //cornerTL = Point.Empty;
                                     cornerTR = new Point(source.Width, 0);
                                     cornerBL = new Point(0, source.Height);
                                     cornerBR = new Point(source.Width, source.Height);
@@ -1136,18 +1120,6 @@ namespace AdaptiveImageSizeReducer
                         }
 
                         cache.InvalidatePrefixed(SourceId + ":");
-
-                        // can't fire "Status" until outer task completes and "valid" value is available in .Result field
-                        Task<bool> propertyChangedTask = new Task<bool>(
-                            delegate ()
-                            {
-                                this.validateTask.Wait();
-
-                                this.permitCurrentViewDuringReanalysis = false;
-                                FirePropertyChanged("Status");
-                                return false;
-                            });
-                        propertyChangedTask.Start();
                     }
                     catch (OperationCanceledException)
                     {
@@ -1158,8 +1130,15 @@ namespace AdaptiveImageSizeReducer
                         Thread.CurrentThread.Priority = savedPriority;
                     }
 
-                    return valid;
+                    this.status = valid ? Status.Valid : Status.Invalid;
+
+                    this.permitCurrentViewDuringReanalysis = false;
+                    FirePropertyChanged("Status");
+
+                    return false;
                 });
+
+            this.status = Status.Pending;
 
             // not invalidating first == permit current view to remain until new analysis is complete
             if (!invalidateCurrentView)
@@ -1303,7 +1282,7 @@ namespace AdaptiveImageSizeReducer
                 writer.WriteValue(this.delete);
                 writer.WriteEndElement(); // delete
 
-                if (!this.cropRect.IsEmpty && (CropRect != new Rectangle(new Point(), new Size(this.width, this.height))))
+                if (!this.cropRect.IsEmpty && (CropRect != new Rectangle(Point.Empty, new Size(this.width, this.height))))
                 {
                     KeyValuePair<string, int>[] cropFields = new KeyValuePair<string, int>[]
                     {

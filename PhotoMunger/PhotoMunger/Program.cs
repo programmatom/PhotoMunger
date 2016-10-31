@@ -238,7 +238,7 @@ namespace AdaptiveImageSizeReducer
                 window = new Window(directory, items, cache, options);
                 window.Show();
 
-                window.LastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(items, window);
+                window.LastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(items);
 
 
                 Application.Run(window);

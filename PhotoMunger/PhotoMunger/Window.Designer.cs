@@ -52,11 +52,6 @@ namespace AdaptiveImageSizeReducer
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
             this.dataGridViewFiles = new System.Windows.Forms.DataGridView();
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Delete = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxMain = new System.Windows.Forms.PictureBox();
@@ -81,6 +76,7 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetNormalizedGeometryAspectRatio = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetAllNormalizedGeometry = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonRotateLeft90 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
@@ -108,9 +104,12 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage = new System.Windows.Forms.Label();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripButtonRotateLeft90 = new System.Windows.Forms.ToolStripButton();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -126,16 +125,17 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelSize.SuspendLayout();
             this.flowLayoutPanelCropRect.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewFiles
             // 
             this.dataGridViewFiles.AllowUserToAddRows = false;
             this.dataGridViewFiles.AllowUserToDeleteRows = false;
-            this.dataGridViewFiles.AllowUserToResizeColumns = false;
             this.dataGridViewFiles.AllowUserToResizeRows = false;
             this.dataGridViewFiles.AutoGenerateColumns = false;
             this.dataGridViewFiles.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridViewFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewFiles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.FileName,
             this.shrinkDataGridViewCheckBoxColumn,
@@ -147,45 +147,9 @@ namespace AdaptiveImageSizeReducer
             this.dataGridViewFiles.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridViewFiles.Name = "dataGridViewFiles";
             this.dataGridViewFiles.RowHeadersVisible = false;
+            this.dataGridViewFiles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridViewFiles.Size = new System.Drawing.Size(109, 605);
             this.dataGridViewFiles.TabIndex = 0;
-            // 
-            // FileName
-            // 
-            this.FileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.FileName.DataPropertyName = "RenamedFileName";
-            this.FileName.HeaderText = "Name";
-            this.FileName.Name = "FileName";
-            this.FileName.Width = 60;
-            // 
-            // shrinkDataGridViewCheckBoxColumn
-            // 
-            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
-            this.shrinkDataGridViewCheckBoxColumn.Width = 5;
-            // 
-            // Delete
-            // 
-            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.Delete.DataPropertyName = "Delete";
-            this.Delete.HeaderText = "Delete";
-            this.Delete.Name = "Delete";
-            this.Delete.Width = 5;
-            // 
-            // FileSize
-            // 
-            this.FileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.FileSize.DataPropertyName = "FileSize";
-            this.FileSize.HeaderText = "Size";
-            this.FileSize.Name = "FileSize";
-            this.FileSize.ReadOnly = true;
-            this.FileSize.Width = 52;
-            // 
-            // dataBindingSource
-            // 
-            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
             // 
             // splitContainer
             // 
@@ -462,6 +426,16 @@ namespace AdaptiveImageSizeReducer
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripButtonRotateLeft90
+            // 
+            this.toolStripButtonRotateLeft90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRotateLeft90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateLeft90;
+            this.toolStripButtonRotateLeft90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRotateLeft90.Name = "toolStripButtonRotateLeft90";
+            this.toolStripButtonRotateLeft90.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonRotateLeft90.ToolTipText = "Rotate counter-clockwise 90 degrees";
+            this.toolStripButtonRotateLeft90.Click += new System.EventHandler(this.toolStripButtonRotateLeft90_Click);
             // 
             // toolStripButtonRotateRight90
             // 
@@ -749,15 +723,41 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage.TabIndex = 7;
             this.labelMessage.UseMnemonic = false;
             // 
-            // toolStripButtonRotateLeft90
+            // FileName
             // 
-            this.toolStripButtonRotateLeft90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRotateLeft90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateLeft90;
-            this.toolStripButtonRotateLeft90.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRotateLeft90.Name = "toolStripButtonRotateLeft90";
-            this.toolStripButtonRotateLeft90.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonRotateLeft90.ToolTipText = "Rotate counter-clockwise 90 degrees";
-            this.toolStripButtonRotateLeft90.Click += new System.EventHandler(this.toolStripButtonRotateLeft90_Click);
+            this.FileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.FileName.DataPropertyName = "RenamedFileName";
+            this.FileName.HeaderText = "Name";
+            this.FileName.Name = "FileName";
+            // 
+            // Delete
+            // 
+            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Delete.DataPropertyName = "Delete";
+            this.Delete.HeaderText = "Delete";
+            this.Delete.Name = "Delete";
+            this.Delete.Width = 23;
+            // 
+            // FileSize
+            // 
+            this.FileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.FileSize.DataPropertyName = "FileSize";
+            this.FileSize.HeaderText = "Size";
+            this.FileSize.Name = "FileSize";
+            this.FileSize.ReadOnly = true;
+            this.FileSize.Width = 52;
+            // 
+            // shrinkDataGridViewCheckBoxColumn
+            // 
+            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
+            this.shrinkDataGridViewCheckBoxColumn.Width = 23;
+            // 
+            // dataBindingSource
+            // 
+            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
             // 
             // Window
             // 
@@ -769,7 +769,6 @@ namespace AdaptiveImageSizeReducer
             this.Text = "Images";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -793,6 +792,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelCropRect.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -845,10 +845,6 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripButton toolStripButtonCustomAspectRatio;
         public System.Windows.Forms.DataGridView dataGridViewFiles;
         private System.Windows.Forms.ToolStripButton toolStripButtonUseGDIResize;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn shrinkDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Delete;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.CheckBox checkBoxNormalizeGeometry;
         private System.Windows.Forms.ToolStripButton toolStripButtonSetNormalizedGeometryAspectRatioExplicitly;
@@ -856,6 +852,10 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripButton toolStripButtonResetAllNormalizedGeometry;
         private System.Windows.Forms.ToolStripButton toolStripButtonNormalizeGeometryCorners;
         private System.Windows.Forms.ToolStripButton toolStripButtonRotateLeft90;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn shrinkDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Delete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
     }
 }
 

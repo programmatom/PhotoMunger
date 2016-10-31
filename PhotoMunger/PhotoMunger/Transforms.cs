@@ -1281,7 +1281,7 @@ namespace AdaptiveImageSizeReducer
 
             using (ManagedBitmap32 result = new ManagedBitmap32(bitmap.Width, bitmap.Height))
             {
-                Rectangle bounds = new Rectangle(new Point(), bitmap.Size);
+                Rectangle bounds = new Rectangle(Point.Empty, bitmap.Size);
 
                 Parallel.For( // for (int y = 0; y < bitmap.Height; y++)
                     0,
@@ -1505,7 +1505,7 @@ namespace AdaptiveImageSizeReducer
 
             if (rect.IsEmpty)
             {
-                rect = new Rectangle(new Point(), bitmap.Size);
+                rect = new Rectangle(Point.Empty, bitmap.Size);
             }
 
             profile.Push("Build Histogram");
@@ -2092,7 +2092,7 @@ namespace AdaptiveImageSizeReducer
                                 swDraw.Start();
                                 using (Graphics graphics = Graphics.FromImage(sourceImageTileGDI))
                                 {
-                                    //graphics.FillRectangle(System.Drawing.Brushes.Black, new Rectangle(new Point(), sourceImageTileGDI.Size));
+                                    //graphics.FillRectangle(System.Drawing.Brushes.Black, new Rectangle(Point.Empty, sourceImageTileGDI.Size));
                                     graphics.DrawImage(bitmap, new Rectangle(-xx, -yy, monoImage.Width, monoImage.Height));
                                 }
                                 swDraw.Stop();
@@ -2287,7 +2287,7 @@ namespace AdaptiveImageSizeReducer
             Debug.Assert(rightRotations >= 0);
             Point[] points = new Point[] { new Point(rect.Left, rect.Top), new Point(rect.Right, rect.Bottom) };
             RotatePoints(width, height, rightRotations, points);
-            Point tl = new Point(), br = new Point();
+            Point tl = Point.Empty, br = Point.Empty;
             if (points[0].X < points[1].X)
             {
                 tl.X = points[0].X;

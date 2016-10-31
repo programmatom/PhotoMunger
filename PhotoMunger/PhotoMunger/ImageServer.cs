@@ -458,6 +458,7 @@ namespace AdaptiveImageSizeReducer
                                         log.WriteLine("Main thread exiting");
                                         log.Flush();
                                         log.Close();
+                                        log = null;
                                     }
                                     return 0;
 
@@ -691,6 +692,7 @@ namespace AdaptiveImageSizeReducer
                     log.WriteLine("Terminating abnormally");
                     log.Flush();
                     log.Close();
+                    log = null;
                 }
                 return 1;
             }
@@ -701,6 +703,7 @@ namespace AdaptiveImageSizeReducer
                 log.WriteLine("Terminating normally");
                 log.Flush();
                 log.Close();
+                log = null;
             }
 #pragma warning restore CS0162
             if (currentBitmap != null)

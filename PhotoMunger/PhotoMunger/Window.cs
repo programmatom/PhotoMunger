@@ -33,7 +33,7 @@ using System.Xml;
 
 namespace AdaptiveImageSizeReducer
 {
-    public partial class Window : Form, ISuspendResumeFormatting
+    public partial class Window : Form
     {
         private readonly string directory;
         private readonly BindingList<Item> items = new BindingList<Item>();
@@ -289,20 +289,11 @@ namespace AdaptiveImageSizeReducer
             UpdatePrimary();
         }
 
-        private void FormatRow(int rowIndex)
-        {
-            foreach (DataGridViewCell cell in this.dataGridViewFiles.Rows[rowIndex].Cells)
-            {
-                FormatCell(cell.RowIndex, cell.ColumnIndex, cell.Style);
-            }
-        }
-
         private void FormatCell(int rowIndex, int columnIndex, DataGridViewCellStyle cellStyle)
         {
-            Item item = items[rowIndex];
-
             DataGridViewCellStyle defaultCellStyle = this.dataGridViewFiles.DefaultCellStyle;
-            DataGridViewCell cell = this.dataGridViewFiles.Rows[rowIndex].Cells[columnIndex];
+
+            Item item = items[rowIndex];
 
             cellStyle.BackColor = rowIndex == this.swapIndex ? SystemColors.ControlLight : defaultCellStyle.BackColor;
 
@@ -325,6 +316,7 @@ namespace AdaptiveImageSizeReducer
 
             if (String.Equals(this.dataGridViewFiles.Columns[columnIndex].Name, "shrinkDataGridViewCheckBoxColumn"))
             {
+                DataGridViewCell cell = this.dataGridViewFiles.Rows[rowIndex].Cells[columnIndex];
                 cell.ReadOnly = item.Status != Status.Valid;
             }
 
@@ -347,28 +339,6 @@ namespace AdaptiveImageSizeReducer
         private void DataGridViewFiles_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             FormatCell(e.RowIndex, e.ColumnIndex, e.CellStyle);
-        }
-
-        // HACKS: DataGridView will call DataGridViewFiles_CellFormatting on ALL cells in a column for a format change
-        // to any of them when AutoSizeMode is auto anything. We know our format doesn't change width, so allow suspend
-        // during bulk changes.
-        private DataGridViewAutoSizeColumnMode[] savedColumnAutoSizes;
-        public void SuspendDataGridViewReformatting()
-        {
-            this.savedColumnAutoSizes = new DataGridViewAutoSizeColumnMode[this.dataGridViewFiles.ColumnCount];
-            for (int i = 0; i < this.dataGridViewFiles.ColumnCount; i++)
-            {
-                this.savedColumnAutoSizes[i] = this.dataGridViewFiles.Columns[i].AutoSizeMode;
-                this.dataGridViewFiles.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            }
-        }
-        public void ResumeDataGridViewReformatting()
-        {
-            for (int i = 0; i < this.dataGridViewFiles.ColumnCount; i++)
-            {
-                this.dataGridViewFiles.Columns[i].AutoSizeMode = this.savedColumnAutoSizes[i];
-            }
-            this.savedColumnAutoSizes = null;
         }
 
         private void DataGridViewFiles_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -715,7 +685,8 @@ namespace AdaptiveImageSizeReducer
             {
                 // DataGridView doesn't handle binding for formatting, so this simulates it
                 int i = this.items.IndexOf((Item)sender);
-                FormatRow(i);
+                this.dataGridViewFiles.InvalidateRow(i);
+                this.dataGridViewFiles.Update();
                 if (CurrentItem == sender)
                 {
                     UpdatePrimary();
@@ -848,7 +819,7 @@ namespace AdaptiveImageSizeReducer
 
             this.cache.TryClear();
 
-            this.lastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(this.items, this);
+            this.lastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(this.items);
 
             UpdatePrimary();
             PreloadNearbyCacheItems();
@@ -989,7 +960,7 @@ namespace AdaptiveImageSizeReducer
                     {
                         Debug.Assert(pictureBoxMainHolder.IsCompleted); // task should have blocked until completion
                         ManagedBitmap bitmap = pictureBoxMainHolder.Bitmap;
-                        SetPictureBoxImage(pictureBoxMain, bitmap.GetSectionEnslaved(new Rectangle(new Point(), bitmap.Size)));
+                        SetPictureBoxImage(pictureBoxMain, bitmap.GetSectionEnslaved(new Rectangle(Point.Empty, bitmap.Size)));
                         width = bitmap.Width;
                         height = bitmap.Height;
                     }
@@ -1178,11 +1149,11 @@ namespace AdaptiveImageSizeReducer
                     {
                         using (Graphics graphics = Graphics.FromImage(detail1))
                         {
-                            graphics.DrawImage(Properties.Resources.InvalidPlaceHolder, new Rectangle(new Point(), detail1.Size));
+                            graphics.DrawImage(Properties.Resources.InvalidPlaceHolder, new Rectangle(Point.Empty, detail1.Size));
                         }
                         using (Graphics graphics = Graphics.FromImage(detail2))
                         {
-                            graphics.DrawImage(Properties.Resources.InvalidPlaceHolder, new Rectangle(new Point(), detail1.Size));
+                            graphics.DrawImage(Properties.Resources.InvalidPlaceHolder, new Rectangle(Point.Empty, detail1.Size));
                         }
                     }
                 }
@@ -2192,11 +2163,5 @@ namespace AdaptiveImageSizeReducer
                 Math.Sign(loc.X - pivot.X) * (int)Math.Round(w * wr) + pivot.X,
                 Math.Sign(loc.Y - pivot.Y) * (int)Math.Round(h * hr) + pivot.Y);
         }
-    }
-
-    public interface ISuspendResumeFormatting
-    {
-        void SuspendDataGridViewReformatting();
-        void ResumeDataGridViewReformatting();
     }
 }
