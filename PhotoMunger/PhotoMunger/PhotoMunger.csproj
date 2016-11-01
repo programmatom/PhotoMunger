@@ -104,6 +104,7 @@
     <Compile Include="LoggingWindow.Designer.cs">
       <DependentUpon>LoggingWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ParallelDevolved.cs" />
     <Compile Include="ProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>

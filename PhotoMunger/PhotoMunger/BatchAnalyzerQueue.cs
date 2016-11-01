@@ -62,10 +62,9 @@ namespace AdaptiveImageSizeReducer
 
                     try
                     {
-                        Parallel.For(
+                        ParallelDevolved.For(
                             0,
                             queue.Count,
-                            Program.GetProcessorConstrainedParallelOptions(cancel.Token),
                             delegate (int i)
                             {
                                 Item item;
