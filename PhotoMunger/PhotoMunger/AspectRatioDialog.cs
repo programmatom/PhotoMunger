@@ -78,7 +78,6 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonCurrent.Text += String.Format(" {0}x{1}", current.Width, current.Height);
             this.radioButtonCurrent.CheckedChanged += AspectButton_CheckedChanged;
 
-            int radioTabIndex = 100;
             for (int i = 0; i < Ratios.Length; i++)
             {
                 RadioButton item = new RadioButton();
@@ -100,7 +99,7 @@ namespace AdaptiveImageSizeReducer
                 }
                 item.CheckedChanged += AspectButton_CheckedChanged;
                 item.AutoSize = true;
-                item.TabIndex = radioTabIndex++;
+                item.TabIndex = this.radioButtonCustom.TabIndex;
                 flowLayoutPanelAspectSelectors.Controls.Add(item);
             }
 
