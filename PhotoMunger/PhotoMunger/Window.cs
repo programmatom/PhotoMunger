@@ -89,6 +89,8 @@ namespace AdaptiveImageSizeReducer
 
             UpdateWindowTitle();
 
+            this.splitContainer.SplitterMoved += SplitContainer_SplitterMoved;
+
             this.toolStripButtonShowOriginalInsteadOfProcessed.Checked = options.ShowOriginalInsteadOfProcessed;
             this.toolStripButtonShowAnnotationsPrimary.Checked = options.ShowAnnotationsPrimary;
             this.toolStripButtonShowAnnotationsDetail.Checked = options.ShowAnnotationsDetail;
@@ -121,6 +123,9 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxBrightAdjust.Click += UIElementRestoreFocus_Click;
             this.checkBoxPolyUnbias.Click += UIElementRestoreFocus_Click;
             this.checkBoxNormalizeGeometry.Click += UIElementRestoreFocus_Click;
+
+            this.toolStripDropDownButtonMarkColor.DropDownOpening += ToolStripDropDownButtonMarkColor_DropDownOpening;
+            this.toolStripDropDownButtonMarkColor.DropDownItemClicked += ToolStripDropDownButtonMarkColor_DropDownItemClicked;
 
             this.pictureBoxDetail1.MouseEnter += PictureBoxDetail1_MouseEnter;
             this.pictureBoxDetail1.MouseLeave += PictureBoxDetail1_MouseLeave;
@@ -257,6 +262,11 @@ namespace AdaptiveImageSizeReducer
         {
             const int FudgeFactor = 10;
             labelMessage.MaximumSize = new Size(tableLayoutPanelStats.ClientSize.Width - tableLayoutPanelStats.Margin.Left - tableLayoutPanelStats.Margin.Right - FudgeFactor, 0);
+        }
+
+        private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            this.dataGridViewFiles.Focus();
         }
 
         private void PictureBoxDetail1_MouseEnter(object sender, EventArgs e)
@@ -675,6 +685,37 @@ namespace AdaptiveImageSizeReducer
             this.cache.TryClear();
             Program.UseGDIResize = this.toolStripButtonUseGDIResize.Checked;
             UpdatePrimary();
+        }
+
+        private void ToolStripDropDownButtonMarkColor_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Item currentItem = this.CurrentItem;
+            if (currentItem != null)
+            {
+                for (int i = 0; i < TagColors.Length; i++)
+                {
+                    if (e.ClickedItem == this.toolStripDropDownButtonMarkColor.DropDownItems[i])
+                    {
+                        currentItem.TagColor = TagColors[i];
+                        this.dataGridViewFiles.InvalidateRow(this.dataGridViewFiles.CurrentRow.Index);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void ToolStripDropDownButtonMarkColor_DropDownOpening(object sender, EventArgs e)
+        {
+            Item currentItem = this.CurrentItem;
+            for (int i = 0; i < TagColors.Length; i++)
+            {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)this.toolStripDropDownButtonMarkColor.DropDownItems[i];
+                menuItem.Checked = false;
+                if ((currentItem != null) && (currentItem.TagColor == TagColors[i]))
+                {
+                    menuItem.Checked = true;
+                }
+            }
         }
 
         private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1128,7 +1169,7 @@ namespace AdaptiveImageSizeReducer
                     {
                         using (Graphics graphics = Graphics.FromImage(detail1))
                         {
-                            int divisor = (inDragForCrop || (this.geoDrag != GeoCorner.None)) ? Item.AnnotationDivisor : 1; // for fast drag mode
+                            int divisor = this.toolStripButtonShowAnnotationsDetail.Checked && (inDragForCrop || (this.geoDrag != GeoCorner.None)) ? Item.AnnotationDivisor : 1; // for fast drag mode
                             graphics.FillRectangle(Brushes.Black, 0, 0, detail1.Width, detail1.Height);
                             using (Bitmap section = imageHolder1.Bitmap.GetSectionEnslaved(new Rectangle(detailOffset.X / divisor, detailOffset.Y / divisor, detail1.Width / divisor, detail1.Height / divisor)))
                             {
@@ -1138,8 +1179,9 @@ namespace AdaptiveImageSizeReducer
 
                         using (Graphics graphics = Graphics.FromImage(detail2))
                         {
+                            int divisor = (inDragForCrop || (this.geoDrag != GeoCorner.None)) ? Item.AnnotationDivisor : 1; // for fast drag mode
                             graphics.FillRectangle(Brushes.Black, 0, 0, detail2.Width, detail2.Height);
-                            using (Bitmap section = imageHolder2.Bitmap.GetSectionEnslaved(new Rectangle(detailOffset.X, detailOffset.Y, detail1.Width, detail1.Height)))
+                            using (Bitmap section = imageHolder2.Bitmap.GetSectionEnslaved(new Rectangle(detailOffset.X / divisor, detailOffset.Y / divisor, detail1.Width / divisor, detail1.Height / divisor)))
                             {
                                 graphics.DrawImage(section, 0, 0, detail1.Width, detail1.Height);
                             }
@@ -1389,6 +1431,30 @@ namespace AdaptiveImageSizeReducer
 
         // gestures
 
+        private void markToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.swapIndex >= 0)
+            {
+                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
+            }
+            this.swapIndex = this.CurrentItemRow;
+            options.LastSelectedSwap = this.swapIndex;
+            this.dataGridViewFiles.InvalidateRow(this.swapIndex);
+        }
+
+        private void swapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.swapIndex >= 0)
+            {
+                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
+                int savedIndex = this.CurrentItemRow;
+                this.SelectItem(this.swapIndex);
+                this.swapIndex = savedIndex;
+                options.LastSelectedSwap = this.swapIndex;
+                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
+            }
+        }
+
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         protected override bool ProcessKeyPreview(ref Message m)
@@ -1507,28 +1573,15 @@ namespace AdaptiveImageSizeReducer
                             this.toolStripButtonOptions_Click(this, EventArgs.Empty);
                             return true;
 
+#if false // TODO: not needed - UI element has accelerator
                         case Keys.M:
-                            if (this.swapIndex >= 0)
-                            {
-                                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
-                            }
-                            this.swapIndex = this.CurrentItemRow;
-                            options.LastSelectedSwap = this.swapIndex;
-                            this.dataGridViewFiles.InvalidateRow(this.swapIndex);
+                            markToolStripMenuItem_Click(this, EventArgs.Empty);
                             return true;
 
                         case Keys.S:
-                            if (this.swapIndex >= 0)
-                            {
-                                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
-                                int savedIndex = this.CurrentItemRow;
-                                this.SelectItem(this.swapIndex);
-                                this.swapIndex = savedIndex;
-                                options.LastSelectedSwap = this.swapIndex;
-                                this.dataGridViewFiles.InvalidateRow(this.swapIndex);
-                                return true;
-                            }
-                            break;
+                            swapToolStripMenuItem_Click(this, EventArgs.Empty);
+                            return true;
+#endif
 
                         case Keys.Left:
                         case Keys.Right:
@@ -1587,6 +1640,7 @@ namespace AdaptiveImageSizeReducer
                             UpdatePrimary();
                             return true;
 
+#if false // TODO: not needed - UI element has accelerator
                         case Keys.D1:
                         case Keys.D2:
                         case Keys.D3:
@@ -1596,9 +1650,12 @@ namespace AdaptiveImageSizeReducer
                         case Keys.D7:
                         case Keys.D8:
                         case Keys.D9:
-                            currentItem.TagColor = TagColors[(int)key - (int)Keys.D1];
-                            this.dataGridViewFiles.InvalidateRow(this.dataGridViewFiles.CurrentRow.Index);
+                            ToolStripDropDownButtonMarkColor_DropDownItemClicked(
+                                this.toolStripDropDownButtonMarkColor,
+                                new ToolStripItemClickedEventArgs(
+                                    this.toolStripDropDownButtonMarkColor.DropDownItems[(int)key - (int)Keys.D1]));
                             return true;
+#endif
                     }
                 }
             }

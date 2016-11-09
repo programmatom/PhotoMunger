@@ -667,9 +667,11 @@ namespace AdaptiveImageSizeReducer
                 {
                     int ey = y + rect.Y;
                     int ex = x + rect.X;
+                    int* pTarget = (int*)(scan0 + y * stride + x * 4);
+                    *pTarget = 0;
                     if ((ey >= 0) && (ey < this.height) && (ex >= 0) && (ex < this.width))
                     {
-                        *(int*)(scan0 + y * stride + x * 4) = *(int*)(this.scan0 + ey * this.stride + ex * 4);
+                        *pTarget = *(int*)(this.scan0 + ey * this.stride + ex * 4);
                     }
                 }
             }

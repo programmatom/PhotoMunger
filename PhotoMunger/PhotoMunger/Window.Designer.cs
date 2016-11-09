@@ -52,6 +52,11 @@ namespace AdaptiveImageSizeReducer
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
             this.dataGridViewFiles = new System.Windows.Forms.DataGridView();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxMain = new System.Windows.Forms.PictureBox();
@@ -80,6 +85,20 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownButtonMarkColor = new System.Windows.Forms.ToolStripDropDownButton();
+            this.blackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.blueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yellowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.greenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.purpleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cyanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButtonCatchAllMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.markToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.swapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxDetail1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxDetail2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelStats = new System.Windows.Forms.TableLayoutPanel();
@@ -104,12 +123,8 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage = new System.Windows.Forms.Label();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
-            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Delete = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -125,7 +140,6 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelSize.SuspendLayout();
             this.flowLayoutPanelCropRect.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewFiles
@@ -148,8 +162,44 @@ namespace AdaptiveImageSizeReducer
             this.dataGridViewFiles.Name = "dataGridViewFiles";
             this.dataGridViewFiles.RowHeadersVisible = false;
             this.dataGridViewFiles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridViewFiles.Size = new System.Drawing.Size(109, 605);
+            this.dataGridViewFiles.Size = new System.Drawing.Size(120, 605);
             this.dataGridViewFiles.TabIndex = 0;
+            // 
+            // FileName
+            // 
+            this.FileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.FileName.DataPropertyName = "RenamedFileName";
+            this.FileName.HeaderText = "Name";
+            this.FileName.Name = "FileName";
+            // 
+            // shrinkDataGridViewCheckBoxColumn
+            // 
+            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
+            this.shrinkDataGridViewCheckBoxColumn.Width = 23;
+            // 
+            // Delete
+            // 
+            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Delete.DataPropertyName = "Delete";
+            this.Delete.HeaderText = "Delete";
+            this.Delete.Name = "Delete";
+            this.Delete.Width = 23;
+            // 
+            // FileSize
+            // 
+            this.FileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.FileSize.DataPropertyName = "FileSize";
+            this.FileSize.HeaderText = "Size";
+            this.FileSize.Name = "FileSize";
+            this.FileSize.ReadOnly = true;
+            this.FileSize.Width = 52;
+            // 
+            // dataBindingSource
+            // 
+            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
             // 
             // splitContainer
             // 
@@ -166,7 +216,7 @@ namespace AdaptiveImageSizeReducer
             // 
             this.splitContainer.Panel2.Controls.Add(this.tableLayoutPanel);
             this.splitContainer.Size = new System.Drawing.Size(928, 605);
-            this.splitContainer.SplitterDistance = 109;
+            this.splitContainer.SplitterDistance = 120;
             this.splitContainer.TabIndex = 1;
             // 
             // tableLayoutPanel
@@ -181,7 +231,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 1;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(815, 605);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(804, 605);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // pictureBoxMain
@@ -192,7 +242,7 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.Location = new System.Drawing.Point(0, 1);
             this.pictureBoxMain.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.pictureBoxMain.Name = "pictureBoxMain";
-            this.pictureBoxMain.Size = new System.Drawing.Size(588, 603);
+            this.pictureBoxMain.Size = new System.Drawing.Size(577, 603);
             this.pictureBoxMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
@@ -207,7 +257,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel.Controls.Add(this.tableLayoutPanelStats);
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(588, 0);
+            this.flowLayoutPanel.Location = new System.Drawing.Point(577, 0);
             this.flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
             this.flowLayoutPanel.Size = new System.Drawing.Size(227, 605);
@@ -241,7 +291,10 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonRotateLeft90,
             this.toolStripButtonRotateRight90,
             this.toolStripButtonOptions,
-            this.toolStripButtonGlobalOptions});
+            this.toolStripButtonGlobalOptions,
+            this.toolStripSeparator5,
+            this.toolStripDropDownButtonMarkColor,
+            this.toolStripDropDownButtonCatchAllMenu});
             this.toolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -466,6 +519,120 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonGlobalOptions.Size = new System.Drawing.Size(23, 20);
             this.toolStripButtonGlobalOptions.ToolTipText = "Change global processing options and analyze again";
             this.toolStripButtonGlobalOptions.Click += new System.EventHandler(this.toolStripButtonGlobalOptions_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 23);
+            // 
+            // toolStripDropDownButtonMarkColor
+            // 
+            this.toolStripDropDownButtonMarkColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButtonMarkColor.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.blackToolStripMenuItem,
+            this.blueToolStripMenuItem,
+            this.redToolStripMenuItem,
+            this.yellowToolStripMenuItem,
+            this.orangeToolStripMenuItem,
+            this.greenToolStripMenuItem,
+            this.purpleToolStripMenuItem,
+            this.cyanToolStripMenuItem,
+            this.pinkToolStripMenuItem});
+            this.toolStripDropDownButtonMarkColor.Image = global::AdaptiveImageSizeReducer.Properties.Resources.TagColor;
+            this.toolStripDropDownButtonMarkColor.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonMarkColor.Name = "toolStripDropDownButtonMarkColor";
+            this.toolStripDropDownButtonMarkColor.Size = new System.Drawing.Size(29, 20);
+            this.toolStripDropDownButtonMarkColor.ToolTipText = "Mark item name with color";
+            // 
+            // blackToolStripMenuItem
+            // 
+            this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
+            this.blackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D1)));
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blackToolStripMenuItem.Text = "Black";
+            // 
+            // blueToolStripMenuItem
+            // 
+            this.blueToolStripMenuItem.Name = "blueToolStripMenuItem";
+            this.blueToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
+            this.blueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blueToolStripMenuItem.Text = "Blue";
+            // 
+            // redToolStripMenuItem
+            // 
+            this.redToolStripMenuItem.Name = "redToolStripMenuItem";
+            this.redToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
+            this.redToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.redToolStripMenuItem.Text = "Red";
+            // 
+            // yellowToolStripMenuItem
+            // 
+            this.yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
+            this.yellowToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
+            this.yellowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yellowToolStripMenuItem.Text = "Yellow";
+            // 
+            // orangeToolStripMenuItem
+            // 
+            this.orangeToolStripMenuItem.Name = "orangeToolStripMenuItem";
+            this.orangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
+            this.orangeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.orangeToolStripMenuItem.Text = "Orange";
+            // 
+            // greenToolStripMenuItem
+            // 
+            this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
+            this.greenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D6)));
+            this.greenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.greenToolStripMenuItem.Text = "Green";
+            // 
+            // purpleToolStripMenuItem
+            // 
+            this.purpleToolStripMenuItem.Name = "purpleToolStripMenuItem";
+            this.purpleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D7)));
+            this.purpleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.purpleToolStripMenuItem.Text = "Purple";
+            // 
+            // cyanToolStripMenuItem
+            // 
+            this.cyanToolStripMenuItem.Name = "cyanToolStripMenuItem";
+            this.cyanToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D8)));
+            this.cyanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cyanToolStripMenuItem.Text = "Cyan";
+            // 
+            // pinkToolStripMenuItem
+            // 
+            this.pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
+            this.pinkToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D9)));
+            this.pinkToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pinkToolStripMenuItem.Text = "Pink";
+            // 
+            // toolStripDropDownButtonCatchAllMenu
+            // 
+            this.toolStripDropDownButtonCatchAllMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButtonCatchAllMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.markToolStripMenuItem,
+            this.swapToolStripMenuItem});
+            this.toolStripDropDownButtonCatchAllMenu.Image = global::AdaptiveImageSizeReducer.Properties.Resources.CatchAllMenu;
+            this.toolStripDropDownButtonCatchAllMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonCatchAllMenu.Name = "toolStripDropDownButtonCatchAllMenu";
+            this.toolStripDropDownButtonCatchAllMenu.Size = new System.Drawing.Size(29, 20);
+            // 
+            // markToolStripMenuItem
+            // 
+            this.markToolStripMenuItem.Name = "markToolStripMenuItem";
+            this.markToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
+            this.markToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.markToolStripMenuItem.Text = "Mark";
+            this.markToolStripMenuItem.Click += new System.EventHandler(this.markToolStripMenuItem_Click);
+            // 
+            // swapToolStripMenuItem
+            // 
+            this.swapToolStripMenuItem.Name = "swapToolStripMenuItem";
+            this.swapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.swapToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.swapToolStripMenuItem.Text = "Swap";
+            this.swapToolStripMenuItem.Click += new System.EventHandler(this.swapToolStripMenuItem_Click);
             // 
             // pictureBoxDetail1
             // 
@@ -723,42 +890,6 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage.TabIndex = 7;
             this.labelMessage.UseMnemonic = false;
             // 
-            // FileName
-            // 
-            this.FileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.FileName.DataPropertyName = "RenamedFileName";
-            this.FileName.HeaderText = "Name";
-            this.FileName.Name = "FileName";
-            // 
-            // Delete
-            // 
-            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Delete.DataPropertyName = "Delete";
-            this.Delete.HeaderText = "Delete";
-            this.Delete.Name = "Delete";
-            this.Delete.Width = 23;
-            // 
-            // FileSize
-            // 
-            this.FileSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.FileSize.DataPropertyName = "FileSize";
-            this.FileSize.HeaderText = "Size";
-            this.FileSize.Name = "FileSize";
-            this.FileSize.ReadOnly = true;
-            this.FileSize.Width = 52;
-            // 
-            // shrinkDataGridViewCheckBoxColumn
-            // 
-            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
-            this.shrinkDataGridViewCheckBoxColumn.Width = 23;
-            // 
-            // dataBindingSource
-            // 
-            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
-            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -769,6 +900,7 @@ namespace AdaptiveImageSizeReducer
             this.Text = "Images";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -792,7 +924,6 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelCropRect.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -852,10 +983,24 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripButton toolStripButtonResetAllNormalizedGeometry;
         private System.Windows.Forms.ToolStripButton toolStripButtonNormalizeGeometryCorners;
         private System.Windows.Forms.ToolStripButton toolStripButtonRotateLeft90;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonMarkColor;
+        private System.Windows.Forms.ToolStripMenuItem blackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem blueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem redToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yellowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orangeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem greenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem purpleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cyanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pinkToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn shrinkDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Delete;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileSize;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonCatchAllMenu;
+        private System.Windows.Forms.ToolStripMenuItem markToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem swapToolStripMenuItem;
     }
 }
 

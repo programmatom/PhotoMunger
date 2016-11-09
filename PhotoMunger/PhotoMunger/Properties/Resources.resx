@@ -124,6 +124,9 @@
   <data name="AnnotationDetailButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AnnotationDetailButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CatchAllMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CatchAllMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ClearCropButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClearCropButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -174,6 +177,9 @@
   </data>
   <data name="ShowShrunkExpandedPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ShowShrunkExpandedPreview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TagColor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TagColor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UseGDIResize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UseGDIResie.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

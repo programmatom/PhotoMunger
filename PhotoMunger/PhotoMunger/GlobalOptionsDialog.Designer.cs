@@ -52,7 +52,6 @@ namespace AdaptiveImageSizeReducer
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxBrightAdjust = new System.Windows.Forms.CheckBox();
-            this.globalOptionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.checkBoxAutoCrop = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonOK = new System.Windows.Forms.Button();
@@ -140,8 +139,8 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonJpegEncoderWPF = new System.Windows.Forms.RadioButton();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.labelVersion = new System.Windows.Forms.Label();
+            this.globalOptionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -156,6 +155,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -227,12 +227,8 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxBrightAdjust.Location = new System.Drawing.Point(171, 173);
             this.checkBoxBrightAdjust.Name = "checkBoxBrightAdjust";
             this.checkBoxBrightAdjust.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxBrightAdjust.TabIndex = 7;
+            this.checkBoxBrightAdjust.TabIndex = 44;
             this.checkBoxBrightAdjust.UseVisualStyleBackColor = true;
-            // 
-            // globalOptionsBindingSource
-            // 
-            this.globalOptionsBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.GlobalOptions);
             // 
             // checkBoxAutoCrop
             // 
@@ -242,7 +238,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxAutoCrop.Location = new System.Drawing.Point(171, 93);
             this.checkBoxAutoCrop.Name = "checkBoxAutoCrop";
             this.checkBoxAutoCrop.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxAutoCrop.TabIndex = 2;
+            this.checkBoxAutoCrop.TabIndex = 21;
             this.checkBoxAutoCrop.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
@@ -296,7 +292,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(86, 20);
-            this.flowLayoutPanel7.TabIndex = 17;
+            this.flowLayoutPanel7.TabIndex = 8;
             // 
             // label19
             // 
@@ -305,7 +301,7 @@ namespace AdaptiveImageSizeReducer
             this.label19.Location = new System.Drawing.Point(3, 3);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(40, 13);
-            this.label19.TabIndex = 13;
+            this.label19.TabIndex = 8;
             this.label19.Text = "Factor:";
             // 
             // textBoxShrinkFactor
@@ -315,7 +311,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxShrinkFactor.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxShrinkFactor.Name = "textBoxShrinkFactor";
             this.textBoxShrinkFactor.Size = new System.Drawing.Size(40, 20);
-            this.textBoxShrinkFactor.TabIndex = 15;
+            this.textBoxShrinkFactor.TabIndex = 9;
             // 
             // label1
             // 
@@ -324,7 +320,7 @@ namespace AdaptiveImageSizeReducer
             this.label1.Location = new System.Drawing.Point(3, 93);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(142, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 20;
             this.label1.Text = "Autocrop:";
             // 
             // flowLayoutPanel1
@@ -343,7 +339,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(387, 20);
-            this.flowLayoutPanel1.TabIndex = 3;
+            this.flowLayoutPanel1.TabIndex = 22;
             this.flowLayoutPanel1.WrapContents = false;
             // 
             // label2
@@ -354,7 +350,7 @@ namespace AdaptiveImageSizeReducer
             this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 13);
-            this.label2.TabIndex = 3;
+            this.label2.TabIndex = 22;
             this.label2.Text = "LeftMax:";
             // 
             // textBoxAutoCropLeftMax
@@ -365,7 +361,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxAutoCropLeftMax.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAutoCropLeftMax.Name = "textBoxAutoCropLeftMax";
             this.textBoxAutoCropLeftMax.Size = new System.Drawing.Size(40, 20);
-            this.textBoxAutoCropLeftMax.TabIndex = 7;
+            this.textBoxAutoCropLeftMax.TabIndex = 23;
             // 
             // label4
             // 
@@ -375,7 +371,7 @@ namespace AdaptiveImageSizeReducer
             this.label4.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
-            this.label4.TabIndex = 5;
+            this.label4.TabIndex = 24;
             this.label4.Text = "TopMax:";
             // 
             // textBoxAutoCropTopMax
@@ -386,7 +382,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxAutoCropTopMax.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAutoCropTopMax.Name = "textBoxAutoCropTopMax";
             this.textBoxAutoCropTopMax.Size = new System.Drawing.Size(40, 20);
-            this.textBoxAutoCropTopMax.TabIndex = 8;
+            this.textBoxAutoCropTopMax.TabIndex = 25;
             // 
             // label5
             // 
@@ -396,7 +392,7 @@ namespace AdaptiveImageSizeReducer
             this.label5.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 13);
-            this.label5.TabIndex = 6;
+            this.label5.TabIndex = 26;
             this.label5.Text = "RightMax:";
             // 
             // textBoxAutoCropRightMax
@@ -407,7 +403,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxAutoCropRightMax.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAutoCropRightMax.Name = "textBoxAutoCropRightMax";
             this.textBoxAutoCropRightMax.Size = new System.Drawing.Size(40, 20);
-            this.textBoxAutoCropRightMax.TabIndex = 9;
+            this.textBoxAutoCropRightMax.TabIndex = 27;
             // 
             // label3
             // 
@@ -417,7 +413,7 @@ namespace AdaptiveImageSizeReducer
             this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 28;
             this.label3.Text = "BottomMax:";
             // 
             // textBoxAutoCropBottomMax
@@ -428,7 +424,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxAutoCropBottomMax.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAutoCropBottomMax.Name = "textBoxAutoCropBottomMax";
             this.textBoxAutoCropBottomMax.Size = new System.Drawing.Size(40, 20);
-            this.textBoxAutoCropBottomMax.TabIndex = 10;
+            this.textBoxAutoCropBottomMax.TabIndex = 29;
             // 
             // label7
             // 
@@ -437,7 +433,7 @@ namespace AdaptiveImageSizeReducer
             this.label7.Location = new System.Drawing.Point(3, 153);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(142, 13);
-            this.label7.TabIndex = 4;
+            this.label7.TabIndex = 38;
             this.label7.Text = "Bulk Rotation:";
             // 
             // label8
@@ -447,7 +443,7 @@ namespace AdaptiveImageSizeReducer
             this.label8.Location = new System.Drawing.Point(3, 173);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(142, 13);
-            this.label8.TabIndex = 6;
+            this.label8.TabIndex = 43;
             this.label8.Text = "Adjust Brightness:";
             // 
             // flowLayoutPanel2
@@ -461,7 +457,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(289, 20);
-            this.flowLayoutPanel2.TabIndex = 7;
+            this.flowLayoutPanel2.TabIndex = 45;
             // 
             // label10
             // 
@@ -470,7 +466,7 @@ namespace AdaptiveImageSizeReducer
             this.label10.Location = new System.Drawing.Point(3, 3);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(127, 13);
-            this.label10.TabIndex = 13;
+            this.label10.TabIndex = 45;
             this.label10.Text = "Minimum Cluster Fraction:";
             // 
             // textBoxMinClusterFrac
@@ -480,7 +476,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxMinClusterFrac.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxMinClusterFrac.Name = "textBoxMinClusterFrac";
             this.textBoxMinClusterFrac.Size = new System.Drawing.Size(40, 20);
-            this.textBoxMinClusterFrac.TabIndex = 14;
+            this.textBoxMinClusterFrac.TabIndex = 46;
             // 
             // label11
             // 
@@ -489,7 +485,7 @@ namespace AdaptiveImageSizeReducer
             this.label11.Location = new System.Drawing.Point(176, 3);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(89, 13);
-            this.label11.TabIndex = 15;
+            this.label11.TabIndex = 47;
             this.label11.Text = "White Correction:";
             // 
             // checkBoxWhiteCorrection
@@ -500,7 +496,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxWhiteCorrection.Location = new System.Drawing.Point(271, 3);
             this.checkBoxWhiteCorrection.Name = "checkBoxWhiteCorrection";
             this.checkBoxWhiteCorrection.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxWhiteCorrection.TabIndex = 16;
+            this.checkBoxWhiteCorrection.TabIndex = 48;
             this.checkBoxWhiteCorrection.UseVisualStyleBackColor = true;
             // 
             // label16
@@ -510,7 +506,7 @@ namespace AdaptiveImageSizeReducer
             this.label16.Location = new System.Drawing.Point(3, 33);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(142, 13);
-            this.label16.TabIndex = 11;
+            this.label16.TabIndex = 6;
             this.label16.Text = "Shrink:";
             // 
             // checkBoxShrink
@@ -521,7 +517,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxShrink.Location = new System.Drawing.Point(171, 33);
             this.checkBoxShrink.Name = "checkBoxShrink";
             this.checkBoxShrink.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxShrink.TabIndex = 12;
+            this.checkBoxShrink.TabIndex = 7;
             this.checkBoxShrink.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel4
@@ -537,7 +533,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(198, 17);
-            this.flowLayoutPanel4.TabIndex = 10;
+            this.flowLayoutPanel4.TabIndex = 40;
             this.flowLayoutPanel4.WrapContents = false;
             // 
             // radioButtonRotation0
@@ -548,7 +544,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation0.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonRotation0.Name = "radioButtonRotation0";
             this.radioButtonRotation0.Size = new System.Drawing.Size(51, 17);
-            this.radioButtonRotation0.TabIndex = 0;
+            this.radioButtonRotation0.TabIndex = 39;
             this.radioButtonRotation0.TabStop = true;
             this.radioButtonRotation0.Text = "None";
             this.radioButtonRotation0.UseVisualStyleBackColor = true;
@@ -562,7 +558,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation90.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonRotation90.Name = "radioButtonRotation90";
             this.radioButtonRotation90.Size = new System.Drawing.Size(37, 17);
-            this.radioButtonRotation90.TabIndex = 1;
+            this.radioButtonRotation90.TabIndex = 40;
             this.radioButtonRotation90.TabStop = true;
             this.radioButtonRotation90.Text = "90";
             this.radioButtonRotation90.UseVisualStyleBackColor = true;
@@ -576,7 +572,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation180.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonRotation180.Name = "radioButtonRotation180";
             this.radioButtonRotation180.Size = new System.Drawing.Size(43, 17);
-            this.radioButtonRotation180.TabIndex = 2;
+            this.radioButtonRotation180.TabIndex = 41;
             this.radioButtonRotation180.TabStop = true;
             this.radioButtonRotation180.Text = "180";
             this.radioButtonRotation180.UseVisualStyleBackColor = true;
@@ -590,7 +586,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation270.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonRotation270.Name = "radioButtonRotation270";
             this.radioButtonRotation270.Size = new System.Drawing.Size(43, 17);
-            this.radioButtonRotation270.TabIndex = 3;
+            this.radioButtonRotation270.TabIndex = 42;
             this.radioButtonRotation270.TabStop = true;
             this.radioButtonRotation270.Text = "270";
             this.radioButtonRotation270.UseVisualStyleBackColor = true;
@@ -605,7 +601,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(163, 20);
-            this.flowLayoutPanel5.TabIndex = 13;
+            this.flowLayoutPanel5.TabIndex = 30;
             // 
             // label6
             // 
@@ -614,7 +610,7 @@ namespace AdaptiveImageSizeReducer
             this.label6.Location = new System.Drawing.Point(3, 3);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(117, 13);
-            this.label6.TabIndex = 0;
+            this.label6.TabIndex = 30;
             this.label6.Text = "Min Median Brightness:";
             // 
             // textBoxAutoCropMinMedianBrightness
@@ -624,7 +620,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxAutoCropMinMedianBrightness.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxAutoCropMinMedianBrightness.Name = "textBoxAutoCropMinMedianBrightness";
             this.textBoxAutoCropMinMedianBrightness.Size = new System.Drawing.Size(40, 20);
-            this.textBoxAutoCropMinMedianBrightness.TabIndex = 1;
+            this.textBoxAutoCropMinMedianBrightness.TabIndex = 31;
             // 
             // label9
             // 
@@ -633,7 +629,7 @@ namespace AdaptiveImageSizeReducer
             this.label9.Location = new System.Drawing.Point(3, 13);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(142, 13);
-            this.label9.TabIndex = 14;
+            this.label9.TabIndex = 2;
             this.label9.Text = "Jpeg Quality:";
             // 
             // textBoxJpegQuality
@@ -644,7 +640,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxJpegQuality.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxJpegQuality.Name = "textBoxJpegQuality";
             this.textBoxJpegQuality.Size = new System.Drawing.Size(40, 20);
-            this.textBoxJpegQuality.TabIndex = 15;
+            this.textBoxJpegQuality.TabIndex = 3;
             // 
             // label13
             // 
@@ -653,7 +649,7 @@ namespace AdaptiveImageSizeReducer
             this.label13.Location = new System.Drawing.Point(3, 213);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(142, 13);
-            this.label13.TabIndex = 16;
+            this.label13.TabIndex = 57;
             this.label13.Text = "Monochrome Bitmap Output:";
             // 
             // checkBoxOneBit
@@ -664,7 +660,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxOneBit.Location = new System.Drawing.Point(171, 213);
             this.checkBoxOneBit.Name = "checkBoxOneBit";
             this.checkBoxOneBit.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxOneBit.TabIndex = 17;
+            this.checkBoxOneBit.TabIndex = 58;
             this.checkBoxOneBit.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel6
@@ -681,7 +677,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Size = new System.Drawing.Size(343, 20);
-            this.flowLayoutPanel6.TabIndex = 18;
+            this.flowLayoutPanel6.TabIndex = 59;
             // 
             // label17
             // 
@@ -690,7 +686,7 @@ namespace AdaptiveImageSizeReducer
             this.label17.Location = new System.Drawing.Point(3, 3);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(70, 13);
-            this.label17.TabIndex = 0;
+            this.label17.TabIndex = 59;
             this.label17.Text = "Key Channel:";
             // 
             // radioButtonOneBitChannelAll
@@ -701,7 +697,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitChannelAll.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonOneBitChannelAll.Name = "radioButtonOneBitChannelAll";
             this.radioButtonOneBitChannelAll.Size = new System.Drawing.Size(36, 17);
-            this.radioButtonOneBitChannelAll.TabIndex = 7;
+            this.radioButtonOneBitChannelAll.TabIndex = 59;
             this.radioButtonOneBitChannelAll.TabStop = true;
             this.radioButtonOneBitChannelAll.Text = "All";
             this.radioButtonOneBitChannelAll.UseVisualStyleBackColor = true;
@@ -715,7 +711,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitChannelR.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonOneBitChannelR.Name = "radioButtonOneBitChannelR";
             this.radioButtonOneBitChannelR.Size = new System.Drawing.Size(33, 17);
-            this.radioButtonOneBitChannelR.TabIndex = 6;
+            this.radioButtonOneBitChannelR.TabIndex = 60;
             this.radioButtonOneBitChannelR.TabStop = true;
             this.radioButtonOneBitChannelR.Text = "R";
             this.radioButtonOneBitChannelR.UseVisualStyleBackColor = true;
@@ -729,7 +725,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitChannelG.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonOneBitChannelG.Name = "radioButtonOneBitChannelG";
             this.radioButtonOneBitChannelG.Size = new System.Drawing.Size(33, 17);
-            this.radioButtonOneBitChannelG.TabIndex = 5;
+            this.radioButtonOneBitChannelG.TabIndex = 61;
             this.radioButtonOneBitChannelG.TabStop = true;
             this.radioButtonOneBitChannelG.Text = "G";
             this.radioButtonOneBitChannelG.UseVisualStyleBackColor = true;
@@ -743,7 +739,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitChannelB.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonOneBitChannelB.Name = "radioButtonOneBitChannelB";
             this.radioButtonOneBitChannelB.Size = new System.Drawing.Size(32, 17);
-            this.radioButtonOneBitChannelB.TabIndex = 4;
+            this.radioButtonOneBitChannelB.TabIndex = 62;
             this.radioButtonOneBitChannelB.TabStop = true;
             this.radioButtonOneBitChannelB.Text = "B";
             this.radioButtonOneBitChannelB.UseVisualStyleBackColor = true;
@@ -756,7 +752,7 @@ namespace AdaptiveImageSizeReducer
             this.label18.Location = new System.Drawing.Point(237, 3);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(63, 13);
-            this.label18.TabIndex = 1;
+            this.label18.TabIndex = 63;
             this.label18.Text = "Threshhold:";
             // 
             // textBoxOneBitThreshhold
@@ -767,7 +763,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxOneBitThreshhold.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxOneBitThreshhold.Name = "textBoxOneBitThreshhold";
             this.textBoxOneBitThreshhold.Size = new System.Drawing.Size(40, 20);
-            this.textBoxOneBitThreshhold.TabIndex = 3;
+            this.textBoxOneBitThreshhold.TabIndex = 64;
             // 
             // flowLayoutPanel8
             // 
@@ -781,7 +777,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(345, 20);
-            this.flowLayoutPanel8.TabIndex = 19;
+            this.flowLayoutPanel8.TabIndex = 65;
             // 
             // label20
             // 
@@ -790,7 +786,7 @@ namespace AdaptiveImageSizeReducer
             this.label20.Location = new System.Drawing.Point(3, 5);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(77, 13);
-            this.label20.TabIndex = 0;
+            this.label20.TabIndex = 65;
             this.label20.Text = "Output Format:";
             // 
             // radioButtonOneBitOutputBmp
@@ -800,7 +796,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitOutputBmp.Location = new System.Drawing.Point(86, 3);
             this.radioButtonOneBitOutputBmp.Name = "radioButtonOneBitOutputBmp";
             this.radioButtonOneBitOutputBmp.Size = new System.Drawing.Size(46, 17);
-            this.radioButtonOneBitOutputBmp.TabIndex = 1;
+            this.radioButtonOneBitOutputBmp.TabIndex = 65;
             this.radioButtonOneBitOutputBmp.TabStop = true;
             this.radioButtonOneBitOutputBmp.Text = "Bmp";
             this.radioButtonOneBitOutputBmp.UseVisualStyleBackColor = true;
@@ -813,7 +809,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonOneBitOutputPng.Location = new System.Drawing.Point(138, 3);
             this.radioButtonOneBitOutputPng.Name = "radioButtonOneBitOutputPng";
             this.radioButtonOneBitOutputPng.Size = new System.Drawing.Size(44, 17);
-            this.radioButtonOneBitOutputPng.TabIndex = 2;
+            this.radioButtonOneBitOutputPng.TabIndex = 66;
             this.radioButtonOneBitOutputPng.TabStop = true;
             this.radioButtonOneBitOutputPng.Text = "Png";
             this.radioButtonOneBitOutputPng.UseVisualStyleBackColor = true;
@@ -827,7 +823,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxOneBitScaleUp.Location = new System.Drawing.Point(188, 3);
             this.checkBoxOneBitScaleUp.Name = "checkBoxOneBitScaleUp";
             this.checkBoxOneBitScaleUp.Size = new System.Drawing.Size(154, 17);
-            this.checkBoxOneBitScaleUp.TabIndex = 3;
+            this.checkBoxOneBitScaleUp.TabIndex = 67;
             this.checkBoxOneBitScaleUp.Text = "Scale 2x Before Quantizing";
             this.checkBoxOneBitScaleUp.UseVisualStyleBackColor = true;
             // 
@@ -838,7 +834,7 @@ namespace AdaptiveImageSizeReducer
             this.label21.Location = new System.Drawing.Point(3, 193);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(142, 13);
-            this.label21.TabIndex = 16;
+            this.label21.TabIndex = 49;
             this.label21.Text = "Static Saturation:";
             // 
             // checkBoxStaticSaturation
@@ -849,7 +845,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxStaticSaturation.Location = new System.Drawing.Point(171, 193);
             this.checkBoxStaticSaturation.Name = "checkBoxStaticSaturation";
             this.checkBoxStaticSaturation.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxStaticSaturation.TabIndex = 17;
+            this.checkBoxStaticSaturation.TabIndex = 50;
             this.checkBoxStaticSaturation.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel9
@@ -865,7 +861,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
             this.flowLayoutPanel9.Size = new System.Drawing.Size(380, 20);
-            this.flowLayoutPanel9.TabIndex = 9;
+            this.flowLayoutPanel9.TabIndex = 51;
             // 
             // label22
             // 
@@ -874,7 +870,7 @@ namespace AdaptiveImageSizeReducer
             this.label22.Location = new System.Drawing.Point(3, 3);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(94, 13);
-            this.label22.TabIndex = 13;
+            this.label22.TabIndex = 51;
             this.label22.Text = "White Threshhold:";
             // 
             // textBoxStaticSaturationWhiteThreshhold
@@ -884,7 +880,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxStaticSaturationWhiteThreshhold.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxStaticSaturationWhiteThreshhold.Name = "textBoxStaticSaturationWhiteThreshhold";
             this.textBoxStaticSaturationWhiteThreshhold.Size = new System.Drawing.Size(40, 20);
-            this.textBoxStaticSaturationWhiteThreshhold.TabIndex = 15;
+            this.textBoxStaticSaturationWhiteThreshhold.TabIndex = 52;
             // 
             // label23
             // 
@@ -893,7 +889,7 @@ namespace AdaptiveImageSizeReducer
             this.label23.Location = new System.Drawing.Point(143, 3);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(93, 13);
-            this.label23.TabIndex = 14;
+            this.label23.TabIndex = 53;
             this.label23.Text = "Black Threshhold:";
             // 
             // textBoxStaticSaturationBlackThreshhold
@@ -903,7 +899,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxStaticSaturationBlackThreshhold.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxStaticSaturationBlackThreshhold.Name = "textBoxStaticSaturationBlackThreshhold";
             this.textBoxStaticSaturationBlackThreshhold.Size = new System.Drawing.Size(40, 20);
-            this.textBoxStaticSaturationBlackThreshhold.TabIndex = 16;
+            this.textBoxStaticSaturationBlackThreshhold.TabIndex = 54;
             // 
             // label24
             // 
@@ -912,7 +908,7 @@ namespace AdaptiveImageSizeReducer
             this.label24.Location = new System.Drawing.Point(282, 3);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(55, 13);
-            this.label24.TabIndex = 13;
+            this.label24.TabIndex = 55;
             this.label24.Text = "Exponent:";
             // 
             // textBoxStaticSaturateExponent
@@ -922,7 +918,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxStaticSaturateExponent.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxStaticSaturateExponent.Name = "textBoxStaticSaturateExponent";
             this.textBoxStaticSaturateExponent.Size = new System.Drawing.Size(40, 20);
-            this.textBoxStaticSaturateExponent.TabIndex = 16;
+            this.textBoxStaticSaturateExponent.TabIndex = 56;
             // 
             // label25
             // 
@@ -931,7 +927,7 @@ namespace AdaptiveImageSizeReducer
             this.label25.Location = new System.Drawing.Point(3, 53);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(142, 13);
-            this.label25.TabIndex = 1;
+            this.label25.TabIndex = 10;
             this.label25.Text = "Auto-normalize Geometry:";
             // 
             // checkBoxAutoNormalizeGeometry
@@ -942,7 +938,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxAutoNormalizeGeometry.Location = new System.Drawing.Point(171, 53);
             this.checkBoxAutoNormalizeGeometry.Name = "checkBoxAutoNormalizeGeometry";
             this.checkBoxAutoNormalizeGeometry.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxAutoNormalizeGeometry.TabIndex = 2;
+            this.checkBoxAutoNormalizeGeometry.TabIndex = 11;
             this.checkBoxAutoNormalizeGeometry.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel10
@@ -958,7 +954,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel10.Name = "flowLayoutPanel10";
             this.flowLayoutPanel10.Size = new System.Drawing.Size(269, 20);
-            this.flowLayoutPanel10.TabIndex = 3;
+            this.flowLayoutPanel10.TabIndex = 12;
             this.flowLayoutPanel10.WrapContents = false;
             // 
             // label29
@@ -969,7 +965,7 @@ namespace AdaptiveImageSizeReducer
             this.label29.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(101, 13);
-            this.label29.TabIndex = 4;
+            this.label29.TabIndex = 12;
             this.label29.Text = "Force Aspect Ratio:";
             // 
             // label26
@@ -980,7 +976,7 @@ namespace AdaptiveImageSizeReducer
             this.label26.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(38, 13);
-            this.label26.TabIndex = 3;
+            this.label26.TabIndex = 12;
             this.label26.Text = "Width:";
             // 
             // textBoxNormalizeGeometryAspectWidth
@@ -991,7 +987,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxNormalizeGeometryAspectWidth.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxNormalizeGeometryAspectWidth.Name = "textBoxNormalizeGeometryAspectWidth";
             this.textBoxNormalizeGeometryAspectWidth.Size = new System.Drawing.Size(40, 20);
-            this.textBoxNormalizeGeometryAspectWidth.TabIndex = 7;
+            this.textBoxNormalizeGeometryAspectWidth.TabIndex = 13;
             // 
             // label27
             // 
@@ -1001,7 +997,7 @@ namespace AdaptiveImageSizeReducer
             this.label27.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(41, 13);
-            this.label27.TabIndex = 5;
+            this.label27.TabIndex = 14;
             this.label27.Text = "Height:";
             // 
             // textBoxNormalizeGeometryAspectHeight
@@ -1012,7 +1008,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxNormalizeGeometryAspectHeight.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxNormalizeGeometryAspectHeight.Name = "textBoxNormalizeGeometryAspectHeight";
             this.textBoxNormalizeGeometryAspectHeight.Size = new System.Drawing.Size(40, 20);
-            this.textBoxNormalizeGeometryAspectHeight.TabIndex = 7;
+            this.textBoxNormalizeGeometryAspectHeight.TabIndex = 15;
             // 
             // flowLayoutPanel11
             // 
@@ -1027,7 +1023,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel11.Name = "flowLayoutPanel11";
             this.flowLayoutPanel11.Size = new System.Drawing.Size(330, 20);
-            this.flowLayoutPanel11.TabIndex = 3;
+            this.flowLayoutPanel11.TabIndex = 16;
             this.flowLayoutPanel11.WrapContents = false;
             // 
             // label28
@@ -1038,7 +1034,7 @@ namespace AdaptiveImageSizeReducer
             this.label28.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(81, 13);
-            this.label28.TabIndex = 4;
+            this.label28.TabIndex = 16;
             this.label28.Text = "Resize Method:";
             // 
             // label30
@@ -1049,7 +1045,7 @@ namespace AdaptiveImageSizeReducer
             this.label30.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(48, 13);
-            this.label30.TabIndex = 3;
+            this.label30.TabIndex = 16;
             this.label30.Text = "Preview:";
             // 
             // comboBoxNormalizeGeometryPreviewResizeMethod
@@ -1065,7 +1061,7 @@ namespace AdaptiveImageSizeReducer
             this.comboBoxNormalizeGeometryPreviewResizeMethod.Margin = new System.Windows.Forms.Padding(0);
             this.comboBoxNormalizeGeometryPreviewResizeMethod.Name = "comboBoxNormalizeGeometryPreviewResizeMethod";
             this.comboBoxNormalizeGeometryPreviewResizeMethod.Size = new System.Drawing.Size(80, 21);
-            this.comboBoxNormalizeGeometryPreviewResizeMethod.TabIndex = 8;
+            this.comboBoxNormalizeGeometryPreviewResizeMethod.TabIndex = 17;
             // 
             // label31
             // 
@@ -1075,7 +1071,7 @@ namespace AdaptiveImageSizeReducer
             this.label31.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(32, 13);
-            this.label31.TabIndex = 5;
+            this.label31.TabIndex = 18;
             this.label31.Text = "Final:";
             // 
             // comboBoxNormalizeGeometryFinalResizeMethod
@@ -1091,7 +1087,7 @@ namespace AdaptiveImageSizeReducer
             this.comboBoxNormalizeGeometryFinalResizeMethod.Margin = new System.Windows.Forms.Padding(0);
             this.comboBoxNormalizeGeometryFinalResizeMethod.Name = "comboBoxNormalizeGeometryFinalResizeMethod";
             this.comboBoxNormalizeGeometryFinalResizeMethod.Size = new System.Drawing.Size(80, 21);
-            this.comboBoxNormalizeGeometryFinalResizeMethod.TabIndex = 8;
+            this.comboBoxNormalizeGeometryFinalResizeMethod.TabIndex = 19;
             // 
             // label12
             // 
@@ -1100,7 +1096,7 @@ namespace AdaptiveImageSizeReducer
             this.label12.Location = new System.Drawing.Point(3, 133);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(142, 13);
-            this.label12.TabIndex = 8;
+            this.label12.TabIndex = 32;
             this.label12.Text = "Polynomial Unbias:";
             // 
             // checkBoxUnbias
@@ -1111,7 +1107,7 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxUnbias.Location = new System.Drawing.Point(171, 133);
             this.checkBoxUnbias.Name = "checkBoxUnbias";
             this.checkBoxUnbias.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxUnbias.TabIndex = 0;
+            this.checkBoxUnbias.TabIndex = 33;
             this.checkBoxUnbias.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel3
@@ -1125,7 +1121,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(241, 20);
-            this.flowLayoutPanel3.TabIndex = 9;
+            this.flowLayoutPanel3.TabIndex = 34;
             // 
             // label14
             // 
@@ -1134,7 +1130,7 @@ namespace AdaptiveImageSizeReducer
             this.label14.Location = new System.Drawing.Point(3, 3);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(68, 13);
-            this.label14.TabIndex = 13;
+            this.label14.TabIndex = 34;
             this.label14.Text = "Max Degree:";
             // 
             // textBoxUnbiasMaxDegree
@@ -1144,7 +1140,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxUnbiasMaxDegree.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxUnbiasMaxDegree.Name = "textBoxUnbiasMaxDegree";
             this.textBoxUnbiasMaxDegree.Size = new System.Drawing.Size(40, 20);
-            this.textBoxUnbiasMaxDegree.TabIndex = 15;
+            this.textBoxUnbiasMaxDegree.TabIndex = 35;
             // 
             // label15
             // 
@@ -1153,7 +1149,7 @@ namespace AdaptiveImageSizeReducer
             this.label15.Location = new System.Drawing.Point(117, 3);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(61, 13);
-            this.label15.TabIndex = 14;
+            this.label15.TabIndex = 36;
             this.label15.Text = "Max ChiSq:";
             // 
             // textBoxUnbiasMaxChiSq
@@ -1163,7 +1159,7 @@ namespace AdaptiveImageSizeReducer
             this.textBoxUnbiasMaxChiSq.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxUnbiasMaxChiSq.Name = "textBoxUnbiasMaxChiSq";
             this.textBoxUnbiasMaxChiSq.Size = new System.Drawing.Size(60, 20);
-            this.textBoxUnbiasMaxChiSq.TabIndex = 16;
+            this.textBoxUnbiasMaxChiSq.TabIndex = 37;
             // 
             // flowLayoutPanel12
             // 
@@ -1176,7 +1172,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel12.Name = "flowLayoutPanel12";
             this.flowLayoutPanel12.Size = new System.Drawing.Size(303, 17);
-            this.flowLayoutPanel12.TabIndex = 10;
+            this.flowLayoutPanel12.TabIndex = 4;
             this.flowLayoutPanel12.WrapContents = false;
             // 
             // label33
@@ -1186,7 +1182,7 @@ namespace AdaptiveImageSizeReducer
             this.label33.Location = new System.Drawing.Point(3, 2);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(50, 13);
-            this.label33.TabIndex = 13;
+            this.label33.TabIndex = 0;
             this.label33.Text = "Encoder:";
             // 
             // radioButtonJpegEncoderGDI
@@ -1197,7 +1193,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonJpegEncoderGDI.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonJpegEncoderGDI.Name = "radioButtonJpegEncoderGDI";
             this.radioButtonJpegEncoderGDI.Size = new System.Drawing.Size(50, 17);
-            this.radioButtonJpegEncoderGDI.TabIndex = 0;
+            this.radioButtonJpegEncoderGDI.TabIndex = 4;
             this.radioButtonJpegEncoderGDI.TabStop = true;
             this.radioButtonJpegEncoderGDI.Text = "GDI+";
             this.radioButtonJpegEncoderGDI.UseVisualStyleBackColor = true;
@@ -1211,7 +1207,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonJpegEncoderWPF.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonJpegEncoderWPF.Name = "radioButtonJpegEncoderWPF";
             this.radioButtonJpegEncoderWPF.Size = new System.Drawing.Size(185, 17);
-            this.radioButtonJpegEncoderWPF.TabIndex = 1;
+            this.radioButtonJpegEncoderWPF.TabIndex = 5;
             this.radioButtonJpegEncoderWPF.TabStop = true;
             this.radioButtonJpegEncoderWPF.Text = "WPF (better for high-color images)";
             this.radioButtonJpegEncoderWPF.UseVisualStyleBackColor = true;
@@ -1239,6 +1235,10 @@ namespace AdaptiveImageSizeReducer
             this.labelVersion.TabIndex = 14;
             this.labelVersion.Text = "Version";
             // 
+            // globalOptionsBindingSource
+            // 
+            this.globalOptionsBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.GlobalOptions);
+            // 
             // GlobalOptionsDialog
             // 
             this.AcceptButton = this.buttonOK;
@@ -1255,7 +1255,6 @@ namespace AdaptiveImageSizeReducer
             this.Text = "Global Options";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
@@ -1282,6 +1281,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel12.ResumeLayout(false);
             this.flowLayoutPanel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

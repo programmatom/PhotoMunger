@@ -194,6 +194,8 @@
     <Content Include="jpegtran.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\CatchAllMenu.png" />
+    <None Include="Resources\TagColor.png" />
     <None Include="Resources\RotateLeft90.png" />
     <None Include="Resources\GeometryCorners.png" />
     <None Include="Resources\ResetNormalizeGeometryToGlobal.png" />

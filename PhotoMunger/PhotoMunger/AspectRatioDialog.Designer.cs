@@ -68,6 +68,7 @@ namespace AdaptiveImageSizeReducer
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.radioButtonPortrait = new System.Windows.Forms.RadioButton();
             this.radioButtonLandscape = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanelAspectSelectors.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -102,6 +103,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelAspectSelectors.AutoSize = true;
             this.flowLayoutPanelAspectSelectors.Controls.Add(this.label1);
             this.flowLayoutPanelAspectSelectors.Controls.Add(this.panelSpacer);
+            this.flowLayoutPanelAspectSelectors.Controls.Add(this.radioButtonCustom);
             this.flowLayoutPanelAspectSelectors.Controls.Add(this.flowLayoutPanel2);
             this.flowLayoutPanelAspectSelectors.Controls.Add(this.radioButtonCurrent);
             this.flowLayoutPanelAspectSelectors.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -128,30 +130,30 @@ namespace AdaptiveImageSizeReducer
             this.panelSpacer.Margin = new System.Windows.Forms.Padding(0);
             this.panelSpacer.Name = "panelSpacer";
             this.panelSpacer.Size = new System.Drawing.Size(50, 10);
-            this.panelSpacer.TabIndex = 3;
+            this.panelSpacer.TabIndex = 2;
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.AutoSize = true;
-            this.flowLayoutPanel2.Controls.Add(this.radioButtonCustom);
+            this.flowLayoutPanel2.Controls.Add(this.panel1);
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.textBoxCustomX);
             this.flowLayoutPanel2.Controls.Add(this.label3);
             this.flowLayoutPanel2.Controls.Add(this.textBoxCustomY);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 23);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 46);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(209, 23);
-            this.flowLayoutPanel2.TabIndex = 1;
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(193, 20);
+            this.flowLayoutPanel2.TabIndex = 3;
             // 
             // radioButtonCustom
             // 
             this.radioButtonCustom.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.radioButtonCustom.AutoSize = true;
-            this.radioButtonCustom.Location = new System.Drawing.Point(3, 3);
+            this.radioButtonCustom.Location = new System.Drawing.Point(3, 26);
             this.radioButtonCustom.Name = "radioButtonCustom";
             this.radioButtonCustom.Size = new System.Drawing.Size(60, 17);
-            this.radioButtonCustom.TabIndex = 0;
+            this.radioButtonCustom.TabIndex = 2;
             this.radioButtonCustom.TabStop = true;
             this.radioButtonCustom.Text = "Custom";
             this.radioButtonCustom.UseVisualStyleBackColor = true;
@@ -160,49 +162,49 @@ namespace AdaptiveImageSizeReducer
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(69, 5);
+            this.label2.Location = new System.Drawing.Point(53, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(21, 13);
-            this.label2.TabIndex = 1;
+            this.label2.TabIndex = 3;
             this.label2.Text = "W:";
             // 
             // textBoxCustomX
             // 
             this.textBoxCustomX.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxCustomX.Location = new System.Drawing.Point(96, 1);
+            this.textBoxCustomX.Location = new System.Drawing.Point(80, 0);
             this.textBoxCustomX.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.textBoxCustomX.Name = "textBoxCustomX";
             this.textBoxCustomX.Size = new System.Drawing.Size(40, 20);
-            this.textBoxCustomX.TabIndex = 3;
+            this.textBoxCustomX.TabIndex = 4;
             this.textBoxCustomX.TextChanged += new System.EventHandler(this.textBoxCustomX_TextChanged);
             // 
             // label3
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(142, 5);
+            this.label3.Location = new System.Drawing.Point(126, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(18, 13);
-            this.label3.TabIndex = 2;
+            this.label3.TabIndex = 5;
             this.label3.Text = "H:";
             // 
             // textBoxCustomY
             // 
             this.textBoxCustomY.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBoxCustomY.Location = new System.Drawing.Point(166, 1);
+            this.textBoxCustomY.Location = new System.Drawing.Point(150, 0);
             this.textBoxCustomY.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.textBoxCustomY.Name = "textBoxCustomY";
             this.textBoxCustomY.Size = new System.Drawing.Size(40, 20);
-            this.textBoxCustomY.TabIndex = 4;
+            this.textBoxCustomY.TabIndex = 6;
             this.textBoxCustomY.TextChanged += new System.EventHandler(this.textBoxCustomY_TextChanged);
             // 
             // radioButtonCurrent
             // 
             this.radioButtonCurrent.AutoSize = true;
-            this.radioButtonCurrent.Location = new System.Drawing.Point(3, 49);
+            this.radioButtonCurrent.Location = new System.Drawing.Point(3, 69);
             this.radioButtonCurrent.Name = "radioButtonCurrent";
             this.radioButtonCurrent.Size = new System.Drawing.Size(59, 17);
-            this.radioButtonCurrent.TabIndex = 2;
+            this.radioButtonCurrent.TabIndex = 7;
             this.radioButtonCurrent.TabStop = true;
             this.radioButtonCurrent.Text = "Current";
             this.radioButtonCurrent.UseVisualStyleBackColor = true;
@@ -218,7 +220,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel3.Location = new System.Drawing.Point(61, 289);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(338, 29);
-            this.flowLayoutPanel3.TabIndex = 1;
+            this.flowLayoutPanel3.TabIndex = 0;
             this.flowLayoutPanel3.WrapContents = false;
             // 
             // buttonOK
@@ -244,7 +246,7 @@ namespace AdaptiveImageSizeReducer
             this.buttonCancel.Location = new System.Drawing.Point(210, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(125, 23);
-            this.buttonCancel.TabIndex = 2;
+            this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -276,7 +278,7 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonPortrait.Location = new System.Drawing.Point(3, 203);
             this.radioButtonPortrait.Name = "radioButtonPortrait";
             this.radioButtonPortrait.Size = new System.Drawing.Size(58, 17);
-            this.radioButtonPortrait.TabIndex = 4;
+            this.radioButtonPortrait.TabIndex = 200;
             this.radioButtonPortrait.TabStop = true;
             this.radioButtonPortrait.Text = "Portrait";
             this.radioButtonPortrait.UseVisualStyleBackColor = true;
@@ -288,11 +290,19 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonLandscape.Location = new System.Drawing.Point(3, 226);
             this.radioButtonLandscape.Name = "radioButtonLandscape";
             this.radioButtonLandscape.Size = new System.Drawing.Size(78, 17);
-            this.radioButtonLandscape.TabIndex = 3;
+            this.radioButtonLandscape.TabIndex = 201;
             this.radioButtonLandscape.TabStop = true;
             this.radioButtonLandscape.Text = "Landscape";
             this.radioButtonLandscape.UseVisualStyleBackColor = true;
             this.radioButtonLandscape.CheckedChanged += new System.EventHandler(this.radioButtonLandscape_CheckedChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(50, 10);
+            this.panel1.TabIndex = 3;
             // 
             // AspectRatioDialog
             // 
@@ -344,5 +354,6 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.RadioButton radioButtonLandscape;
         private System.Windows.Forms.RadioButton radioButtonCurrent;
         private System.Windows.Forms.Panel panelSpacer;
+        private System.Windows.Forms.Panel panel1;
     }
 }

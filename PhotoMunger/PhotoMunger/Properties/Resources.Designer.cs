@@ -83,6 +83,16 @@ namespace AdaptiveImageSizeReducer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CatchAllMenu {
+            get {
+                object obj = ResourceManager.GetObject("CatchAllMenu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ClearCropButton {
             get {
                 object obj = ResourceManager.GetObject("ClearCropButton", resourceCulture);
@@ -246,6 +256,16 @@ namespace AdaptiveImageSizeReducer.Properties {
         internal static System.Drawing.Bitmap ShowShrunkExpandedPreview {
             get {
                 object obj = ResourceManager.GetObject("ShowShrunkExpandedPreview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TagColor {
+            get {
+                object obj = ResourceManager.GetObject("TagColor", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

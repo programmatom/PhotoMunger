@@ -60,13 +60,16 @@ namespace AdaptiveImageSizeReducer
                 this.radioButtonLandscape.Checked = true;
             }
 
+
             this.buttons = new RadioButton[SpecialCases + Ratios.Length];
+
             this.buttons[0] = this.radioButtonCustom;
             if (index == 0)
             {
                 this.radioButtonCustom.Checked = true;
             }
             this.radioButtonCustom.CheckedChanged += AspectButton_CheckedChanged;
+
             this.buttons[1] = this.radioButtonCurrent;
             if (index == 1)
             {
@@ -74,6 +77,8 @@ namespace AdaptiveImageSizeReducer
             }
             this.radioButtonCurrent.Text += String.Format(" {0}x{1}", current.Width, current.Height);
             this.radioButtonCurrent.CheckedChanged += AspectButton_CheckedChanged;
+
+            int radioTabIndex = 100;
             for (int i = 0; i < Ratios.Length; i++)
             {
                 RadioButton item = new RadioButton();
@@ -95,6 +100,7 @@ namespace AdaptiveImageSizeReducer
                 }
                 item.CheckedChanged += AspectButton_CheckedChanged;
                 item.AutoSize = true;
+                item.TabIndex = radioTabIndex++;
                 flowLayoutPanelAspectSelectors.Controls.Add(item);
             }
 
