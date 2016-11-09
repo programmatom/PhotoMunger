@@ -266,6 +266,7 @@ namespace AdaptiveImageSizeReducer
 
         private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
+            // TODO: should reset focus only if mouse was used
             this.dataGridViewFiles.Focus();
         }
 
