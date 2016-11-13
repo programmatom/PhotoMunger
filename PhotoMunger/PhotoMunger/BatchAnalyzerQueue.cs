@@ -65,6 +65,7 @@ namespace AdaptiveImageSizeReducer
                         ParallelDevolved.For(
                             0,
                             queue.Count,
+                            cancel.Token,
                             delegate (int i)
                             {
                                 Item item;

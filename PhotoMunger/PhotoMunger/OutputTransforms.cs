@@ -150,7 +150,7 @@ namespace AdaptiveImageSizeReducer
 
                 // initial lossy transforms
 
-                if (item.NormalizeGeometry)
+                if (item.NormalizeGeometry || (item.FineRotateDegrees != 0))
                 {
                     if (bitmap == null)
                     {
@@ -176,6 +176,7 @@ namespace AdaptiveImageSizeReducer
                             item.CornerBL,
                             item.CornerBR,
                             item.NormalizeGeometryForcedAspectRatio,
+                            item.FineRotateDegrees,
                             item.NormalizeGeometryFinalInterp),
                         delegate (string text) { },
                         cancel);

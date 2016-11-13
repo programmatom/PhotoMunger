@@ -254,6 +254,9 @@ namespace AdaptiveImageSizeReducer
         private bool normalizeGeometry;
         private bool normalizeGeometry_dirty;
 
+        private double fineRotateDegrees;
+        private bool fineRotateDegrees_dirty;
+
         private Rectangle cropRect;
         private bool cropRect_dirty;
 
@@ -301,6 +304,9 @@ namespace AdaptiveImageSizeReducer
 
         [Bindable(true)]
         public bool NormalizeGeometry { get { return normalizeGeometry; } set { normalizeGeometry = value; normalizeGeometry_dirty = true; Notify("NormalizeGeometry"); } }
+
+        [Bindable(true)]
+        public double FineRotateDegrees { get { return fineRotateDegrees; } set { fineRotateDegrees = value; fineRotateDegrees_dirty = true; Notify("FineRotateDegrees"); } }
 
         [Bindable(true)]
         public int CropRectLeft
@@ -462,6 +468,8 @@ namespace AdaptiveImageSizeReducer
 
             this.normalizeGeometry = item.NormalizeGeometry;
 
+            this.fineRotateDegrees = item.FineRotateDegrees;
+
             this.cropRect = item.CropRect;
         }
 
@@ -552,6 +560,11 @@ namespace AdaptiveImageSizeReducer
             if (normalizeGeometry_dirty)
             {
                 item.NormalizeGeometry = this.normalizeGeometry;
+            }
+
+            if (fineRotateDegrees_dirty)
+            {
+                item.FineRotateDegrees = this.fineRotateDegrees;
             }
 
             if (cropRect_dirty)

@@ -597,7 +597,7 @@ namespace AdaptiveImageSizeReducer
                             using (BitmapHolder holder = cacheItem.GetPreviewBitmapHolder(
                                 showShrunkExpandedPreview,
                                 false/*inDrag*/,
-                                currentItem.NormalizeGeometry))
+                                currentItem.NormalizeGeometry || (CurrentItem.FineRotateDegrees != 0)))
                             {
                                 holder.Wait();
                             }
@@ -618,7 +618,7 @@ namespace AdaptiveImageSizeReducer
                                     showShrunkExpandedPreview,
                                     false/*inDrag*/,
                                     showAnnotationsHF,
-                                    CurrentItem.NormalizeGeometry,
+                                    CurrentItem.NormalizeGeometry || (CurrentItem.FineRotateDegrees != 0),
                                     showAutoCropGrid,
                                     showPolyUnbiasGrid,
                                     showCropRectPads))
@@ -1253,7 +1253,7 @@ namespace AdaptiveImageSizeReducer
 
                     try
                     {
-                        bool combinedNormalizeGeometry = item.NormalizeGeometry && showNormalizedGeometry;
+                        bool combinedNormalizeGeometry = (item.NormalizeGeometry || (item.FineRotateDegrees != 0)) && showNormalizedGeometry;
 
                         imageHolder1 = !showAnnotationsDetail
                             ? (!combinedNormalizeGeometry

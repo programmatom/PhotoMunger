@@ -34,7 +34,7 @@ namespace AdaptiveImageSizeReducer
 
     public static class ParallelDevolved
     {
-        public static void For(int start, int count, Action<int> body)
+        public static void For(int start, int count, CancellationToken cancel, Action<int> body)
         {
             int p = !Program.ProfileMode ? Environment.ProcessorCount : 1;
 
@@ -47,6 +47,11 @@ namespace AdaptiveImageSizeReducer
 
             for (int i = 0; i < count; i++)
             {
+                if (cancel.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 int t = EventWaitHandle.WaitAny(tasksAvailability);
                 tasksAvailability[t].Reset();
                 Task<bool> task = new Task<bool>(

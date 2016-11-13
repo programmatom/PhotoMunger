@@ -81,6 +81,8 @@ namespace AdaptiveImageSizeReducer
         private int cornerRotation;
         private float? normalizedGeometryAspectRatio;
 
+        private double fineRotateDegrees;
+
         private Status status;
         private Task<bool> validateTask;
         private CancellationTokenSource validateTaskCancel;
@@ -818,6 +820,24 @@ namespace AdaptiveImageSizeReducer
         public Transforms.InterpMethod NormalizeGeometryFinalInterp { get { return options.NormalizeGeometryFinalInterp; } }
 
         [Bindable(true)]
+        public double FineRotateDegrees
+        {
+            get
+            {
+                return fineRotateDegrees;
+            }
+            set
+            {
+                fineRotateDegrees = value;
+
+                ResetAnalyzeTask(true/*invalidateCurrentView*/);
+                StartInit();
+
+                FirePropertyChanged("FineRotationDegrees");
+            }
+        }
+
+        [Bindable(true)]
         public string AnalysisMessage
         {
             get
@@ -895,12 +915,12 @@ namespace AdaptiveImageSizeReducer
 
         private string GetSourceBitmapHolderWithNormalizeGeometryId()
         {
-            return NormalizeGeometry ? String.Format("{0}:NormalizeGeometry", SourceId) : SourceId;
+            return (NormalizeGeometry || (FineRotateDegrees != 0)) ? String.Format("{0}:NormalizeGeometry", SourceId) : SourceId;
         }
 
         public BitmapHolder GetSourceBitmapHolderWithNormalizeGeometry()
         {
-            if (!NormalizeGeometry)
+            if (!NormalizeGeometry && (this.FineRotateDegrees == 0))
             {
                 Debug.Assert(String.Equals(GetSourceBitmapHolderWithNormalizeGeometryId(), SourceId));
                 return GetSourceBitmapHolder();
@@ -922,7 +942,7 @@ namespace AdaptiveImageSizeReducer
                                 this.SourceId,
                                 result,
                                 1,
-                                new Transforms.NormalizeGeometryParameters(this.CornerTL, this.CornerTR, this.CornerBL, this.CornerBR, this.NormalizeGeometryForcedAspectRatio, this.NormalizeGeometryPreviewInterp),
+                                new Transforms.NormalizeGeometryParameters(this.CornerTL, this.CornerTR, this.CornerBL, this.CornerBR, this.NormalizeGeometryForcedAspectRatio, this.FineRotateDegrees, this.NormalizeGeometryPreviewInterp),
                                 null,
                                 new CancellationTokenSource());
                         }
@@ -940,7 +960,7 @@ namespace AdaptiveImageSizeReducer
         public BitmapHolder GetPreviewBitmapHolder(bool shrinkExpand, bool inDrag, bool showNormalizedGeometry)
         {
             float effectiveShrinkExpandFactor = shrinkExpand && !inDrag ? this.ShrinkFactor : 1;
-            bool effectiveShowNormalizedGeometry = this.NormalizeGeometry && showNormalizedGeometry;
+            bool effectiveShowNormalizedGeometry = (this.NormalizeGeometry || (this.FineRotateDegrees != 0)) && showNormalizedGeometry;
 
             string previewId = GetPreviewId(effectiveShrinkExpandFactor, inDrag, effectiveShowNormalizedGeometry);
 
@@ -971,7 +991,7 @@ namespace AdaptiveImageSizeReducer
                             hf,
                             this.CropRect,
                             effectiveShowNormalizedGeometry,
-                            new Transforms.NormalizeGeometryParameters(this.CornerTL, this.CornerTR, this.CornerBL, this.CornerBR, this.NormalizeGeometryForcedAspectRatio, this.NormalizeGeometryPreviewInterp),
+                            new Transforms.NormalizeGeometryParameters(this.CornerTL, this.CornerTR, this.CornerBL, this.CornerBR, this.NormalizeGeometryForcedAspectRatio, this.FineRotateDegrees, this.NormalizeGeometryPreviewInterp),
                             !inDrag && this.BrightAdjust,
                             new Transforms.BrightAdjustParameters(this.BrightAdjustMinClusterFrac, this.BrightAdjustWhiteCorrect),
                             !inDrag && this.Unbias,
@@ -1002,7 +1022,7 @@ namespace AdaptiveImageSizeReducer
 
         public BitmapHolder GetAnnotatedBitmapHolder(bool shrinkExpand, bool inDrag, bool showHF, bool showNormalizedGeometry, bool showAutoCropGrid, bool showPolyUnbiasGrid, bool showCropDragPads)
         {
-            bool effectiveShowNormalizedGeometry = this.NormalizeGeometry && showNormalizedGeometry;
+            bool effectiveShowNormalizedGeometry = (this.NormalizeGeometry || (this.FineRotateDegrees != 0)) && showNormalizedGeometry;
 
             string annotatedId = GetAnnotatedId(showHF, inDrag, effectiveShowNormalizedGeometry, showAutoCropGrid, showPolyUnbiasGrid, showCropDragPads);
 
@@ -1445,6 +1465,14 @@ namespace AdaptiveImageSizeReducer
                 writer.WriteEndElement(); // rotation
                 //
                 writer.WriteEndElement(); // normalizeGeometry
+
+                writer.WriteStartElement("fineRotate");
+                //
+                writer.WriteStartElement("fineRotateDegrees");
+                writer.WriteValue(this.fineRotateDegrees);
+                writer.WriteEndElement(); // fineRotateDegrees
+                //
+                writer.WriteEndElement(); // fineRotate
             }
             writer.WriteEndElement(); // actions
 
@@ -1469,6 +1497,7 @@ namespace AdaptiveImageSizeReducer
             int i;
             float f;
             string s;
+            double d;
 
             if (ReadValue(item, "rename", out s))
             {
@@ -1608,6 +1637,11 @@ namespace AdaptiveImageSizeReducer
             if (ReadValue(item, "actions/normalizeGeometry/rotation", out i))
             {
                 this.cornerRotation = i;
+            }
+
+            if (ReadValue(item, "actions/fineRotate/fineRotateDegrees", out d))
+            {
+                this.fineRotateDegrees = d;
             }
         }
     }

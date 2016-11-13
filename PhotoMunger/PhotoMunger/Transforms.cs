@@ -466,7 +466,7 @@ namespace AdaptiveImageSizeReducer
                         cancel);
                 }
 
-                if (item.NormalizeGeometry)
+                if (item.NormalizeGeometry || (item.FineRotateDegrees != 0))
                 {
                     ApplyNormalizeGeometry(
                         profile,
@@ -479,6 +479,7 @@ namespace AdaptiveImageSizeReducer
                             item.CornerBL,
                             item.CornerBR,
                             item.NormalizeGeometryForcedAspectRatio,
+                            item.FineRotateDegrees,
                             item.NormalizeGeometryPreviewInterp),
                         addMessage,
                         cancel);
@@ -1127,14 +1128,16 @@ namespace AdaptiveImageSizeReducer
             public readonly Point cornerTL, cornerTR, cornerBL, cornerBR;
             public readonly float? normalizedGeometryAspectRatio;
             public readonly InterpMethod interpolation;
+            public readonly double fineRotationDegrees;
 
-            public NormalizeGeometryParameters(Point cornerTL, Point cornerTR, Point cornerBL, Point cornerBR, float? normalizedGeometryAspectRatio, InterpMethod interpolation)
+            public NormalizeGeometryParameters(Point cornerTL, Point cornerTR, Point cornerBL, Point cornerBR, float? normalizedGeometryAspectRatio, double fineRotationDegrees, InterpMethod interpolation)
             {
                 this.cornerTL = cornerTL;
                 this.cornerTR = cornerTR;
                 this.cornerBL = cornerBL;
                 this.cornerBR = cornerBR;
                 this.normalizedGeometryAspectRatio = normalizedGeometryAspectRatio;
+                this.fineRotationDegrees = fineRotationDegrees;
                 this.interpolation = interpolation;
             }
         }
@@ -1183,6 +1186,24 @@ namespace AdaptiveImageSizeReducer
                     factor * _00,
                     factor * _21,
                     factor * _22);
+            }
+
+            public bool IsIdentity { get { return (_00 == 1) && (_01 == 0) && (_02 == 0) && (_10 == 0) && (_11 == 1) && (_12 == 0) && (_20 == 0) && (_21 == 0) && (_22 == 1); } }
+
+            public Matrix<float> ToMatrix()
+            {
+                return Matrix<float>.Build.DenseOfArray(
+                    new float[3, 3]
+                    {
+                        { _00, _01, _02, },
+                        { _10, _11, _12, },
+                        { _20, _21, _22, }
+                    });
+            }
+
+            public static Matrix3x3 FromMatrix(Matrix<float> m)
+            {
+                return new AdaptiveImageSizeReducer.Transforms.Matrix3x3(m[0, 0], m[0, 1], m[0, 2], m[1, 0], m[1, 1], m[1, 2], m[2, 0], m[2, 1], m[2, 2]);
             }
         }
 
@@ -1268,155 +1289,87 @@ namespace AdaptiveImageSizeReducer
 
             Matrix3x3 Mst = new Matrix3x3((float)X[0], (float)X[3], (float)X[6], (float)X[1], (float)X[4], (float)X[7], (float)X[2], (float)X[5], (float)X[8]);
 
-            //Matrix<double> Mp = Matrix<double>.Build.DenseOfArray(
-            //    new double[3, 3]
-            //    {
-            //        { X[0], X[3], X[6] },
-            //        { X[1], X[4], X[7] },
-            //        { X[2], X[5], X[8] },
-            //    });
-            //Matrix<double> MpI = Mp.Inverse();
-            //
-            //Matrix3x3 Mts = new Matrix3x3((float)Mp[0, 0], (float)Mp[0, 1], (float)Mp[0, 2], (float)Mp[1, 0], (float)Mp[1, 1], (float)Mp[1, 2], (float)Mp[2, 0], (float)Mp[2, 1], (float)Mp[2, 2]);
+            bool edgeExtend = !Mst.IsIdentity;
+
+            if (normalizeParameters.fineRotationDegrees != 0)
+            {
+                float translateX = bitmap.Width / 2f;
+                float translateY = bitmap.Height / 2f;
+
+                Matrix<float> m = Mst.ToMatrix();
+
+                m = m.Transpose();
+
+                Matrix<float> translate = Matrix<float>.Build.DenseOfArray(
+                    new float[3, 3]
+                    {
+                        { 1, 0, translateX, },
+                        { 0, 1, translateY, },
+                        { 0, 0, 1, }
+                    });
+                Matrix<float> untranslate = Matrix<float>.Build.DenseOfArray(
+                    new float[3, 3]
+                    {
+                        { 1, 0, -translateX, },
+                        { 0, 1, -translateY, },
+                        { 0, 0, 1, }
+                    });
+
+                // translate center to origin
+                m = m.Multiply(translate);
+
+                double r = normalizeParameters.fineRotationDegrees / 180 * Math.PI;
+                float cos = (float)Math.Cos(r);
+                float sin = (float)Math.Sin(r);
+                Matrix<float> rotate = Matrix<float>.Build.DenseOfArray(
+                    new float[3, 3]
+                    {
+                        { cos, sin, 0, },
+                        { -sin, cos, 0, },
+                        { 0, 0, 1, }
+                    });
+                m = m.Multiply(rotate);
+
+                // scale to fit
+                float ufMax = 0, vfMax = 0;
+                foreach (Point p in new Point[] { new Point(0, 0), new Point(0, bitmap.Height - 1), new Point(bitmap.Width - 1, 0), new Point(bitmap.Width - 1, bitmap.Height - 1) })
+                {
+                    float uf, vf, wf;
+                    MathNet.Numerics.LinearAlgebra.Vector<float> v = rotate.Multiply(MathNet.Numerics.LinearAlgebra.Vector<float>.Build.DenseOfArray(new float[] { p.X - bitmap.Width / 2, p.Y - bitmap.Height / 2, 1 }));
+                    uf = v[0];
+                    vf = v[1];
+                    wf = v[2];
+                    uf = uf / wf;
+                    vf = vf / wf;
+                    ufMax = Math.Max(ufMax, uf);
+                    vfMax = Math.Max(vfMax, vf);
+                }
+                float factor = Math.Max(ufMax / (bitmap.Width - 1) * 2, vfMax / (bitmap.Height - 1) * 2);
+                Matrix<float> scale = Matrix<float>.Build.DenseOfArray(
+                    new float[3, 3]
+                    {
+                        { factor, 0, 0, },
+                        { 0, factor, 0, },
+                        { 0, 0, 1, }
+                    });
+                m = m.Multiply(scale);
+
+                // restore origin
+                m = m.Multiply(untranslate);
+
+                m = m.Transpose();
+
+                Mst = Matrix3x3.FromMatrix(m);
+            }
 
             using (ManagedBitmap32 result = new ManagedBitmap32(bitmap.Width, bitmap.Height))
             {
-                Rectangle bounds = new Rectangle(Point.Empty, bitmap.Size);
-
-                Parallel.For( // for (int y = 0; y < bitmap.Height; y++)
-                    0,
-                    bitmap.Height,
-                    Program.GetProcessorConstrainedParallelOptions2(cancel.Token),
-                    delegate (int y)
-                    {
-                        switch (normalizeParameters.interpolation)
-                        {
-                            default:
-                                Debug.Assert(false);
-                                throw new ArgumentException();
-
-                            case InterpMethod.NearestNeighbor:
-                                {
-                                    float limitW = bitmap.Width - 1;
-                                    float limitH = bitmap.Height - 1;
-
-                                    for (int x = 0; x < bitmap.Width; x++)
-                                    {
-                                        float uf, vf, wf;
-                                        Mst.VMul(x, y, 1, out uf, out vf, out wf);
-
-                                        uf = Math.Min(Math.Max(uf / wf + .5f, 0), limitW);
-                                        vf = Math.Min(Math.Max(vf / wf + .5f, 0), limitH);
-
-                                        int u = (int)uf;
-                                        int v = (int)vf;
-
-                                        result[x, y] = bitmap[u, v];
-                                    }
-                                }
-                                break;
-
-                            case InterpMethod.Bilinear:
-                                {
-                                    float limitW = bitmap.Width - 2;
-                                    float limitH = bitmap.Height - 2;
-
-                                    for (int x = 0; x < bitmap.Width; x++)
-                                    {
-                                        float uf, vf, wf;
-                                        Mst.VMul(x, y, 1, out uf, out vf, out wf);
-
-                                        uf = Math.Min(Math.Max(uf / wf, 0), limitW);
-                                        vf = Math.Min(Math.Max(vf / wf, 0), limitH);
-
-                                        int u = (int)uf;
-                                        int v = (int)vf;
-
-                                        ColorRGB rgb00 = new ColorRGB(bitmap[u + 0, v + 0]); // note: rgbXX is named col,row order
-                                        ColorRGB rgb10 = new ColorRGB(bitmap[u + 1, v + 0]);
-                                        ColorRGB rgb01 = new ColorRGB(bitmap[u + 0, v + 1]);
-                                        ColorRGB rgb11 = new ColorRGB(bitmap[u + 1, v + 1]);
-
-                                        float ywr = vf - v;
-                                        ColorRGB rgb0 = rgb00 + ywr * (rgb01 - rgb00);
-                                        ColorRGB rgb1 = rgb10 + ywr * (rgb11 - rgb10);
-
-                                        float xwr = uf - u;
-                                        ColorRGB rgb = rgb0 + xwr * (rgb1 - rgb0);
-
-
-                                        result[x, y] = rgb.ToRGB32();
-                                    }
-                                }
-                                break;
-
-                            case InterpMethod.Bicubic:
-                                {
-                                    float limitW = bitmap.Width;
-                                    float limitH = bitmap.Height;
-
-                                    for (int x = 0; x < bitmap.Width; x++)
-                                    {
-                                        float uf, vf, wf;
-                                        Mst.VMul(x, y, 1, out uf, out vf, out wf);
-
-                                        uf = Math.Min(Math.Max(uf / wf, 0), limitW);
-                                        vf = Math.Min(Math.Max(vf / wf, 0), limitH);
-
-                                        int u = (int)uf;
-                                        int v = (int)vf;
-
-                                        // based on code from ImageMagick (http://www.imagemagick.org/script/index.php)
-
-                                        float wum9, wup0, wup1, wup2;
-                                        GetSplineWeights(uf - u, out wum9, out wup0, out wup1, out wup2);
-                                        float wvm9, wvp0, wvp1, wvp2;
-                                        GetSplineWeights(vf - v, out wvm9, out wvp0, out wvp1, out wvp2);
-
-                                        int um1 = Math.Max(u - 1, 0);
-                                        int up0 = Math.Min(u + 0, bitmap.Width - 1);
-                                        int up1 = Math.Min(u + 1, bitmap.Width - 1);
-                                        int up2 = Math.Min(u + 2, bitmap.Width - 1);
-                                        int vm1 = Math.Max(v - 1, 0);
-                                        int vp0 = Math.Min(v + 0, bitmap.Height - 1);
-                                        int vp1 = Math.Min(v + 1, bitmap.Height - 1);
-                                        int vp2 = Math.Min(v + 2, bitmap.Height - 1);
-
-                                        Vector3 c0, c1, c2, c3;
-
-                                        c0 = ColorRGB.VectorFromRGB(bitmap[um1, vm1]) * wum9;
-                                        c1 = ColorRGB.VectorFromRGB(bitmap[um1, vp0]) * wum9;
-                                        c2 = ColorRGB.VectorFromRGB(bitmap[um1, vp1]) * wum9;
-                                        c3 = ColorRGB.VectorFromRGB(bitmap[um1, vp2]) * wum9;
-
-                                        c0 += ColorRGB.VectorFromRGB(bitmap[up0, vm1]) * wup0;
-                                        c1 += ColorRGB.VectorFromRGB(bitmap[up0, vp0]) * wup0;
-                                        c2 += ColorRGB.VectorFromRGB(bitmap[up0, vp1]) * wup0;
-                                        c3 += ColorRGB.VectorFromRGB(bitmap[up0, vp2]) * wup0;
-
-                                        c0 += ColorRGB.VectorFromRGB(bitmap[up1, vm1]) * wup1;
-                                        c1 += ColorRGB.VectorFromRGB(bitmap[up1, vp0]) * wup1;
-                                        c2 += ColorRGB.VectorFromRGB(bitmap[up1, vp1]) * wup1;
-                                        c3 += ColorRGB.VectorFromRGB(bitmap[up1, vp2]) * wup1;
-
-                                        c0 += ColorRGB.VectorFromRGB(bitmap[up2, vm1]) * wup2;
-                                        c1 += ColorRGB.VectorFromRGB(bitmap[up2, vp0]) * wup2;
-                                        c2 += ColorRGB.VectorFromRGB(bitmap[up2, vp1]) * wup2;
-                                        c3 += ColorRGB.VectorFromRGB(bitmap[up2, vp2]) * wup2;
-
-                                        Vector3 p = c0 * wvm9 + c1 * wvp0 + c2 * wvp1 + c3 * wvp2;
-
-                                        result[x, y] = ColorRGB.RGBFromVector(p);
-                                    }
-                                }
-                                break;
-                        }
-                    });
+                ProjectiveTransform(bitmap, Mst, normalizeParameters.interpolation, edgeExtend, result, cancel);
 
 #pragma warning disable CS0162 // unreachable
                 if (debug)
                 {
-                    using (Bitmap overlay = result.GetSectionEnslaved(bounds))
+                    using (Bitmap overlay = result.GetSectionEnslaved(new Rectangle(Point.Empty, result.Size)))
                     {
                         using (Graphics graphics = Graphics.FromImage(overlay))
                         {
@@ -1471,6 +1424,160 @@ namespace AdaptiveImageSizeReducer
 
         public enum InterpMethod { Bicubic = 0, Bilinear = 1, NearestNeighbor = 2 };
 
+        private static void ProjectiveTransform(ManagedBitmap bitmap, Matrix3x3 Mst, InterpMethod interpolation, bool edgeExtend, ManagedBitmap32 result, CancellationTokenSource cancel)
+        {
+            Rectangle bounds = new Rectangle(Point.Empty, bitmap.Size);
+
+            Parallel.For( // for (int y = 0; y < bitmap.Height; y++)
+                0,
+                bitmap.Height,
+                Program.GetProcessorConstrainedParallelOptions2(cancel.Token),
+                delegate (int y)
+                {
+                    switch (interpolation)
+                    {
+                        default:
+                            Debug.Assert(false);
+                            throw new ArgumentException();
+
+                        case InterpMethod.NearestNeighbor:
+                            {
+                                float limitW = bitmap.Width - 1;
+                                float limitH = bitmap.Height - 1;
+
+                                for (int x = 0; x < bitmap.Width; x++)
+                                {
+                                    float uf, vf, wf;
+                                    Mst.VMul(x, y, 1, out uf, out vf, out wf);
+
+                                    uf = Math.Min(Math.Max(uf / wf + .5f, 0), limitW);
+                                    vf = Math.Min(Math.Max(vf / wf + .5f, 0), limitH);
+
+                                    int u = (int)uf;
+                                    int v = (int)vf;
+
+                                    result[x, y] = bitmap[u, v];
+                                }
+                            }
+                            break;
+
+                        case InterpMethod.Bilinear:
+                            {
+                                float limitW = bitmap.Width - 2;
+                                float limitH = bitmap.Height - 2;
+
+                                for (int x = 0; x < bitmap.Width; x++)
+                                {
+                                    float uf, vf, wf;
+                                    Mst.VMul(x, y, 1, out uf, out vf, out wf);
+
+                                    uf = Math.Min(Math.Max(uf / wf, 0), limitW);
+                                    vf = Math.Min(Math.Max(vf / wf, 0), limitH);
+
+                                    int u = (int)uf;
+                                    int v = (int)vf;
+
+                                    ColorRGB rgb00 = new ColorRGB(bitmap[u + 0, v + 0]); // note: rgbXX is named col,row order
+                                    ColorRGB rgb10 = new ColorRGB(bitmap[u + 1, v + 0]);
+                                    ColorRGB rgb01 = new ColorRGB(bitmap[u + 0, v + 1]);
+                                    ColorRGB rgb11 = new ColorRGB(bitmap[u + 1, v + 1]);
+
+                                    float ywr = vf - v;
+                                    ColorRGB rgb0 = rgb00 + ywr * (rgb01 - rgb00);
+                                    ColorRGB rgb1 = rgb10 + ywr * (rgb11 - rgb10);
+
+                                    float xwr = uf - u;
+                                    ColorRGB rgb = rgb0 + xwr * (rgb1 - rgb0);
+
+                                    result[x, y] = rgb.ToRGB32();
+                                }
+                            }
+                            break;
+
+                        case InterpMethod.Bicubic:
+                            {
+                                float limitW = bitmap.Width;
+                                float limitH = bitmap.Height;
+
+                                for (int x = 0; x < bitmap.Width; x++)
+                                {
+                                    float uf, vf, wf;
+                                    Mst.VMul(x, y, 1, out uf, out vf, out wf);
+
+                                    uf = Math.Min(Math.Max(uf / wf, 0), limitW);
+                                    vf = Math.Min(Math.Max(vf / wf, 0), limitH);
+
+                                    int u = (int)uf;
+                                    int v = (int)vf;
+
+                                    // based on code from ImageMagick (http://www.imagemagick.org/script/index.php)
+
+                                    float wum9, wup0, wup1, wup2;
+                                    GetSplineWeights(uf - u, out wum9, out wup0, out wup1, out wup2);
+                                    float wvm9, wvp0, wvp1, wvp2;
+                                    GetSplineWeights(vf - v, out wvm9, out wvp0, out wvp1, out wvp2);
+
+                                    int um1 = Math.Max(u - 1, 0);
+                                    int up0 = Math.Min(u + 0, bitmap.Width - 1);
+                                    int up1 = Math.Min(u + 1, bitmap.Width - 1);
+                                    int up2 = Math.Min(u + 2, bitmap.Width - 1);
+                                    int vm1 = Math.Max(v - 1, 0);
+                                    int vp0 = Math.Min(v + 0, bitmap.Height - 1);
+                                    int vp1 = Math.Min(v + 1, bitmap.Height - 1);
+                                    int vp2 = Math.Min(v + 2, bitmap.Height - 1);
+
+                                    Vector3 c0, c1, c2, c3;
+
+                                    c0 = ColorRGB.VectorFromRGB(bitmap[um1, vm1]) * wum9;
+                                    c1 = ColorRGB.VectorFromRGB(bitmap[um1, vp0]) * wum9;
+                                    c2 = ColorRGB.VectorFromRGB(bitmap[um1, vp1]) * wum9;
+                                    c3 = ColorRGB.VectorFromRGB(bitmap[um1, vp2]) * wum9;
+
+                                    c0 += ColorRGB.VectorFromRGB(bitmap[up0, vm1]) * wup0;
+                                    c1 += ColorRGB.VectorFromRGB(bitmap[up0, vp0]) * wup0;
+                                    c2 += ColorRGB.VectorFromRGB(bitmap[up0, vp1]) * wup0;
+                                    c3 += ColorRGB.VectorFromRGB(bitmap[up0, vp2]) * wup0;
+
+                                    c0 += ColorRGB.VectorFromRGB(bitmap[up1, vm1]) * wup1;
+                                    c1 += ColorRGB.VectorFromRGB(bitmap[up1, vp0]) * wup1;
+                                    c2 += ColorRGB.VectorFromRGB(bitmap[up1, vp1]) * wup1;
+                                    c3 += ColorRGB.VectorFromRGB(bitmap[up1, vp2]) * wup1;
+
+                                    c0 += ColorRGB.VectorFromRGB(bitmap[up2, vm1]) * wup2;
+                                    c1 += ColorRGB.VectorFromRGB(bitmap[up2, vp0]) * wup2;
+                                    c2 += ColorRGB.VectorFromRGB(bitmap[up2, vp1]) * wup2;
+                                    c3 += ColorRGB.VectorFromRGB(bitmap[up2, vp2]) * wup2;
+
+                                    Vector3 p = c0 * wvm9 + c1 * wvp0 + c2 * wvp1 + c3 * wvp2;
+
+                                    result[x, y] = ColorRGB.RGBFromVector(p);
+                                }
+                            }
+                            break;
+                    }
+
+                    if (!edgeExtend)
+                    {
+                        int limitW = bitmap.Width - 1;
+                        int limitH = bitmap.Height - 1;
+
+                        for (int x = 0; x < bitmap.Width; x++)
+                        {
+                            float uf, vf, wf;
+                            Mst.VMul(x, y, 1, out uf, out vf, out wf);
+
+                            int u = (int)(uf / wf + .5f);
+                            int v = (int)(vf / wf + .5f);
+
+                            if ((u < 0) || (v < 0) || (u > limitW) || (v > limitH))
+                            {
+                                result[x, y] = 0;
+                            }
+                        }
+                    }
+                });
+        }
+
         // based on code from ImageMagick (http://www.imagemagick.org/script/index.php)
         private static void GetSplineWeights(float t, out float w0, out float w1, out float w2, out float w3)
         {
@@ -1485,6 +1592,23 @@ namespace AdaptiveImageSizeReducer
             float b = w3 - w0;
             w1 = a - w0 + b;
             w2 = t - w3 - b;
+        }
+
+        public struct FineRotateParameters
+        {
+            public readonly double degrees;
+
+            public FineRotateParameters(double degrees)
+            {
+                this.degrees = degrees;
+            }
+        }
+
+        public static void ApplyFineRotation(Profile profile, string tag, ManagedBitmap bitmap, Rectangle rect, FineRotateParameters fineRotateParams, CancellationTokenSource cancel)
+        {
+            profile.Push("Transforms.ApplyFineRotation {0}", tag);
+
+            profile.Pop();
         }
 
         public struct BrightAdjustParameters
