@@ -185,16 +185,18 @@ namespace AdaptiveImageSizeReducer
                     return;
                 }
 
-                XmlDocument settings = new XmlDocument();
+                XPathNavigator settingsNav;
                 {
+                    XmlDocument settings = new XmlDocument();
                     string settingsPath = Path.Combine(scanDirectory, SettingsFile);
                     if (File.Exists(settingsPath))
                     {
                         settings.Load(settingsPath);
                     }
+                    settingsNav = settings.CreateNavigator();
                 }
 
-                GlobalOptions options = new GlobalOptions(settings.CreateNavigator().SelectSingleNode("/*/options"));
+                GlobalOptions options = new GlobalOptions(settingsNav.SelectSingleNode("/*/options"));
                 {
                     using (GlobalOptionsDialog dialog = new GlobalOptionsDialog(options, directory))
                     {
@@ -228,10 +230,14 @@ namespace AdaptiveImageSizeReducer
                     Item item = new Item(Path.Combine(directory, fileName), options, cache);
                     items.Add(item);
 
-                    XPathNavigator itemNav = settings.CreateNavigator().SelectSingleNode(String.Format("/*/items/item[file=\"{0}\"]", fileName));
+                    XPathNavigator itemNav = settingsNav.SelectSingleNode(String.Format("/*/items/item[file=\"{0}\"]", fileName));
                     if (itemNav != null)
                     {
                         item.ReadXml(itemNav);
+                    }
+                    else
+                    {
+                        item.SettingsNav = settingsNav; // no match; try after hash has been computed
                     }
                 }
 

@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -99,6 +100,9 @@ namespace AdaptiveImageSizeReducer
         private string message;
 
         private Color tagColor = Color.Black;
+
+        private XPathNavigator settingsNav;
+        private string hash;
 
         public const int AnnotationDivisor = 4;
 
@@ -1191,10 +1195,37 @@ namespace AdaptiveImageSizeReducer
                 // avoid trying to load obviously inappropriate files
                 Transforms.SanityCheckJpegFormatFileThrow(this.SourcePath);
 
+                // task to compute hash signature for finding identical files
+                Task<string> hashTask = new Task<string>(
+                    delegate ()
+                    {
+                        byte[] hashBytes;
+                        using (Stream stream = new FileStream(this.SourcePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            hashBytes = SHA512.Create().ComputeHash(stream);
+                        }
+                        return Convert.ToBase64String(hashBytes);
+                    });
+                hashTask.Start();
+
                 // ensure image is loadable
                 SmartBitmap bitmap = new SmartBitmap(GetSourceBitmap()); // could throw if file invalid, despite above sanity check
                 this.width = bitmap.Width;
                 this.height = bitmap.Height;
+
+                hashTask.Wait();
+                this.hash = hashTask.Result;
+
+                // see if we must read settings now (file was renamed, but we now have the hash to find old settings)
+                if (this.settingsNav != null)
+                {
+                    XPathNavigator nav = settingsNav.SelectSingleNode(String.Format("/*/items/item[hash=\"{0}\"]", this.hash));
+                    if (nav != null)
+                    {
+                        ReadXml(nav);
+                    }
+                    settingsNav = null;
+                }
 
                 return bitmap;
             }
@@ -1268,6 +1299,12 @@ namespace AdaptiveImageSizeReducer
                 writer.WriteStartElement("tagColor");
                 writer.WriteValue((string)this.tagColor.Name);
                 writer.WriteEndElement(); // tagColor
+            }
+            if (!String.IsNullOrEmpty(this.hash))
+            {
+                writer.WriteStartElement("hash");
+                writer.WriteValue(this.hash);
+                writer.WriteEndElement();
             }
 
             writer.WriteStartElement("actions");
@@ -1507,6 +1544,10 @@ namespace AdaptiveImageSizeReducer
             {
                 this.tagColor = Color.FromName(s);
             }
+            if (ReadValue(item, "hash", out s))
+            {
+                this.hash = s;
+            }
 
             if (ReadValue(item, "actions/jpegQuality", out i))
             {
@@ -1644,5 +1685,7 @@ namespace AdaptiveImageSizeReducer
                 this.fineRotateDegrees = d;
             }
         }
+
+        public XPathNavigator SettingsNav { set { this.settingsNav = value; } }
     }
 }
