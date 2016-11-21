@@ -921,7 +921,19 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
+#if false // TODO: remove
         private static void SetPictureBoxImage(PictureBox pictureBox, Image image)
+        {
+            Image old = pictureBox.Image;
+            pictureBox.Image = image;
+            if (old != null)
+            {
+                old.Dispose();
+            }
+        }
+#endif
+
+        private static void SetPictureBoxImage(ImageBox pictureBox, Bitmap image)
         {
             Image old = pictureBox.Image;
             pictureBox.Image = image;
@@ -1791,11 +1803,36 @@ namespace AdaptiveImageSizeReducer
             return GeoCorner.None;
         }
 
+        private void UpdateCrosshairs(Point mouseLoc)
+        {
+            Item currentItem = this.CurrentItem;
+            if ((currentItem == null) || inDragForCrop || (geoDrag != GeoCorner.None) || !this.toolStripButtonCrop.Checked || !currentItem.CropRect.IsEmpty)
+            {
+                this.pictureBoxMain.ShowCrosshair = false;
+            }
+            else
+            {
+                this.pictureBoxMain.ShowCrosshair = true;
+
+                Point imagePos = WindowToImagePosition(mouseLoc, pictureBoxMain, currentItem.Width, currentItem.Height, null);
+                imagePos = new Point(
+                    (imagePos.X + Transforms.LosslessCropGranularity / 2) / Transforms.LosslessCropGranularity * Transforms.LosslessCropGranularity,
+                    (imagePos.Y + Transforms.LosslessCropGranularity / 2) / Transforms.LosslessCropGranularity * Transforms.LosslessCropGranularity);
+
+                this.pictureBoxMain.CrosshairX = imagePos.X;
+                this.pictureBoxMain.CrosshairY = imagePos.Y;
+
+                pictureBoxMain.Update();
+            }
+        }
+
         private void PictureBoxMain_MouseMove(object sender, MouseEventArgs e)
         {
             Item item = CurrentItem;
             if ((item != null) && item.Valid)
             {
+                UpdateCrosshairs(e.Location);
+
                 if (inDragForCrop)
                 {
                     Debug.Assert(toolStripButtonCrop.Checked);
@@ -1940,6 +1977,7 @@ namespace AdaptiveImageSizeReducer
         private void PictureBoxMain_MouseLeave(object sender, EventArgs e)
         {
             pictureBoxMain.Cursor = Cursors.Arrow;
+            this.pictureBoxMain.ShowCrosshair = false;
         }
 
         private static Point WindowImagePositionMapper(Point sourcePos, Control window, int imageWidth, int imageHeight, Control centerOn, bool reverse)

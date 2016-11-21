@@ -98,6 +98,12 @@
     <Compile Include="FileSizeText.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="ImageCache.cs" />
+    <Compile Include="ImageBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ImageBox.Designer.cs">
+      <DependentUpon>ImageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoggingWindow.cs">
       <SubType>Form</SubType>
     </Compile>

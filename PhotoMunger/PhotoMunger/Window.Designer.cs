@@ -59,7 +59,6 @@ namespace AdaptiveImageSizeReducer
             this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBoxMain = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonApply = new System.Windows.Forms.ToolStripButton();
@@ -121,6 +120,8 @@ namespace AdaptiveImageSizeReducer
             this.checkBoxPolyUnbias = new System.Windows.Forms.CheckBox();
             this.checkBoxNormalizeGeometry = new System.Windows.Forms.CheckBox();
             this.labelMessage = new System.Windows.Forms.Label();
+            this.panelMainPictureContainer = new System.Windows.Forms.Panel();
+            this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
@@ -130,7 +131,6 @@ namespace AdaptiveImageSizeReducer
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
             this.flowLayoutPanel.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDetail1)).BeginInit();
@@ -140,6 +140,8 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelSize.SuspendLayout();
             this.flowLayoutPanelCropRect.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.panelMainPictureContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewFiles
@@ -224,8 +226,8 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel.Controls.Add(this.pictureBoxMain, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.flowLayoutPanel, 1, 0);
+            this.tableLayoutPanel.Controls.Add(this.panelMainPictureContainer, 0, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -233,20 +235,6 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(804, 605);
             this.tableLayoutPanel.TabIndex = 0;
-            // 
-            // pictureBoxMain
-            // 
-            this.pictureBoxMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxMain.Location = new System.Drawing.Point(0, 1);
-            this.pictureBoxMain.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.pictureBoxMain.Name = "pictureBoxMain";
-            this.pictureBoxMain.Size = new System.Drawing.Size(577, 603);
-            this.pictureBoxMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxMain.TabIndex = 1;
-            this.pictureBoxMain.TabStop = false;
-            this.pictureBoxMain.WaitOnLoad = true;
             // 
             // flowLayoutPanel
             // 
@@ -548,63 +536,63 @@ namespace AdaptiveImageSizeReducer
             // 
             this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
             this.blackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D1)));
-            this.blackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.blackToolStripMenuItem.Text = "Black";
             // 
             // blueToolStripMenuItem
             // 
             this.blueToolStripMenuItem.Name = "blueToolStripMenuItem";
             this.blueToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
-            this.blueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.blueToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.blueToolStripMenuItem.Text = "Blue";
             // 
             // redToolStripMenuItem
             // 
             this.redToolStripMenuItem.Name = "redToolStripMenuItem";
             this.redToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
-            this.redToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.redToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.redToolStripMenuItem.Text = "Red";
             // 
             // yellowToolStripMenuItem
             // 
             this.yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
             this.yellowToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
-            this.yellowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yellowToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.yellowToolStripMenuItem.Text = "Yellow";
             // 
             // orangeToolStripMenuItem
             // 
             this.orangeToolStripMenuItem.Name = "orangeToolStripMenuItem";
             this.orangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
-            this.orangeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.orangeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.orangeToolStripMenuItem.Text = "Orange";
             // 
             // greenToolStripMenuItem
             // 
             this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
             this.greenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D6)));
-            this.greenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.greenToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.greenToolStripMenuItem.Text = "Green";
             // 
             // purpleToolStripMenuItem
             // 
             this.purpleToolStripMenuItem.Name = "purpleToolStripMenuItem";
             this.purpleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D7)));
-            this.purpleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.purpleToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.purpleToolStripMenuItem.Text = "Purple";
             // 
             // cyanToolStripMenuItem
             // 
             this.cyanToolStripMenuItem.Name = "cyanToolStripMenuItem";
             this.cyanToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D8)));
-            this.cyanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cyanToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.cyanToolStripMenuItem.Text = "Cyan";
             // 
             // pinkToolStripMenuItem
             // 
             this.pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
             this.pinkToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D9)));
-            this.pinkToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pinkToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.pinkToolStripMenuItem.Text = "Pink";
             // 
             // toolStripDropDownButtonCatchAllMenu
@@ -890,6 +878,33 @@ namespace AdaptiveImageSizeReducer
             this.labelMessage.TabIndex = 7;
             this.labelMessage.UseMnemonic = false;
             // 
+            // panelMainPictureContainer
+            // 
+            this.panelMainPictureContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelMainPictureContainer.Controls.Add(this.pictureBoxMain);
+            this.panelMainPictureContainer.Location = new System.Drawing.Point(0, 1);
+            this.panelMainPictureContainer.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.panelMainPictureContainer.Name = "panelMainPictureContainer";
+            this.panelMainPictureContainer.Size = new System.Drawing.Size(577, 603);
+            this.panelMainPictureContainer.TabIndex = 1;
+            // 
+            // pictureBoxMain
+            // 
+            this.pictureBoxMain.CrosshairColor = System.Drawing.SystemColors.ControlDark;
+            this.pictureBoxMain.CrosshairX = 0;
+            this.pictureBoxMain.CrosshairY = 0;
+            this.pictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxMain.Image = null;
+            this.pictureBoxMain.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxMain.Name = "pictureBoxMain";
+            this.pictureBoxMain.ShowCrosshair = false;
+            this.pictureBoxMain.Size = new System.Drawing.Size(577, 603);
+            this.pictureBoxMain.TabIndex = 1;
+            this.pictureBoxMain.TabStop = false;
+            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -907,7 +922,6 @@ namespace AdaptiveImageSizeReducer
             this.splitContainer.ResumeLayout(false);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).EndInit();
             this.flowLayoutPanel.ResumeLayout(false);
             this.flowLayoutPanel.PerformLayout();
             this.toolStrip.ResumeLayout(false);
@@ -924,6 +938,8 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanelCropRect.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
+            this.panelMainPictureContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -935,7 +951,7 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.PictureBox pictureBoxDetail1;
         private System.Windows.Forms.PictureBox pictureBoxDetail2;
-        private System.Windows.Forms.PictureBox pictureBoxMain;
+        private ImageBox pictureBoxMain;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton toolStripButtonApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelStats;
@@ -1001,6 +1017,7 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonCatchAllMenu;
         private System.Windows.Forms.ToolStripMenuItem markToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem swapToolStripMenuItem;
+        private System.Windows.Forms.Panel panelMainPictureContainer;
     }
 }
 
