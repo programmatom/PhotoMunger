@@ -124,6 +124,7 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -265,6 +266,9 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonShowShrunkExpandedPreview,
             this.toolStripButtonUseGDIResize,
             this.toolStripSeparator2,
+            this.toolStripButtonRotateLeft90,
+            this.toolStripButtonRotateRight90,
+            this.toolStripSeparator6,
             this.toolStripButtonCrop,
             this.toolStripButtonClearCrop,
             this.toolStripButtonCropKeepAspectRatio,
@@ -276,8 +280,6 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetNormalizedGeometryAspectRatio,
             this.toolStripButtonResetAllNormalizedGeometry,
             this.toolStripSeparator3,
-            this.toolStripButtonRotateLeft90,
-            this.toolStripButtonRotateRight90,
             this.toolStripButtonOptions,
             this.toolStripButtonGlobalOptions,
             this.toolStripSeparator5,
@@ -905,6 +907,11 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
+            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1018,6 +1025,7 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripMenuItem markToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem swapToolStripMenuItem;
         private System.Windows.Forms.Panel panelMainPictureContainer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 
