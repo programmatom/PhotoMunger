@@ -90,21 +90,47 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
+        // Check that the file is one of the supported image formats for GDI+. This is just a sanity check and
+        // may produce false positives, in which case the file will be rejected when an attempt is made to load
+        // it. The purpose is primarily to avoid trying to load huge MP4/AVI video files which tend to blow up
+        // by causing GDI+ to use huge amounts of memory.
         public static bool SanityCheckJpegFormatFile(string path)
         {
             using (Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                byte[] two = new byte[2];
-                if (two.Length != stream.Read(two, 0, two.Length))
+                byte[] b = new byte[4];
+                if (b.Length != stream.Read(b, 0, b.Length)) // too short!
                 {
                     return false;
                 }
-                if ((two[0] != 0xFF) || (two[1] != 0xD8))
+
+                // try to recognize any of the formats supported by GDI+
+                if ((b[0] == 0xFF) && (b[1] == 0xD8)) // JPEG
                 {
-                    return false;
+                    return true;
+                }
+                if ((b[0] == 0x42) && (b[1] == 0x4D)) // BMP
+                {
+                    return true;
+                }
+                if ((b[0] == 0x49) && (b[1] == 0x49)) // TIFF - little-endian
+                {
+                    return true;
+                }
+                if ((b[0] == 0x4D) && (b[1] == 0x4D)) // TIFF - big-endian
+                {
+                    return true;
+                }
+                if ((b[1] == 0x50) && (b[2] == 0x4E) && (b[3] == 0x47)) // PNG
+                {
+                    return true;
+                }
+                if ((b[0] == 0x47) && (b[1] == 0x49) && (b[2] == 0x46)) // GIF
+                {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public class NotJpegFormatFileException : Exception
@@ -2521,7 +2547,7 @@ namespace AdaptiveImageSizeReducer
                         // WPF:
                         JpegBitmapEncoder encoder = new JpegBitmapEncoder();
                         encoder.Frames.Add(source.AsWPF());
-                        encoder.QualityLevel = InternalJpegQuality;
+                        encoder.QualityLevel = jpegQuality;
                         using (Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                         {
                             encoder.Save(stream);
@@ -2557,6 +2583,15 @@ namespace AdaptiveImageSizeReducer
             profile?.Push("Load");
             Bitmap bitmap = new Bitmap(ReadAllBytes(path)); // could throw if file is invalid despite preceding sanity check
             profile?.Pop();
+
+            if (bitmap.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppRgb)
+            {
+                profile?.Push("Ensure 32-bit depth");
+                Bitmap bitmap2 = bitmap.Clone(new Rectangle(Point.Empty, bitmap.Size), System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                bitmap.Dispose();
+                bitmap = bitmap2;
+                profile?.Pop();
+            }
 
             profile?.Push("Orient");
             bitmap.RotateFlip(ReadOrientationProperty(bitmap));
@@ -2612,8 +2647,21 @@ namespace AdaptiveImageSizeReducer
                     case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
                         managed = new ManagedBitmap1(bitmap);
                         break;
+                    case System.Drawing.Imaging.PixelFormat.Format8bppIndexed:
+                        managed = new ManagedBitmap32(bitmap);
+                        break;
                 }
                 profile.Pop();
+
+                if (!(managed is ManagedBitmap32))
+                {
+                    profile.Push("Ensure 32-bit depth");
+                    ManagedBitmap32 managed2 = new ManagedBitmap32(managed.Width, managed.Height);
+                    managed.CopyTo(managed2);
+                    managed.Dispose();
+                    managed = managed2;
+                    profile.Pop();
+                }
             }
 
             if (optionalRightRotations.HasValue)
