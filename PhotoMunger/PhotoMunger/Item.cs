@@ -1219,10 +1219,14 @@ namespace AdaptiveImageSizeReducer
                 // see if we must read settings now (file was renamed, but we now have the hash to find old settings)
                 if (this.settingsNav != null)
                 {
-                    XPathNavigator nav = settingsNav.SelectSingleNode(String.Format("/*/items/item[hash=\"{0}\"]", this.hash));
-                    if (nav != null)
+                    lock (this.settingsNav)
                     {
-                        ReadXml(nav);
+                        XPathNavigator nav = settingsNav.SelectSingleNode(String.Format("/*/items/item[hash=\"{0}\"]", this.hash));
+                        if (nav != null)
+                        {
+                            ReadXml(nav);
+                            nav.DeleteSelf();
+                        }
                     }
                     settingsNav = null;
                 }

@@ -69,6 +69,9 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonShowShrunkExpandedPreview = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonUseGDIResize = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonRotateLeft90 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonCrop = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonClearCrop = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonCropKeepAspectRatio = new System.Windows.Forms.ToolStripButton();
@@ -80,8 +83,6 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetNormalizedGeometryAspectRatio = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetAllNormalizedGeometry = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonRotateLeft90 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonRotateRight90 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -98,6 +99,9 @@ namespace AdaptiveImageSizeReducer
             this.toolStripDropDownButtonCatchAllMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.markToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.swapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sortByNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unsortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxDetail1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxDetail2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelStats = new System.Windows.Forms.TableLayoutPanel();
@@ -124,7 +128,6 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -368,6 +371,31 @@ namespace AdaptiveImageSizeReducer
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
             // 
+            // toolStripButtonRotateLeft90
+            // 
+            this.toolStripButtonRotateLeft90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRotateLeft90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateLeft90;
+            this.toolStripButtonRotateLeft90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRotateLeft90.Name = "toolStripButtonRotateLeft90";
+            this.toolStripButtonRotateLeft90.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonRotateLeft90.ToolTipText = "Rotate counter-clockwise 90 degrees";
+            this.toolStripButtonRotateLeft90.Click += new System.EventHandler(this.toolStripButtonRotateLeft90_Click);
+            // 
+            // toolStripButtonRotateRight90
+            // 
+            this.toolStripButtonRotateRight90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRotateRight90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateRight90;
+            this.toolStripButtonRotateRight90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRotateRight90.Name = "toolStripButtonRotateRight90";
+            this.toolStripButtonRotateRight90.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonRotateRight90.ToolTipText = "Rotate clockwise 90 degrees";
+            this.toolStripButtonRotateRight90.Click += new System.EventHandler(this.toolStripButtonRotateRight90_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
+            // 
             // toolStripButtonCrop
             // 
             this.toolStripButtonCrop.CheckOnClick = true;
@@ -470,26 +498,6 @@ namespace AdaptiveImageSizeReducer
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
             // 
-            // toolStripButtonRotateLeft90
-            // 
-            this.toolStripButtonRotateLeft90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRotateLeft90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateLeft90;
-            this.toolStripButtonRotateLeft90.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRotateLeft90.Name = "toolStripButtonRotateLeft90";
-            this.toolStripButtonRotateLeft90.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonRotateLeft90.ToolTipText = "Rotate counter-clockwise 90 degrees";
-            this.toolStripButtonRotateLeft90.Click += new System.EventHandler(this.toolStripButtonRotateLeft90_Click);
-            // 
-            // toolStripButtonRotateRight90
-            // 
-            this.toolStripButtonRotateRight90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRotateRight90.Image = global::AdaptiveImageSizeReducer.Properties.Resources.RotateRight90;
-            this.toolStripButtonRotateRight90.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRotateRight90.Name = "toolStripButtonRotateRight90";
-            this.toolStripButtonRotateRight90.Size = new System.Drawing.Size(23, 20);
-            this.toolStripButtonRotateRight90.ToolTipText = "Rotate clockwise 90 degrees";
-            this.toolStripButtonRotateRight90.Click += new System.EventHandler(this.toolStripButtonRotateRight90_Click);
-            // 
             // toolStripButtonOptions
             // 
             this.toolStripButtonOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -538,63 +546,63 @@ namespace AdaptiveImageSizeReducer
             // 
             this.blackToolStripMenuItem.Name = "blackToolStripMenuItem";
             this.blackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D1)));
-            this.blackToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.blackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.blackToolStripMenuItem.Text = "Black";
             // 
             // blueToolStripMenuItem
             // 
             this.blueToolStripMenuItem.Name = "blueToolStripMenuItem";
             this.blueToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D2)));
-            this.blueToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.blueToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.blueToolStripMenuItem.Text = "Blue";
             // 
             // redToolStripMenuItem
             // 
             this.redToolStripMenuItem.Name = "redToolStripMenuItem";
             this.redToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D3)));
-            this.redToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.redToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.redToolStripMenuItem.Text = "Red";
             // 
             // yellowToolStripMenuItem
             // 
             this.yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
             this.yellowToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
-            this.yellowToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.yellowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yellowToolStripMenuItem.Text = "Yellow";
             // 
             // orangeToolStripMenuItem
             // 
             this.orangeToolStripMenuItem.Name = "orangeToolStripMenuItem";
             this.orangeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D5)));
-            this.orangeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.orangeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.orangeToolStripMenuItem.Text = "Orange";
             // 
             // greenToolStripMenuItem
             // 
             this.greenToolStripMenuItem.Name = "greenToolStripMenuItem";
             this.greenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D6)));
-            this.greenToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.greenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.greenToolStripMenuItem.Text = "Green";
             // 
             // purpleToolStripMenuItem
             // 
             this.purpleToolStripMenuItem.Name = "purpleToolStripMenuItem";
             this.purpleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D7)));
-            this.purpleToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.purpleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.purpleToolStripMenuItem.Text = "Purple";
             // 
             // cyanToolStripMenuItem
             // 
             this.cyanToolStripMenuItem.Name = "cyanToolStripMenuItem";
             this.cyanToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D8)));
-            this.cyanToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.cyanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cyanToolStripMenuItem.Text = "Cyan";
             // 
             // pinkToolStripMenuItem
             // 
             this.pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
             this.pinkToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D9)));
-            this.pinkToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.pinkToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.pinkToolStripMenuItem.Text = "Pink";
             // 
             // toolStripDropDownButtonCatchAllMenu
@@ -602,7 +610,10 @@ namespace AdaptiveImageSizeReducer
             this.toolStripDropDownButtonCatchAllMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripDropDownButtonCatchAllMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.markToolStripMenuItem,
-            this.swapToolStripMenuItem});
+            this.swapToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.sortByNameToolStripMenuItem,
+            this.unsortToolStripMenuItem});
             this.toolStripDropDownButtonCatchAllMenu.Image = global::AdaptiveImageSizeReducer.Properties.Resources.CatchAllMenu;
             this.toolStripDropDownButtonCatchAllMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButtonCatchAllMenu.Name = "toolStripDropDownButtonCatchAllMenu";
@@ -612,7 +623,7 @@ namespace AdaptiveImageSizeReducer
             // 
             this.markToolStripMenuItem.Name = "markToolStripMenuItem";
             this.markToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
-            this.markToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.markToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.markToolStripMenuItem.Text = "Mark";
             this.markToolStripMenuItem.Click += new System.EventHandler(this.markToolStripMenuItem_Click);
             // 
@@ -620,9 +631,28 @@ namespace AdaptiveImageSizeReducer
             // 
             this.swapToolStripMenuItem.Name = "swapToolStripMenuItem";
             this.swapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.swapToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.swapToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.swapToolStripMenuItem.Text = "Swap";
             this.swapToolStripMenuItem.Click += new System.EventHandler(this.swapToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(219, 6);
+            // 
+            // sortByNameToolStripMenuItem
+            // 
+            this.sortByNameToolStripMenuItem.Name = "sortByNameToolStripMenuItem";
+            this.sortByNameToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.sortByNameToolStripMenuItem.Text = "Sort Items By Target Name";
+            this.sortByNameToolStripMenuItem.Click += new System.EventHandler(this.sortByNameToolStripMenuItem_Click);
+            // 
+            // unsortToolStripMenuItem
+            // 
+            this.unsortToolStripMenuItem.Name = "unsortToolStripMenuItem";
+            this.unsortToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.unsortToolStripMenuItem.Text = "Reset Sort To Original Name";
+            this.unsortToolStripMenuItem.Click += new System.EventHandler(this.unsortToolStripMenuItem_Click);
             // 
             // pictureBoxDetail1
             // 
@@ -907,11 +937,6 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
-            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1026,6 +1051,9 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripMenuItem swapToolStripMenuItem;
         private System.Windows.Forms.Panel panelMainPictureContainer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem sortByNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unsortToolStripMenuItem;
     }
 }
 

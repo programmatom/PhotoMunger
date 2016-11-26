@@ -186,6 +186,7 @@ namespace AdaptiveImageSizeReducer
                 }
 
                 XPathNavigator settingsNav;
+                Dictionary<string, int> sourceFileNameToSequenceNumber = new Dictionary<string, int>();
                 {
                     XmlDocument settings = new XmlDocument();
                     string settingsPath = Path.Combine(scanDirectory, SettingsFile);
@@ -194,6 +195,12 @@ namespace AdaptiveImageSizeReducer
                         settings.Load(settingsPath);
                     }
                     settingsNav = settings.CreateNavigator();
+
+                    int i = 0;
+                    foreach (XPathNavigator nav in settingsNav.Select("/*/items/item/file"))
+                    {
+                        sourceFileNameToSequenceNumber.Add(nav.Value, i++);
+                    }
                 }
 
                 GlobalOptions options = new GlobalOptions(settingsNav.SelectSingleNode("/*/options"));
@@ -225,7 +232,6 @@ namespace AdaptiveImageSizeReducer
                     }
 
                     bool extUpper = String.Equals(Path.GetExtension(fileName), Path.GetExtension(fileName).ToUpper());
-                    //fileName = Path.ChangeExtension(fileName, extUpper ? ".JPG" : ".jpg");
 
                     Item item = new Item(Path.Combine(directory, fileName), options, cache);
                     items.Add(item);
@@ -234,12 +240,33 @@ namespace AdaptiveImageSizeReducer
                     if (itemNav != null)
                     {
                         item.ReadXml(itemNav);
+                        itemNav.DeleteSelf();
                     }
                     else
                     {
                         item.SettingsNav = settingsNav; // no match; try after hash has been computed
                     }
                 }
+                items.Sort(
+                    delegate (Item l, Item r)
+                    {
+                        int c;
+                        int li, ri;
+                        if (!sourceFileNameToSequenceNumber.TryGetValue(l.SourceFileName, out li))
+                        {
+                            li = Int32.MaxValue;
+                        }
+                        if (!sourceFileNameToSequenceNumber.TryGetValue(r.SourceFileName, out ri))
+                        {
+                            ri = Int32.MaxValue;
+                        }
+                        c = li.CompareTo(ri);
+                        if (c == 0)
+                        {
+                            c = String.Compare(l.SourceFileName, r.SourceFileName, StringComparison.CurrentCultureIgnoreCase);
+                        }
+                        return c;
+                    });
 
                 window = new Window(directory, items, cache, options);
                 window.Show();

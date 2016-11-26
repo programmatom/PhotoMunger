@@ -104,6 +104,7 @@ namespace AdaptiveImageSizeReducer
             this.dataGridViewFiles.CellFormatting += DataGridViewFiles_CellFormatting;
             this.dataGridViewFiles.CellValidating += DataGridViewFiles_CellValidating;
             this.dataGridViewFiles.EditingControlShowing += DataGridViewFiles_EditingControlShowing;
+            this.dataGridViewFiles.ColumnHeaderMouseClick += DataGridViewFiles_ColumnHeaderMouseClick;
 
             this.pictureBoxMain.MouseMove += PictureBoxMain_MouseMove;
             this.pictureBoxMain.MouseDown += PictureBoxMain_MouseDown;
@@ -716,6 +717,43 @@ namespace AdaptiveImageSizeReducer
                 {
                     menuItem.Checked = true;
                 }
+            }
+        }
+
+        private void SortView(Comparison<Item> comparer)
+        {
+            List<Item> items2 = new List<Item>(this.items);
+            Item selectedItem = this.CurrentItem;
+            items2.Sort(comparer);
+            this.dataBindingSource.SuspendBinding();
+            while (this.items.Count != 0)
+            {
+                this.items.RemoveAt(0);
+            }
+            foreach (Item item in items2)
+            {
+                this.items.Add(item);
+            }
+            this.dataBindingSource.ResumeBinding();
+            SelectItem(selectedItem);
+            SaveSettings();
+        }
+
+        private void unsortToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SortView(delegate (Item l, Item r) { return String.Compare(l.SourceFileName, r.SourceFileName, StringComparison.CurrentCultureIgnoreCase); });
+        }
+
+        private void sortByNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SortView(delegate (Item l, Item r) { return String.Compare(l.RenamedFileName, r.RenamedFileName, StringComparison.CurrentCultureIgnoreCase); });
+        }
+
+        private void DataGridViewFiles_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                sortByNameToolStripMenuItem_Click(this, EventArgs.Empty);
             }
         }
 
