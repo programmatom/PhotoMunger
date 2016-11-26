@@ -117,11 +117,11 @@
     <Compile Include="ProgressBar.designer.cs">
       <DependentUpon>ProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="OptionsDialog.cs">
+    <Compile Include="ItemOptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OptionsDialog.Designer.cs">
-      <DependentUpon>OptionsDialog.cs</DependentUpon>
+    <Compile Include="ItemOptionsDialog.Designer.cs">
+      <DependentUpon>ItemOptionsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="OutputTransforms.cs" />
     <Compile Include="PolyFit2D.cs" />
@@ -160,8 +160,8 @@
     <EmbeddedResource Include="LoggingWindow.resx">
       <DependentUpon>LoggingWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OptionsDialog.resx">
-      <DependentUpon>OptionsDialog.cs</DependentUpon>
+    <EmbeddedResource Include="ItemOptionsDialog.resx">
+      <DependentUpon>ItemOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>

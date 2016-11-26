@@ -1193,7 +1193,7 @@ namespace AdaptiveImageSizeReducer
             try
             {
                 // avoid trying to load obviously inappropriate files
-                Transforms.SanityCheckJpegFormatFileThrow(this.SourcePath);
+                Transforms.SanityCheckValidImageFormatFileThrow(this.SourcePath);
 
                 // task to compute hash signature for finding identical files
                 Task<string> hashTask = new Task<string>(

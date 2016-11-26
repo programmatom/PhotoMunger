@@ -64,9 +64,7 @@ namespace AdaptiveImageSizeReducer
                 files,
                 delegate (string candidate)
                 {
-                    return !String.Equals(candidate, Program.SettingsFile)
-                        && (String.Equals(Path.GetExtension(candidate), ".jpg", StringComparison.OrdinalIgnoreCase)
-                            || String.Equals(Path.GetExtension(candidate), ".jpeg", StringComparison.OrdinalIgnoreCase));
+                    return !String.Equals(candidate, Program.SettingsFile) && Transforms.SanityCheckValidImageFormatFile(candidate);
                 });
             if (!String.IsNullOrEmpty(sampleFile) && File.Exists(sampleFile))
             {

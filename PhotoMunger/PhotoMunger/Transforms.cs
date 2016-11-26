@@ -94,7 +94,7 @@ namespace AdaptiveImageSizeReducer
         // may produce false positives, in which case the file will be rejected when an attempt is made to load
         // it. The purpose is primarily to avoid trying to load huge MP4/AVI video files which tend to blow up
         // by causing GDI+ to use huge amounts of memory.
-        public static bool SanityCheckJpegFormatFile(string path)
+        public static bool SanityCheckValidImageFormatFile(string path)
         {
             using (Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -146,9 +146,9 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
-        public static void SanityCheckJpegFormatFileThrow(string path)
+        public static void SanityCheckValidImageFormatFileThrow(string path)
         {
-            if (!SanityCheckJpegFormatFile(path))
+            if (!SanityCheckValidImageFormatFile(path))
             {
                 throw new NotJpegFormatFileException(String.Format("File header is not a Jpeg/Exif header ({0})", Path.GetFileName(path)));
             }
@@ -2578,7 +2578,7 @@ namespace AdaptiveImageSizeReducer
         {
             profile?.Push("Transforms.LoadAndOrientGDI {0}", Path.GetFileName(path));
 
-            SanityCheckJpegFormatFileThrow(path);
+            SanityCheckValidImageFormatFileThrow(path);
 
             profile?.Push("Load");
             Bitmap bitmap = new Bitmap(ReadAllBytes(path)); // could throw if file is invalid despite preceding sanity check
@@ -2612,7 +2612,7 @@ namespace AdaptiveImageSizeReducer
             RotateFlipType orientationProperty;
 
             profile.Push("Load");
-            SanityCheckJpegFormatFileThrow(path);
+            SanityCheckValidImageFormatFileThrow(path);
             using (Bitmap bitmap = new Bitmap(ReadAllBytes(path))) // could throw if file is invalid despite preceding sanity check
             {
                 orientationProperty = exifOrientationProperty = ReadOrientationProperty(bitmap);

@@ -28,11 +28,11 @@ using System.Windows.Forms;
 
 namespace AdaptiveImageSizeReducer
 {
-    public partial class OptionsDialog : Form
+    public partial class ItemOptionsDialog : Form
     {
         private readonly Options options;
 
-        private OptionsDialog(Options options, string name)
+        private ItemOptionsDialog(Options options, string name)
         {
             this.options = options;
 
@@ -170,7 +170,7 @@ namespace AdaptiveImageSizeReducer
         public static void DoDialog(Item item)
         {
             Options options = new Options(item);
-            using (OptionsDialog dialog = new OptionsDialog(options, item.RenamedFileName))
+            using (ItemOptionsDialog dialog = new ItemOptionsDialog(options, item.RenamedFileName))
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -196,7 +196,7 @@ namespace AdaptiveImageSizeReducer
 
             // TODO: indeterminate state UI
             Options options = new Options(items[0]);
-            using (OptionsDialog dialog = new OptionsDialog(options, String.Format("[{0} Items]", items.Count)))
+            using (ItemOptionsDialog dialog = new ItemOptionsDialog(options, String.Format("[{0} Items]", items.Count)))
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {

@@ -21,7 +21,7 @@
 */
 namespace AdaptiveImageSizeReducer
 {
-    partial class OptionsDialog
+    partial class ItemOptionsDialog
     {
         /// <summary>
         /// Required designer variable.

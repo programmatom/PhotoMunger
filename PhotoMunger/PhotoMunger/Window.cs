@@ -842,7 +842,7 @@ namespace AdaptiveImageSizeReducer
             }
             if (items.Count != 0)
             {
-                OptionsDialog.DoDialog(items);
+                ItemOptionsDialog.DoDialog(items);
                 UpdatePrimary();
             }
         }
