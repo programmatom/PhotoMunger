@@ -173,7 +173,7 @@ namespace AdaptiveImageSizeReducer
                     return;
                 }
 
-                Window window;
+                Window window = null;
                 ImageCache cache = new ImageCache();
 
                 string directory = Path.GetFullPath(args[0]);
@@ -268,14 +268,19 @@ namespace AdaptiveImageSizeReducer
                         return c;
                     });
 
-                window = new Window(directory, items, cache, options);
-                window.Show();
+                if (items.Count != 0)
+                {
+                    window = new Window(directory, items, cache, options);
+                    window.Show();
 
-                window.LastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(items);
+                    window.LastAnalysisTask = BatchAnalyzerQueue.BeginAnalyzeBatch(items);
 
-
-                Application.Run(window);
-
+                    Application.Run(window);
+                }
+                else
+                {
+                    MessageBox.Show(String.Format("The specified folder \"{0}\" contains no images.", scanDirectory));
+                }
 
                 LoggingWindow logw = logWindow;
                 if (logw != null)
@@ -283,7 +288,10 @@ namespace AdaptiveImageSizeReducer
                     logw.Close();
                 }
 
-                window.LastAnalysisTask.Wait(); // allow any unfinished actions to cancel and dispose state
+                if (window != null)
+                {
+                    window.LastAnalysisTask.Wait(); // allow any unfinished actions to cancel and dispose state
+                }
 
                 cache.Dispose();
                 SerializationManager.Manager.Dispose();

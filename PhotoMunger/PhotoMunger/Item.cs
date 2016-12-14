@@ -66,6 +66,8 @@ namespace AdaptiveImageSizeReducer
         private bool? unbias;
         private int? unbiasMaxDegree;
         private float? unbiasMaxChisq;
+        private float? unbiasMaxS;
+        private float? unbiasMinV;
 
         private bool? oneBit;
         private Transforms.Channel? oneBitChannel;
@@ -322,8 +324,10 @@ namespace AdaptiveImageSizeReducer
 
         private void SetCropRect(Rectangle rect, bool explicitlySet)
         {
-            Debug.Assert((rect.Left == Transforms.SnapLossless(rect.Left)) && (rect.Top == Transforms.SnapLossless(rect.Top))
-                && (rect.Right == Transforms.SnapLossless(rect.Right)) && (rect.Bottom == Transforms.SnapLossless(rect.Bottom)));
+            Debug.Assert((rect.Left == Transforms.SnapLossless(rect.Left))
+                && (rect.Top == Transforms.SnapLossless(rect.Top))
+                && ((rect.Right == Transforms.SnapLossless(rect.Right)) || (rect.Right == this.width))
+                && ((rect.Bottom == Transforms.SnapLossless(rect.Bottom)) || (rect.Bottom == this.height)));
             rect.Intersect(new Rectangle(0, 0, this.width, this.height));
             cropRect = rect;
             cropRectRotation = RightRotations;
@@ -469,6 +473,38 @@ namespace AdaptiveImageSizeReducer
                 cache.InvalidatePrefixed(SourceId + ":Post:");
 
                 FirePropertyChanged("UnbiasMaxChisq");
+            }
+        }
+
+        [Bindable(true)]
+        public float UnbiasMaxS
+        {
+            get
+            {
+                return unbiasMaxS.HasValue ? unbiasMaxS.Value : options.UnbiasMaxS;
+            }
+            set
+            {
+                unbiasMaxS = value;
+                cache.InvalidatePrefixed(SourceId + ":Post:");
+
+                FirePropertyChanged("UnbiasMaxS");
+            }
+        }
+
+        [Bindable(true)]
+        public float UnbiasMinV
+        {
+            get
+            {
+                return unbiasMinV.HasValue ? unbiasMinV.Value : options.UnbiasMinV;
+            }
+            set
+            {
+                unbiasMinV = value;
+                cache.InvalidatePrefixed(SourceId + ":Post:");
+
+                FirePropertyChanged("UnbiasMinV");
             }
         }
 
@@ -999,7 +1035,7 @@ namespace AdaptiveImageSizeReducer
                             !inDrag && this.BrightAdjust,
                             new Transforms.BrightAdjustParameters(this.BrightAdjustMinClusterFrac, this.BrightAdjustWhiteCorrect),
                             !inDrag && this.Unbias,
-                            new Transforms.PolyUnbiasParameters(this.UnbiasMaxDegree, this.UnbiasMaxChisq),
+                            new Transforms.PolyUnbiasParameters(this.UnbiasMaxDegree, this.UnbiasMaxChisq, this.UnbiasMaxS, this.UnbiasMinV),
                             !inDrag && this.StaticSaturate,
                             new Transforms.StaticSaturateParameters(this.StaticSaturateWhiteThreshhold, this.StaticSaturateBlackThreshhold, this.StaticSaturateExponent),
                             !inDrag && this.OneBit,
@@ -1148,6 +1184,12 @@ namespace AdaptiveImageSizeReducer
                     catch (OperationCanceledException)
                     {
                         // parameters changed - someone cancelled this analysis task and started a new one
+                        return false; // do not set status - avoid race condition with successor task
+                    }
+                    catch (Exception exception)
+                    {
+                        Debugger.Log(0, null, String.Format("ResetAnalyzeTask Analyze-EXCEPTION: {0}", exception));
+                        throw;
                     }
                     finally
                     {
@@ -1437,7 +1479,7 @@ namespace AdaptiveImageSizeReducer
                     if (staticSaturateWhiteThreshhold.HasValue)
                     {
                         writer.WriteStartElement("whiteThreshhold");
-                        writer.WriteValue((int)this.staticSaturateWhiteThreshhold.Value);
+                        writer.WriteValue(this.staticSaturateWhiteThreshhold.Value);
                         writer.WriteEndElement(); // whiteThreshhold
                     }
                     if (staticSaturateBlackThreshhold.HasValue)
@@ -1453,6 +1495,42 @@ namespace AdaptiveImageSizeReducer
                         writer.WriteEndElement(); // exponent
                     }
                     writer.WriteEndElement(); // staticSaturate
+                }
+
+                if (unbias.HasValue || unbiasMaxDegree.HasValue || unbiasMaxChisq.HasValue || unbiasMaxS.HasValue || unbiasMinV.HasValue)
+                {
+                    writer.WriteStartElement("unbias");
+                    if (unbias.HasValue)
+                    {
+                        writer.WriteStartElement("enable");
+                        writer.WriteValue(this.unbias.Value);
+                        writer.WriteEndElement(); // enable
+                    }
+                    if (unbiasMaxDegree.HasValue)
+                    {
+                        writer.WriteStartElement("maxDegree");
+                        writer.WriteValue((int)this.unbiasMaxDegree.Value);
+                        writer.WriteEndElement(); // maxDegree
+                    }
+                    if (unbiasMaxChisq.HasValue)
+                    {
+                        writer.WriteStartElement("maxChisq");
+                        writer.WriteValue(this.unbiasMaxChisq.Value);
+                        writer.WriteEndElement(); // maxChisq
+                    }
+                    if (unbiasMaxS.HasValue)
+                    {
+                        writer.WriteStartElement("maxS");
+                        writer.WriteValue(this.unbiasMaxS.Value);
+                        writer.WriteEndElement(); // maxS
+                    }
+                    if (unbiasMinV.HasValue)
+                    {
+                        writer.WriteStartElement("minV");
+                        writer.WriteValue(this.unbiasMinV.Value);
+                        writer.WriteEndElement(); // minV
+                    }
+                    writer.WriteEndElement(); // unbias
                 }
 
                 writer.WriteStartElement("normalizeGeometry");
@@ -1637,6 +1715,27 @@ namespace AdaptiveImageSizeReducer
             if (ReadValue(item, "actions/staticSaturate/exponent", out f))
             {
                 this.staticSaturateExponent = f;
+            }
+
+            if (ReadValue(item, "actions/unbias/enable", out b))
+            {
+                this.unbias = b;
+            }
+            if (ReadValue(item, "actions/unbias/maxDegree", out i))
+            {
+                this.unbiasMaxDegree = i;
+            }
+            if (ReadValue(item, "actions/unbias/maxChisq", out f))
+            {
+                this.unbiasMaxChisq = f;
+            }
+            if (ReadValue(item, "actions/unbias/maxS", out f))
+            {
+                this.unbiasMaxS = f;
+            }
+            if (ReadValue(item, "actions/unbias/minV", out f))
+            {
+                this.unbiasMinV = f;
             }
 
             if (ReadValue(item, "actions/normalizeGeometry/enable", out b))

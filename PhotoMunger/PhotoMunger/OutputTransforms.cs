@@ -255,7 +255,11 @@ namespace AdaptiveImageSizeReducer
                         item.RenamedFileName,
                         bitmap.AsManaged(profile),
                         Rectangle.Empty/*already cropped*/,
-                        new Transforms.PolyUnbiasParameters(item.UnbiasMaxDegree, item.UnbiasMaxChisq),
+                        new Transforms.PolyUnbiasParameters(
+                            item.UnbiasMaxDegree,
+                            item.UnbiasMaxChisq,
+                            item.UnbiasMaxS,
+                            item.UnbiasMinV),
                         null,
                         out unused,
                         cancel);

@@ -324,6 +324,7 @@ namespace AdaptiveImageSizeReducer
         private bool autoCrop;
         private float autoCropLeftLimit = .25f, autoCropTopLimit = .25f, autoCropRightLimit = .25f, autoCropBottomLimit = .25f;
         private float autoCropMinMedianBrightness = .45f;
+        private bool autoCropUseEdgeColor;
 
         private int rightRotations;
 
@@ -334,6 +335,8 @@ namespace AdaptiveImageSizeReducer
         private bool unbias;
         private int unbiasMaxDegree = 6;
         private float unbiasMaxChisq = 200;
+        private float unbiasMaxS = .10f;
+        private float unbiasMinV = .35f;
 
         private bool oneBit;
         private Transforms.Channel oneBitChannel = Transforms.Channel.Composite;
@@ -385,6 +388,8 @@ namespace AdaptiveImageSizeReducer
         public float AutoCropBottomMax { get { return autoCropBottomLimit; } set { autoCropBottomLimit = value; } }
         [Bindable(true)]
         public float AutoCropMinMedianBrightness { get { return autoCropMinMedianBrightness; } set { autoCropMinMedianBrightness = value; } }
+        [Bindable(true)]
+        public bool AutoCropUseEdgeColor { get { return autoCropUseEdgeColor; } set { autoCropUseEdgeColor = value; } }
 
         [Bindable(true)]
         public int RightRotations { get { return rightRotations; } set { rightRotations = value; } }
@@ -402,6 +407,10 @@ namespace AdaptiveImageSizeReducer
         public int UnbiasMaxDegree { get { return unbiasMaxDegree; } set { unbiasMaxDegree = value; } }
         [Bindable(true)]
         public float UnbiasMaxChisq { get { return unbiasMaxChisq; } set { unbiasMaxChisq = value; } }
+        [Bindable(true)]
+        public float UnbiasMaxS { get { return unbiasMaxS; } set { unbiasMaxS = value; } }
+        [Bindable(true)]
+        public float UnbiasMinV { get { return unbiasMinV; } set { unbiasMinV = value; } }
 
         [Bindable(true)]
         public bool OneBit { get { return oneBit; } set { oneBit = value; } }
@@ -481,6 +490,7 @@ namespace AdaptiveImageSizeReducer
             this.autoCropRightLimit = source.autoCropRightLimit;
             this.autoCropBottomLimit = source.autoCropBottomLimit;
             this.autoCropMinMedianBrightness = source.autoCropMinMedianBrightness;
+            this.autoCropUseEdgeColor = source.autoCropUseEdgeColor;
 
             this.rightRotations = source.rightRotations;
 
@@ -491,6 +501,8 @@ namespace AdaptiveImageSizeReducer
             this.unbias = source.unbias;
             this.unbiasMaxDegree = source.unbiasMaxDegree;
             this.unbiasMaxChisq = source.unbiasMaxChisq;
+            this.unbiasMaxS = source.unbiasMaxS;
+            this.unbiasMinV = source.unbiasMinV;
 
             this.oneBit = source.oneBit;
             this.oneBitChannel = source.oneBitChannel;
@@ -547,6 +559,7 @@ namespace AdaptiveImageSizeReducer
                 this.autoCropRightLimit = (float)nav.SelectSingleNode("autoCrop/rightLimit").ValueAsDouble;
                 this.autoCropBottomLimit = (float)nav.SelectSingleNode("autoCrop/bottomLimit").ValueAsDouble;
                 this.autoCropMinMedianBrightness = (float)nav.SelectSingleNode("autoCrop/minMedianBrightness").ValueAsDouble;
+                this.autoCropUseEdgeColor = nav.SelectSingleNode("autoCrop/useEdgeColor").ValueAsBoolean;
 
                 this.rightRotations = nav.SelectSingleNode("rightRotations").ValueAsInt;
 
@@ -557,6 +570,8 @@ namespace AdaptiveImageSizeReducer
                 this.unbias = nav.SelectSingleNode("polyUnbias/enable").ValueAsBoolean;
                 this.unbiasMaxDegree = nav.SelectSingleNode("polyUnbias/maxDegree").ValueAsInt;
                 this.unbiasMaxChisq = (float)nav.SelectSingleNode("polyUnbias/maxChisq").ValueAsDouble;
+                this.unbiasMaxS = (float)nav.SelectSingleNode("polyUnbias/maxS").ValueAsDouble;
+                this.unbiasMinV = (float)nav.SelectSingleNode("polyUnbias/minV").ValueAsDouble;
 
                 this.oneBit = nav.SelectSingleNode("oneBit/enable").ValueAsBoolean;
                 this.oneBitChannel = (Transforms.Channel)nav.SelectSingleNode("oneBit/channel").ValueAsInt;
@@ -668,6 +683,10 @@ namespace AdaptiveImageSizeReducer
             writer.WriteValue(this.autoCropMinMedianBrightness);
             writer.WriteEndElement(); // minMedianBrightness
             //
+            writer.WriteStartElement("useEdgeColor");
+            writer.WriteValue(this.autoCropUseEdgeColor);
+            writer.WriteEndElement(); // useEdgeColor
+            //
             writer.WriteEndElement(); // autoCrop
 
             writer.WriteStartElement("rightRotations");
@@ -703,6 +722,14 @@ namespace AdaptiveImageSizeReducer
             writer.WriteStartElement("maxChisq");
             writer.WriteValue(this.unbiasMaxChisq);
             writer.WriteEndElement(); // maxChisq
+            //
+            writer.WriteStartElement("maxS");
+            writer.WriteValue(this.unbiasMaxS);
+            writer.WriteEndElement(); // maxS
+            //
+            writer.WriteStartElement("minV");
+            writer.WriteValue(this.unbiasMinV);
+            writer.WriteEndElement(); // minV
             //
             writer.WriteEndElement(); // polyUnbias
 

@@ -31,13 +31,14 @@ namespace AdaptiveImageSizeReducer
         private readonly int total;
         private readonly CancellationTokenSource cancel;
 
-        public ProgressDialog(int maximum, int total, CancellationTokenSource cancel)
+        public ProgressDialog(int maximum, int total, Form owner, CancellationTokenSource cancel)
         {
             this.total = total;
             this.cancel = cancel;
 
             InitializeComponent();
             this.Icon = Properties.Resources.Icon1;
+            this.Owner = owner;
 
             this.bumpDelegate = Bump;
             this.closeDelegate = Close;

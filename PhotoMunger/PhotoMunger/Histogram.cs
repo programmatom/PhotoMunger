@@ -79,12 +79,57 @@ namespace AdaptiveImageSizeReducer
         }
 
         /// <summary>
-        /// Get mode of the distribution approximated by the histogram
+        /// Get mode of the distribution approximated by the histogram as defined by the index of the
+        /// single bin with the highest count.
         /// </summary>
         /// <param name="mode">Out parameter receiving the mode</param>
         /// <param name="modeC">Out parameter receiving the count in the bin of the mode</param>
         /// <returns>true if the mode is unique, otherwise false</returns>
         public bool GetMode(out int mode, out int modeC)
+        {
+            return GetModeHelper(bins, numBins, out mode, out modeC);
+        }
+
+        /// <summary>
+        /// Get mode of the distribution approximated by the histogram as defined by the center index
+        /// of the region with the most density
+        /// </summary>
+        /// <param name="radius">The width of the section to compute densities over</param>
+        /// <param name="wrap">for sections over end, continue on other end</param>
+        /// <param name="mode">Out parameter receiving the mode</param>
+        /// <param name="modeC">Out parameter receiving the count in the bin of the mode</param>
+        /// <returns>true if the mode is unique, otherwise false</returns>
+        public bool GetMode(int radius, bool wrap, out int mode, out int modeC)
+        {
+            if ((radius & 1) == 0)
+            {
+                throw new ArgumentException("radius must be odd");
+            }
+
+            int[] densities = new int[numBins + 1];
+            int d = -radius / 2;
+            for (int i = 0; i < numBins; i++) // do not include overs
+            {
+                int s = 0;
+                for (int j = 0; j < radius; j++)
+                {
+                    int jj = i + j + d;
+                    if ((jj >= 0) && (jj < numBins))
+                    {
+                        s += bins[jj];
+                    }
+                    else if (wrap)
+                    {
+                        jj = (jj + numBins) % numBins;
+                        s += bins[jj];
+                    }
+                }
+                densities[i] = s;
+            }
+            return GetModeHelper(densities, numBins, out mode, out modeC);
+        }
+
+        private static bool GetModeHelper(int[] bins, int numBins, out int mode, out int modeC)
         {
             bool unique = true;
             int ii = 0;

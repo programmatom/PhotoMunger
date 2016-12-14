@@ -123,6 +123,10 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxFineRotateDegrees = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxMaxS = new System.Windows.Forms.TextBox();
+            this.textBoxMinV = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.optionsBindingSource)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
@@ -183,7 +187,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(593, 285);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(589, 285);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // checkBoxOneBitEnable
@@ -262,10 +266,14 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel3.Controls.Add(this.textBoxUnbiasMaxDegree);
             this.flowLayoutPanel3.Controls.Add(this.label15);
             this.flowLayoutPanel3.Controls.Add(this.textBoxUnbiasMaxChiSq);
+            this.flowLayoutPanel3.Controls.Add(this.label8);
+            this.flowLayoutPanel3.Controls.Add(this.textBoxMaxS);
+            this.flowLayoutPanel3.Controls.Add(this.label9);
+            this.flowLayoutPanel3.Controls.Add(this.textBoxMinV);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(172, 148);
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(241, 20);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(404, 20);
             this.flowLayoutPanel3.TabIndex = 32;
             // 
             // label14
@@ -314,7 +322,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel1.Controls.Add(this.buttonOK);
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.buttonCancel);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(151, 253);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(149, 253);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(298, 29);
             this.flowLayoutPanel1.TabIndex = 0;
@@ -973,18 +981,56 @@ namespace AdaptiveImageSizeReducer
             this.textBoxFineRotateDegrees.Size = new System.Drawing.Size(60, 20);
             this.textBoxFineRotateDegrees.TabIndex = 31;
             // 
-            // OptionsDialog
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(244, 3);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 36;
+            this.label8.Text = "MaxS:";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(327, 3);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(34, 13);
+            this.label9.TabIndex = 36;
+            this.label9.Text = "MinV:";
+            // 
+            // textBoxMaxS
+            // 
+            this.textBoxMaxS.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.optionsBindingSource, "UnbiasMaxS", true));
+            this.textBoxMaxS.Location = new System.Drawing.Point(284, 0);
+            this.textBoxMaxS.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxMaxS.Name = "textBoxMaxS";
+            this.textBoxMaxS.Size = new System.Drawing.Size(40, 20);
+            this.textBoxMaxS.TabIndex = 36;
+            // 
+            // textBoxMinV
+            // 
+            this.textBoxMinV.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.optionsBindingSource, "UnbiasMinV", true));
+            this.textBoxMinV.Location = new System.Drawing.Point(364, 0);
+            this.textBoxMinV.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxMinV.Name = "textBoxMinV";
+            this.textBoxMinV.Size = new System.Drawing.Size(40, 20);
+            this.textBoxMinV.TabIndex = 36;
+            // 
+            // ItemOptionsDialog
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(593, 285);
+            this.ClientSize = new System.Drawing.Size(589, 285);
             this.Controls.Add(this.tableLayoutPanel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "OptionsDialog";
+            this.Name = "ItemOptionsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Options";
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -1091,5 +1137,9 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxFineRotateDegrees;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBoxMaxS;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxMinV;
     }
 }

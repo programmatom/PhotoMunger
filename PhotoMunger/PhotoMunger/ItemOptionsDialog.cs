@@ -234,6 +234,10 @@ namespace AdaptiveImageSizeReducer
         private bool unbiasMaxDegree_dirty;
         private float unbiasMaxChisq;
         private bool unbiasMaxChisq_dirty;
+        private float unbiasMaxS;
+        private bool unbiasMaxS_dirty;
+        private float unbiasMinV;
+        private bool unbiasMinV_dirty;
 
         private bool oneBit;
         private bool oneBit_dirty;
@@ -285,6 +289,10 @@ namespace AdaptiveImageSizeReducer
         public int UnbiasMaxDegree { get { return unbiasMaxDegree; } set { unbiasMaxDegree = value; unbiasMaxDegree_dirty = true; Notify("UnbiasMaxDegree"); } }
         [Bindable(true)]
         public float UnbiasMaxChisq { get { return unbiasMaxChisq; } set { unbiasMaxChisq = value; unbiasMaxChisq_dirty = true; Notify("UnbiasMaxChisq"); } }
+        [Bindable(true)]
+        public float UnbiasMaxS { get { return unbiasMaxS; } set { unbiasMaxS = value; unbiasMaxS_dirty = true; Notify("UnbiasMaxS"); } }
+        [Bindable(true)]
+        public float UnbiasMinV { get { return unbiasMinV; } set { unbiasMinV = value; unbiasMinV_dirty = true; Notify("UnbiasMinV"); } }
 
         [Bindable(true)]
         public bool OneBit { get { return oneBit; } set { oneBit = value; oneBit_dirty = true; Notify("OneBit"); } }
@@ -456,6 +464,8 @@ namespace AdaptiveImageSizeReducer
             this.unbias = item.Unbias;
             this.unbiasMaxDegree = item.UnbiasMaxDegree;
             this.unbiasMaxChisq = item.UnbiasMaxChisq;
+            this.unbiasMaxS = item.UnbiasMaxS;
+            this.unbiasMinV = item.UnbiasMinV;
 
             this.oneBit = item.OneBit;
             this.oneBitChannel = item.OneBitChannel;
@@ -525,6 +535,14 @@ namespace AdaptiveImageSizeReducer
             if (unbiasMaxChisq_dirty)
             {
                 item.UnbiasMaxChisq = this.unbiasMaxChisq;
+            }
+            if (unbiasMaxS_dirty)
+            {
+                item.UnbiasMaxS = this.unbiasMaxS;
+            }
+            if (unbiasMinV_dirty)
+            {
+                item.UnbiasMinV = this.unbiasMinV;
             }
 
             if (oneBit_dirty)

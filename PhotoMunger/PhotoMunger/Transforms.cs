@@ -488,6 +488,7 @@ namespace AdaptiveImageSizeReducer
                         options.AutoCropRightMax,
                         options.AutoCropBottomMax,
                         options.AutoCropMinMedianBrightness,
+                        options.AutoCropUseEdgeColor,
                         addMessage,
                         cancel);
                 }
@@ -528,6 +529,7 @@ namespace AdaptiveImageSizeReducer
                         options.AutoCropRightMax,
                         options.AutoCropBottomMax,
                         options.AutoCropMinMedianBrightness,
+                        options.AutoCropUseEdgeColor,
                         addMessage,
                         cancel);
                 }
@@ -614,7 +616,7 @@ namespace AdaptiveImageSizeReducer
             return hf;
         }
 
-        private static void AnalyzeAutoNormalizeGeometry(Profile profile, Item item, ManagedBitmap bitmap, float leftMax, float topMax, float rightMax, float bottomMax, float minMedianBrightness, AddMessageMethod addMessage, CancellationTokenSource cancel)
+        private static void AnalyzeAutoNormalizeGeometry(Profile profile, Item item, ManagedBitmap bitmap, float leftMax, float topMax, float rightMax, float bottomMax, float minMedianBrightness, bool useEdgeColor, AddMessageMethod addMessage, CancellationTokenSource cancel)
         {
             profile.Push("AnalyzeAutoNormalizeGeometry");
 
@@ -625,7 +627,8 @@ namespace AdaptiveImageSizeReducer
 
 
             profile.Push("GenerateAutoCropGrid");
-            bool[,] g = GenerateAutoCropGrid(profile, bitmap, minMedianBrightness, cancel);
+            bool[,] g;
+            GenerateAutoCropGrid(profile, bitmap, minMedianBrightness, useEdgeColor, cancel, out g);
             profile.Pop();
 
 
@@ -911,7 +914,7 @@ namespace AdaptiveImageSizeReducer
 
         private const int AutoCropBlockSize = LosslessCropGranularity;
 
-        private static Rectangle AnalyzeAutoCrop(Profile profile, Item item, ManagedBitmap bitmap, float leftMax, float topMax, float rightMax, float bottomMax, float minMedianBrightness, AddMessageMethod addMessage, CancellationTokenSource cancel)
+        private static Rectangle AnalyzeAutoCrop(Profile profile, Item item, ManagedBitmap bitmap, float leftMax, float topMax, float rightMax, float bottomMax, float minMedianBrightness, bool useEdgeColor, AddMessageMethod addMessage, CancellationTokenSource cancel)
         {
             profile.Push("Transforms.AnalyzeAutoCrop");
 
@@ -921,7 +924,8 @@ namespace AdaptiveImageSizeReducer
             Rectangle full = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
             Rectangle crop = full;
 
-            bool[,] g = GenerateAutoCropGrid(profile, bitmap, minMedianBrightness, cancel);
+            bool[,] g;
+            GenerateAutoCropGrid(profile, bitmap, minMedianBrightness, useEdgeColor, cancel, out g);
 
             const float thresh = .125f;
             for (int j = 0; j < cWidth / 2; j++)
@@ -1039,7 +1043,7 @@ namespace AdaptiveImageSizeReducer
             return crop;
         }
 
-        private unsafe static bool[,] GenerateAutoCropGrid(Profile profile, ManagedBitmap bitmap, float minMedianBrightness, CancellationTokenSource cancel)
+        private unsafe static void GenerateAutoCropGrid(Profile profile, ManagedBitmap bitmap, float minMedianBrightness, bool useEdgeColor, CancellationTokenSource cancel, out bool[,] g)
         {
             profile.Push("Transforms.GenerateAutoCropGrid");
 
@@ -1047,92 +1051,76 @@ namespace AdaptiveImageSizeReducer
             int stride = bitmap.Stride / 4;
 
             const float maxS = .1f;
+            const int NumBins = 100;
             float minMV = minMedianBrightness; // was hardcoded .5f
 
             int cWidth = (bitmap.Width + AutoCropBlockSize - 1) / AutoCropBlockSize;
             int cHeight = (bitmap.Height + AutoCropBlockSize - 1) / AutoCropBlockSize;
-            bool[,] g = new bool[cHeight, cWidth];
+            g = new bool[cHeight, cWidth];
+
+            const int EdgeColorHWindow = 36;
+            const float EdgeColorSWindow = .2f;
+
+            float[,] cellS = null, cellH = null;
+            if (useEdgeColor)
+            {
+                cellS = new float[cHeight, cWidth];
+                cellH = new float[cHeight, cWidth];
+
+                for (int i = 0; i < cHeight; i++)
+                {
+                    cancel.Token.ThrowIfCancellationRequested();
+                    int lii = Math.Min((i + 1) * AutoCropBlockSize, bitmap.Height);
+                    int cii = lii - i * AutoCropBlockSize;
+                    for (int j = 0; j < cWidth; j++)
+                    {
+                        int ljj = Math.Min((j + 1) * AutoCropBlockSize, bitmap.Width);
+                        int cjj = ljj - j * AutoCropBlockSize;
+                        ColorRGB rgb = AverageRGB(bitmap, i * AutoCropBlockSize, cii, j * AutoCropBlockSize, cjj);
+                        ColorHSV hsv = new ColorHSV(rgb);
+                        cellH[i, j] = hsv.H;
+                        cellS[i, j] = hsv.S;
+                    }
+                }
+            }
+
             for (int i = 0; i < cHeight; i++)
             {
                 cancel.Token.ThrowIfCancellationRequested();
                 for (int j = 0; j < cWidth; j++)
                 {
-                    const int NumBins = 100;
-                    Histogram hist = new Histogram(NumBins, NumBins);
+                    Histogram histV = new Histogram(NumBins, NumBins);
 
                     double aS1 = 0;
                     int lii = Math.Min((i + 1) * AutoCropBlockSize, bitmap.Height);
                     int ljj = Math.Min((j + 1) * AutoCropBlockSize, bitmap.Width);
                     int n = (lii - i * AutoCropBlockSize) * (ljj - j * AutoCropBlockSize);
-#if false // TODO: remove
-                    if (EnableVectors && (Vector.IsHardwareAccelerated || VectorHardwareAcceleratedOverride) && (lii == AutoCropBlockSize))
+                    for (int ii = i * AutoCropBlockSize; ii < lii; ii++)
                     {
-                        // vector
-                        for (int ii = i * AutoCropBlockSize; ii < lii; ii++)
+                        for (int jj = j * AutoCropBlockSize; jj < ljj; jj++)
                         {
-                            for (int jj = j * AutoCropBlockSize; jj < ljj; jj += Vector<float>.Count)
-                            {
-                                int* pp = scan0 + ii * stride + jj;
-                                Vector<float> v, s;
-                                ColorHSV.GetSV(pp, out s, out v, pHackWorkspace);
-                                switch (Vector<float>.Count)
-                                {
-                                    default:
-                                        for (int vi = 0; vi < Vector<float>.Count; vi++)
-                                        {
-                                            pMV[cmv++] = v[vi];
-                                            aS1 += s[vi];
-                                        }
-                                        break;
-                                    case 4:
-                                        Unsafe.Write(pHackWorkspace, v);
-                                        pMV[cmv++] = ((float*)pHackWorkspace)[0];
-                                        pMV[cmv++] = ((float*)pHackWorkspace)[1];
-                                        pMV[cmv++] = ((float*)pHackWorkspace)[2];
-                                        pMV[cmv++] = ((float*)pHackWorkspace)[3];
-                                        Unsafe.Write(pHackWorkspace, s);
-                                        aS1 += ((float*)pHackWorkspace)[0];
-                                        aS1 += ((float*)pHackWorkspace)[1];
-                                        aS1 += ((float*)pHackWorkspace)[2];
-                                        aS1 += ((float*)pHackWorkspace)[3];
-                                        break;
-                                }
-                            }
+                            int* pp = scan0 + ii * stride + jj;
+                            //ColorRGB rgb = new ColorRGB(*pp);
+                            //ColorHSV hsv = new ColorHSV(rgb);
+                            //float v = hsv.v;
+                            //float s = hsv.s;
+                            int v;
+                            float s;
+                            ColorHSV.GetSV(*pp, out s, out v);
+                            aS1 += s;
+                            histV.Add(v * NumBins / 255);
                         }
                     }
-                    else
-#endif
-                    {
-                        // non-vector
-                        for (int ii = i * AutoCropBlockSize; ii < lii; ii++)
-                        {
-                            for (int jj = j * AutoCropBlockSize; jj < ljj; jj++)
-                            {
-                                int* pp = scan0 + ii * stride + jj;
-                                //ColorRGB rgb = new ColorRGB(*pp);
-                                //ColorHSV hsv = new ColorHSV(rgb);
-                                //float v = hsv.v;
-                                //float s = hsv.s;
-                                int v;
-                                float s;
-                                ColorHSV.GetSV(*pp, out s, out v);
-                                aS1 += s;
-                                hist.Add(v * NumBins / 255);
-                            }
-                        }
-                    }
-
-                    // average saturation
                     aS1 /= n;
 
                     // estimate background white level by computing mode, with compactness check to attempt to exclude
                     // regions of a page that may contain photos or dark diagrams.
                     int mode, modeC;
-                    hist.GetMode(out mode, out modeC);
+                    histV.GetMode(out mode, out modeC);
                     // compactness check
                     const int CompactnessWindowRadius = 8;
                     const float MinClusterFrac = .5f;
-                    int binSum = hist.SumAroundRadius(mode, CompactnessWindowRadius);
+                    int binSum = histV.SumAroundRadius(mode, CompactnessWindowRadius);
                     bool compact = (float)binSum / n > MinClusterFrac;
                     float modef = (float)mode / NumBins;
 
@@ -1141,12 +1129,107 @@ namespace AdaptiveImageSizeReducer
                         // mark if saturation is very low (whitish), and mode brightness is over cutoff, and mode peak is compact
                         g[i, j] = true;
                     }
+
+                    if (useEdgeColor)
+                    {
+                        if ((i > 0) && (i < cHeight - 1) && (j > 0) && (j < cWidth - 1))
+                        {
+                            float edgeH = 0;
+                            float edgeS = 0;
+                            int c = 0;
+                            if (Math.Min(i, cHeight - i) < Math.Min(j, cWidth - j)) // TODO: proper slope
+                            {
+                                int s;
+                                if (i < cHeight / 2)
+                                {
+                                    s = 0;
+                                    c = i;
+                                }
+                                else
+                                {
+                                    s = i;
+                                    c = cHeight - i;
+                                }
+                                for (int ii = 0; ii < c; ii++)
+                                {
+                                    edgeH += cellH[ii + s, j];
+                                    edgeS += cellS[ii + s, j];
+                                }
+                            }
+                            else
+                            {
+                                int s;
+                                if (j < cWidth / 2)
+                                {
+                                    s = 0;
+                                    c = j;
+                                }
+                                else
+                                {
+                                    s = j;
+                                    c = cWidth - j;
+                                }
+                                for (int jj = 0; jj < c; jj++)
+                                {
+                                    edgeH += cellH[i, jj + s];
+                                    edgeS += cellS[i, jj + s];
+                                }
+                            }
+                            edgeH /= c;
+                            edgeS /= c;
+
+                            int cii = lii - i * AutoCropBlockSize;
+                            int cjj = ljj - j * AutoCropBlockSize;
+                            ColorRGB rgb = AverageRGB(bitmap, i * AutoCropBlockSize, cii, j * AutoCropBlockSize, cjj);
+                            ColorHSV hsv = new ColorHSV(rgb);
+
+                            float dh = (360 + hsv.H + .5f - edgeH) % 360;
+                            if (dh > 180)
+                            {
+                                dh = 360 - dh;
+                            }
+                            bool similarHue = dh < EdgeColorHWindow;
+                            bool similarSat = Math.Abs(hsv.S - edgeS) < EdgeColorSWindow;
+                            const float EdgeColorMinV = .5f;
+                            if ((!similarHue || !similarSat) && (hsv.V >= EdgeColorMinV))
+                            {
+                                // for color (hue & sat) different than predominant edge color, mark as page
+                                g[i, j] = true;
+                            }
+                        }
+                    }
                 }
             }
 
             profile.Pop();
+        }
 
-            return g;
+        private unsafe static ColorRGB AverageRGB(ManagedBitmap bitmap, int y, int yc, int x, int xc)
+        {
+            int* scan0 = (int*)bitmap.Scan0;
+            int stride = bitmap.Stride / 4;
+
+            double r = 0, g = 0, b = 0;
+            for (int i = 0; i < yc; i++)
+            {
+                int ii = i + y;
+                for (int j = 0; j < xc; j++)
+                {
+                    int jj = j + x;
+
+                    Debug.Assert((ii >= 0) && (ii < bitmap.Height));
+                    Debug.Assert((jj >= 0) && (jj < bitmap.Width));
+
+                    int* pp = scan0 + ii * stride + jj;
+                    ColorRGB rgb = new ColorRGB(*pp);
+                    r += rgb.R;
+                    g += rgb.G;
+                    b += rgb.B;
+                }
+            }
+
+            int n = xc * yc;
+            return new ColorRGB((float)(r / n), (float)(g / n), (float)(b / n));
         }
 
         public struct NormalizeGeometryParameters
@@ -1831,11 +1914,17 @@ namespace AdaptiveImageSizeReducer
         {
             public readonly int MaxDegree;
             public readonly float MaxChiSq;
+            public readonly float MaxS;
+            public readonly float MinModeV;
+            public readonly bool ApproximatelyPreserveOverallPageBrightness;
 
-            public PolyUnbiasParameters(int maxDegree, float maxChiSq)
+            public PolyUnbiasParameters(int maxDegree, float maxChiSq, float maxS, float minModeV)
             {
                 this.MaxDegree = maxDegree;
                 this.MaxChiSq = maxChiSq;
+                this.MaxS = maxS;
+                this.MinModeV = minModeV;
+                this.ApproximatelyPreserveOverallPageBrightness = true;
             }
         }
 
@@ -1960,17 +2049,14 @@ namespace AdaptiveImageSizeReducer
                 diagnostics = diagnostics.SetGrid((bool[,])compact.Clone(), new Point(imageX, imageY));
                 profile.Pop();
 
-                // TODO: add these to options
-                const float MaxS = .10f;
-                const float MinModeV = .35f;
-                const bool ApproximatelyPreserveOverallPageBrightness = true;
-
                 profile.Push("Overall median");
                 double[,] cw = new double[PolyFitDataGridSize, PolyFitDataGridSize];
                 diagnostics = diagnostics.SetWeights(cw);
                 PolyFit.XX[,] pos = new PolyFit.XX[PolyFitDataGridSize, PolyFitDataGridSize];
                 float[] medcw = new float[PolyFitDataGridSize * PolyFitDataGridSize];
                 int medcwi = 0;
+                float maxS = unbiasParams.MaxS;
+                float minModeVI = unbiasParams.MinModeV * 255;
                 for (int i = 0; i < PolyFitDataGridSize; i++)
                 {
                     for (int j = 0; j < PolyFitDataGridSize; j++)
@@ -1983,7 +2069,7 @@ namespace AdaptiveImageSizeReducer
                             for (int jj = j * cWidth / PolyFitDataGridSize; jj < (j + 1) * cWidth / PolyFitDataGridSize; jj++)
                             {
                                 // only ones with compact mode distribution and only use unsaturated values (to a threshhold)
-                                if (compact[ii, jj] && (aS[ii, jj] <= MaxS) && (modeV[ii, jj] >= MinModeV))
+                                if (compact[ii, jj] && (aS[ii, jj] <= maxS) && (modeV[ii, jj] >= minModeVI))
                                 {
                                     sumv += modeV[ii, jj];
                                     sx += jj;
@@ -2085,7 +2171,7 @@ namespace AdaptiveImageSizeReducer
                 profile.Add(new Stopwatch(), "[Degree = {0}, ChiSq = {1}/{2}]", poly != null ? poly.factory.degree.ToString() : "failed", lastPoly.chiSq, unbiasParams.MaxChiSq);
 
                 const float ModeToPeakTop = 1 + (float)CompactnessWindowRadius / NumBins;
-                float baseline = ApproximatelyPreserveOverallPageBrightness ? medcwv : 1 / ModeToPeakTop;
+                float baseline = unbiasParams.ApproximatelyPreserveOverallPageBrightness ? medcwv : 1 / ModeToPeakTop;
                 if (poly != null)
                 {
                     profile.Push("Generate inverse bias");

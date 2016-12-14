@@ -507,6 +507,10 @@ namespace AdaptiveImageSizeReducer
 
         public override void Dispose()
         {
+            Debug.Assert(!disposed);
+
+            GC.SuppressFinalize(this);
+
             Interlocked.Add(ref aggregatedTotalBytes, -TotalBytes);
 
             disposed = true;
@@ -514,18 +518,22 @@ namespace AdaptiveImageSizeReducer
             buffer.ReleasePointer();
             accessor.Dispose();
             backing.Dispose();
-
-            GC.SuppressFinalize(this);
         }
 
         ~MemoryMappedBitmap()
         {
+            string message = String.Format("{0}: Did you forget to Dispose()? {1}", this.GetType().Name, allocatedFrom.ToString());
+            Debugger.Log(0, null, message + Environment.NewLine);
 #if DEBUG
-            Debug.Assert(false, String.Format("{0}: Did you forget to Dispose()? {1}", this.GetType().Name, allocatedFrom.ToString()));
+            Debug.Assert(false, message);
+#else
+#if true // TODO:remove
+            System.Windows.Forms.MessageBox.Show(message);
+#endif
 #endif
             Dispose();
         }
-#if DEBUG
+#if DEBUG || true//TODO:remove
         private readonly StackTrace allocatedFrom = new StackTrace(1, true/*fNeedFileInfo*/);
 #endif
     }
@@ -1331,19 +1339,24 @@ namespace AdaptiveImageSizeReducer
 
         public void Dispose()
         {
-            Clear();
-
             GC.SuppressFinalize(this);
+            Clear();
         }
 
         ~SmartBitmap()
         {
+            string message = String.Concat("SmartBitmap: Did you forget to Dispose()? ", allocatedFrom.ToString());
+            Debugger.Log(0, null, message + Environment.NewLine);
 #if DEBUG
-            Debug.Assert(false, "SmartBitmap: Did you forget to Dispose()? " + allocatedFrom.ToString());
+            Debug.Assert(false, message);
+#else
+#if true // TODO:remove
+            System.Windows.Forms.MessageBox.Show(message);
+#endif
 #endif
             Dispose();
         }
-#if DEBUG
+#if DEBUG || true//TODO:remove
         private readonly StackTrace allocatedFrom = new StackTrace(1, true/*fNeedFileInfo*/);
 #endif
     }

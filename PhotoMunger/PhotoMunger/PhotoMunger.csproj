@@ -110,6 +110,12 @@
     <Compile Include="LoggingWindow.Designer.cs">
       <DependentUpon>LoggingWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="NumberingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NumberingDialog.Designer.cs">
+      <DependentUpon>NumberingDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ParallelDevolved.cs" />
     <Compile Include="ProgressBar.cs">
       <SubType>UserControl</SubType>
@@ -163,6 +169,9 @@
     <EmbeddedResource Include="ItemOptionsDialog.resx">
       <DependentUpon>ItemOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="NumberingDialog.resx">
+      <DependentUpon>NumberingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,6 +188,7 @@
     <None Include="Properties\DataSources\Data.datasource" />
     <None Include="Properties\DataSources\ExtraOptions.datasource" />
     <None Include="Properties\DataSources\ImageCache.EntryInfo.datasource" />
+    <None Include="Properties\DataSources\NumberingOptions.datasource" />
     <None Include="Properties\DataSources\Options.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

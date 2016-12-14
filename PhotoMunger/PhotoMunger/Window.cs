@@ -959,18 +959,6 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
-#if false // TODO: remove
-        private static void SetPictureBoxImage(PictureBox pictureBox, Image image)
-        {
-            Image old = pictureBox.Image;
-            pictureBox.Image = image;
-            if (old != null)
-            {
-                old.Dispose();
-            }
-        }
-#endif
-
         private static void SetPictureBoxImage(ImageBox pictureBox, Bitmap image)
         {
             Image old = pictureBox.Image;
@@ -1218,9 +1206,42 @@ namespace AdaptiveImageSizeReducer
 
                     if ((item != null) && item.Valid)
                     {
+                        bool fastDragMode = inDragForCrop || (this.geoDrag != GeoCorner.None);
+
+                        if (!fastDragMode)
+                        {
+                            ManagedBitmap bitmap = imageHolder1.Bitmap;
+                            float r = 0, g = 0, b = 0;
+                            const int Radius = 16;
+                            int sw = Math.Max(0, detailOffset.X + (detail1.Width - Radius) / 2);
+                            int lw = Math.Min(bitmap.Width, detailOffset.X + (detail1.Width + Radius) / 2);
+                            int sh = Math.Max(0, detailOffset.Y + (detail1.Height - Radius) / 2);
+                            int lh = Math.Min(bitmap.Height, detailOffset.Y + (detail1.Height + Radius) / 2);
+                            for (int y = sh; y < lh; y++)
+                            {
+                                for (int x = sw; x < lw; x++)
+                                {
+                                    Transforms.ColorRGB rgb = new Transforms.ColorRGB(bitmap[x, y]);
+                                    r += rgb.R;
+                                    g += rgb.G;
+                                    b += rgb.B;
+                                }
+                            }
+                            int n = Math.Max(1, (lw - sw) * (lh - sh));
+                            r /= n;
+                            g /= n;
+                            b /= n;
+                            Transforms.ColorHSV hsv = new Transforms.ColorHSV(new Transforms.ColorRGB(r, g, b));
+                            h = hsv.H.ToString("##0");
+                            s = hsv.S.ToString("#.00");
+                            v = hsv.V.ToString("#.00");
+
+                            Application.Idle += UpdateHSV;
+                        }
+
                         using (Graphics graphics = Graphics.FromImage(detail1))
                         {
-                            int divisor = this.toolStripButtonShowAnnotationsDetail.Checked && (inDragForCrop || (this.geoDrag != GeoCorner.None)) ? Item.AnnotationDivisor : 1; // for fast drag mode
+                            int divisor = this.toolStripButtonShowAnnotationsDetail.Checked && fastDragMode ? Item.AnnotationDivisor : 1;
                             graphics.FillRectangle(Brushes.Black, 0, 0, detail1.Width, detail1.Height);
                             using (Bitmap section = imageHolder1.Bitmap.GetSectionEnslaved(new Rectangle(detailOffset.X / divisor, detailOffset.Y / divisor, detail1.Width / divisor, detail1.Height / divisor)))
                             {
@@ -1230,7 +1251,7 @@ namespace AdaptiveImageSizeReducer
 
                         using (Graphics graphics = Graphics.FromImage(detail2))
                         {
-                            int divisor = (inDragForCrop || (this.geoDrag != GeoCorner.None)) ? Item.AnnotationDivisor : 1; // for fast drag mode
+                            int divisor = fastDragMode ? Item.AnnotationDivisor : 1;
                             graphics.FillRectangle(Brushes.Black, 0, 0, detail2.Width, detail2.Height);
                             using (Bitmap section = imageHolder2.Bitmap.GetSectionEnslaved(new Rectangle(detailOffset.X / divisor, detailOffset.Y / divisor, detail1.Width / divisor, detail1.Height / divisor)))
                             {
@@ -1240,6 +1261,9 @@ namespace AdaptiveImageSizeReducer
                     }
                     else
                     {
+                        h = s = v = String.Empty;
+                        Application.Idle += UpdateHSV;
+
                         using (Graphics graphics = Graphics.FromImage(detail1))
                         {
                             graphics.DrawImage(Properties.Resources.InvalidPlaceHolder, new Rectangle(Point.Empty, detail1.Size));
@@ -1256,6 +1280,16 @@ namespace AdaptiveImageSizeReducer
             pictureBoxDetail1.Update();
             pictureBoxDetail2.Invalidate();
             pictureBoxDetail2.Update();
+        }
+
+        private string h, s, v;
+        private void UpdateHSV(object sender, EventArgs e)
+        {
+            Application.Idle -= UpdateHSV;
+
+            this.statusHue.Text = h;
+            this.statusSaturation.Text = s;
+            this.statusValue.Text = v;
         }
 
         private CancellationTokenSource lastUpdateDetailCancellation;
@@ -1457,7 +1491,7 @@ namespace AdaptiveImageSizeReducer
                 }
             }
             CancellationTokenSource cancel = new CancellationTokenSource();
-            using (ProgressDialog progressDialog = new ProgressDialog(maximum, this.items.Count, cancel))
+            using (ProgressDialog progressDialog = new ProgressDialog(maximum, this.items.Count, this, cancel))
             {
                 // can't start until dialog is visible, but ShowDialog() blocks
                 progressDialog.Shown += delegate (object _sender, EventArgs _e)
@@ -1481,6 +1515,62 @@ namespace AdaptiveImageSizeReducer
 
 
         // gestures
+
+        private NumberingOptions numberingOptions = new NumberingOptions();
+        private void renumberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (NumberingDialog dialog = new NumberingDialog(this.numberingOptions))
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    this.numberingOptions = dialog.Options;
+
+                    bool[] modified = new bool[this.items.Count];
+                    string[] names = new string[this.items.Count];
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        names[i] = this.items[i].RenamedFileName;
+                    }
+
+                    int p = this.CurrentItemRow;
+                    int n = this.numberingOptions.Start;
+                    int c = this.numberingOptions.Count.HasValue ? this.numberingOptions.Count.Value : Int32.MaxValue;
+                    for (int i = 0; i < c; i++)
+                    {
+                        if (p >= this.items.Count)
+                        {
+                            break;
+                        }
+
+                        modified[p] = true;
+                        names[p] = String.Concat(NumberingOptions.FormatValue(n, this.numberingOptions.Format), Path.GetExtension(names[p]));
+
+                        p += this.numberingOptions.Stride;
+                        n += this.numberingOptions.Increment;
+                    }
+
+                    Dictionary<string, bool> used = new Dictionary<string, bool>();
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        string name = names[i].ToLowerInvariant();
+                        if (used.ContainsKey(name))
+                        {
+                            MessageBox.Show(String.Format("The file name \"{0}\" was used multiple times. Renaming not done.", names[i]));
+                            return;
+                        }
+                        used.Add(name, false);
+                    }
+
+                    for (int i = 0; i < names.Length; i++)
+                    {
+                        if (modified[i])
+                        {
+                            this.items[i].RenamedFileName = names[i];
+                        }
+                    }
+                }
+            }
+        }
 
         private void markToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1611,28 +1701,32 @@ namespace AdaptiveImageSizeReducer
                             this.savedCropRect = currentItem.CropRect;
                             return true;
 
-                        case Keys.V:
-                            currentItem.CropRect = this.savedCropRect;
-                            UpdatePrimary();
-                            return true;
-
                         case Keys.A:
                             this.toolStripButtonShowAnnotationsPrimary.Checked = !this.toolStripButtonShowAnnotationsPrimary.Checked;
                             return true;
+
+                        case Keys.D:
+                            this.toolStripButtonCrop.PerformClick();
+                            return true;
+
+                        case Keys.G:
+                            this.toolStripButtonNormalizeGeometryCorners.PerformClick();
+                            return true;
+
+                        // Keys.M: "mark"
 
                         case Keys.O:
                             this.toolStripButtonOptions_Click(this, EventArgs.Empty);
                             return true;
 
-#if false // TODO: not needed - UI element has accelerator
-                        case Keys.M:
-                            markToolStripMenuItem_Click(this, EventArgs.Empty);
+                        // Keys.S: "swap"
+
+                        case Keys.V:
+                            currentItem.CropRect = this.savedCropRect;
+                            UpdatePrimary();
                             return true;
 
-                        case Keys.S:
-                            swapToolStripMenuItem_Click(this, EventArgs.Empty);
-                            return true;
-#endif
+                        // Keys.D1 - Keys.D9: set color
 
                         case Keys.Left:
                         case Keys.Right:
@@ -1690,23 +1784,6 @@ namespace AdaptiveImageSizeReducer
                             }
                             UpdatePrimary();
                             return true;
-
-#if false // TODO: not needed - UI element has accelerator
-                        case Keys.D1:
-                        case Keys.D2:
-                        case Keys.D3:
-                        case Keys.D4:
-                        case Keys.D5:
-                        case Keys.D6:
-                        case Keys.D7:
-                        case Keys.D8:
-                        case Keys.D9:
-                            ToolStripDropDownButtonMarkColor_DropDownItemClicked(
-                                this.toolStripDropDownButtonMarkColor,
-                                new ToolStripItemClickedEventArgs(
-                                    this.toolStripDropDownButtonMarkColor.DropDownItems[(int)key - (int)Keys.D1]));
-                            return true;
-#endif
                     }
                 }
             }
