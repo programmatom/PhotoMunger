@@ -53,8 +53,10 @@ namespace AdaptiveImageSizeReducer
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
             this.dataGridViewFiles = new System.Windows.Forms.DataGridView();
             this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Delete = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.FileSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -100,6 +102,8 @@ namespace AdaptiveImageSizeReducer
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.sortByNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unsortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.renumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxDetail1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxDetail2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelStats = new System.Windows.Forms.TableLayoutPanel();
@@ -130,14 +134,18 @@ namespace AdaptiveImageSizeReducer
             this.label12 = new System.Windows.Forms.Label();
             this.statusValue = new System.Windows.Forms.Label();
             this.panelMainPictureContainer = new System.Windows.Forms.Panel();
+            this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
-            this.shrinkDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dataBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.renumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.diagnosticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showLogWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autocropGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unbiasGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -154,7 +162,6 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panelMainPictureContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).BeginInit();
             this.SuspendLayout();
             // 
@@ -188,6 +195,14 @@ namespace AdaptiveImageSizeReducer
             this.FileName.HeaderText = "Name";
             this.FileName.Name = "FileName";
             // 
+            // shrinkDataGridViewCheckBoxColumn
+            // 
+            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
+            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
+            this.shrinkDataGridViewCheckBoxColumn.Width = 23;
+            // 
             // Delete
             // 
             this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -204,6 +219,10 @@ namespace AdaptiveImageSizeReducer
             this.FileSize.Name = "FileSize";
             this.FileSize.ReadOnly = true;
             this.FileSize.Width = 52;
+            // 
+            // dataBindingSource
+            // 
+            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
             // 
             // splitContainer
             // 
@@ -613,7 +632,9 @@ namespace AdaptiveImageSizeReducer
             this.sortByNameToolStripMenuItem,
             this.unsortToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.renumberToolStripMenuItem});
+            this.renumberToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.diagnosticsToolStripMenuItem});
             this.toolStripDropDownButtonCatchAllMenu.Image = global::AdaptiveImageSizeReducer.Properties.Resources.CatchAllMenu;
             this.toolStripDropDownButtonCatchAllMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButtonCatchAllMenu.Name = "toolStripDropDownButtonCatchAllMenu";
@@ -653,6 +674,18 @@ namespace AdaptiveImageSizeReducer
             this.unsortToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.unsortToolStripMenuItem.Text = "Reset To Original Order";
             this.unsortToolStripMenuItem.Click += new System.EventHandler(this.unsortToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(211, 6);
+            // 
+            // renumberToolStripMenuItem
+            // 
+            this.renumberToolStripMenuItem.Name = "renumberToolStripMenuItem";
+            this.renumberToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.renumberToolStripMenuItem.Text = "Renumber...";
+            this.renumberToolStripMenuItem.Click += new System.EventHandler(this.renumberToolStripMenuItem_Click);
             // 
             // pictureBoxDetail1
             // 
@@ -998,18 +1031,6 @@ namespace AdaptiveImageSizeReducer
             this.panelMainPictureContainer.Size = new System.Drawing.Size(577, 603);
             this.panelMainPictureContainer.TabIndex = 1;
             // 
-            // shrinkDataGridViewCheckBoxColumn
-            // 
-            this.shrinkDataGridViewCheckBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.shrinkDataGridViewCheckBoxColumn.DataPropertyName = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.HeaderText = "Shrink";
-            this.shrinkDataGridViewCheckBoxColumn.Name = "shrinkDataGridViewCheckBoxColumn";
-            this.shrinkDataGridViewCheckBoxColumn.Width = 23;
-            // 
-            // dataBindingSource
-            // 
-            this.dataBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.Item);
-            // 
             // pictureBoxMain
             // 
             this.pictureBoxMain.CrosshairColor = System.Drawing.SystemColors.ControlDark;
@@ -1025,17 +1046,62 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             // 
-            // toolStripMenuItem2
+            // toolStripMenuItem3
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(211, 6);
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(211, 6);
             // 
-            // renumberToolStripMenuItem
+            // diagnosticsToolStripMenuItem
             // 
-            this.renumberToolStripMenuItem.Name = "renumberToolStripMenuItem";
-            this.renumberToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.renumberToolStripMenuItem.Text = "Renumber...";
-            this.renumberToolStripMenuItem.Click += new System.EventHandler(this.renumberToolStripMenuItem_Click);
+            this.diagnosticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showCacheToolStripMenuItem,
+            this.refreshImageToolStripMenuItem,
+            this.showLogWindowToolStripMenuItem,
+            this.autocropGridToolStripMenuItem,
+            this.unbiasGridToolStripMenuItem});
+            this.diagnosticsToolStripMenuItem.Name = "diagnosticsToolStripMenuItem";
+            this.diagnosticsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.diagnosticsToolStripMenuItem.Text = "Diagnostics";
+            // 
+            // showCacheToolStripMenuItem
+            // 
+            this.showCacheToolStripMenuItem.Name = "showCacheToolStripMenuItem";
+            this.showCacheToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.showCacheToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.showCacheToolStripMenuItem.Text = "Show Cache";
+            this.showCacheToolStripMenuItem.Click += new System.EventHandler(this.showCacheToolStripMenuItem_Click);
+            // 
+            // refreshImageToolStripMenuItem
+            // 
+            this.refreshImageToolStripMenuItem.Name = "refreshImageToolStripMenuItem";
+            this.refreshImageToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshImageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.refreshImageToolStripMenuItem.Text = "Refresh Image";
+            this.refreshImageToolStripMenuItem.Click += new System.EventHandler(this.refreshImageToolStripMenuItem_Click);
+            // 
+            // showLogWindowToolStripMenuItem
+            // 
+            this.showLogWindowToolStripMenuItem.Name = "showLogWindowToolStripMenuItem";
+            this.showLogWindowToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.showLogWindowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.showLogWindowToolStripMenuItem.Text = "Show Log Window";
+            this.showLogWindowToolStripMenuItem.Click += new System.EventHandler(this.showLogWindowToolStripMenuItem_Click);
+            // 
+            // autocropGridToolStripMenuItem
+            // 
+            this.autocropGridToolStripMenuItem.Name = "autocropGridToolStripMenuItem";
+            this.autocropGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.autocropGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.autocropGridToolStripMenuItem.Text = "Autocrop Grid";
+            this.autocropGridToolStripMenuItem.Click += new System.EventHandler(this.autocropGridToolStripMenuItem_Click);
+            // 
+            // unbiasGridToolStripMenuItem
+            // 
+            this.unbiasGridToolStripMenuItem.Name = "unbiasGridToolStripMenuItem";
+            this.unbiasGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.unbiasGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.unbiasGridToolStripMenuItem.Text = "Unbias Grid";
+            this.unbiasGridToolStripMenuItem.Click += new System.EventHandler(this.unbiasGridToolStripMenuItem_Click);
             // 
             // Window
             // 
@@ -1047,6 +1113,7 @@ namespace AdaptiveImageSizeReducer
             this.Text = "Images";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
@@ -1072,7 +1139,6 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.panelMainPictureContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMain)).EndInit();
             this.ResumeLayout(false);
 
@@ -1165,6 +1231,13 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.Label statusValue;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem renumberToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem diagnosticsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showCacheToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showLogWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autocropGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unbiasGridToolStripMenuItem;
     }
 }
 

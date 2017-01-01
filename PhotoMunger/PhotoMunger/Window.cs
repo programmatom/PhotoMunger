@@ -223,7 +223,14 @@ namespace AdaptiveImageSizeReducer
         {
             base.OnFormClosed(e);
 
-            SaveSettings();
+            try
+            {
+                SaveSettings();
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // happens when user deletes both main and backup directory before closing program
+            }
 
             if (this.cacheView != null)
             {
@@ -1596,6 +1603,54 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
+        private void showCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.cacheView == null)
+            {
+                this.cacheView = new CacheView(this.cache);
+                this.cacheView.Show();
+                this.cacheView.FormClosed += CacheView_FormClosed;
+            }
+            else
+            {
+                this.cacheView.Activate();
+            }
+        }
+
+        private void refreshImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Item currentItem = this.CurrentItem;
+            cache.InvalidatePrefixed(currentItem.SourceId);
+            UpdatePrimary();
+        }
+
+        private void showLogWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Program.logWindow == null)
+            {
+                Program.logWindow = new LoggingWindow();
+                Program.logWindow.Show();
+            }
+            else
+            {
+                Program.logWindow.Activate();
+            }
+        }
+
+        private void autocropGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.autocropGridToolStripMenuItem.Checked = showAutoCropGrid = !showAutoCropGrid;
+            options.ShowAutoCropGrid = showAutoCropGrid;
+            UpdatePrimary();
+        }
+
+        private void unbiasGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.unbiasGridToolStripMenuItem.Checked = showPolyUnbiasGrid = !showPolyUnbiasGrid;
+            options.ShowPolyUnbiasGrid = showPolyUnbiasGrid;
+            UpdatePrimary();
+        }
+
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         protected override bool ProcessKeyPreview(ref Message m)
@@ -1623,48 +1678,6 @@ namespace AdaptiveImageSizeReducer
 
                         case Keys.F1:
                             Process.Start("https://programmatom.github.io/PhotoMunger/");
-                            break;
-
-                        case Keys.F4:
-                            if (this.cacheView == null)
-                            {
-                                this.cacheView = new CacheView(this.cache);
-                                this.cacheView.Show();
-                                this.cacheView.FormClosed += CacheView_FormClosed;
-                            }
-                            else
-                            {
-                                this.cacheView.Activate();
-                            }
-                            return true;
-
-                        case Keys.F5:
-                            cache.InvalidatePrefixed(currentItem.SourceId);
-                            UpdatePrimary();
-                            return true;
-
-                        case Keys.F6:
-                            if (Program.logWindow == null)
-                            {
-                                Program.logWindow = new LoggingWindow();
-                                Program.logWindow.Show();
-                            }
-                            else
-                            {
-                                Program.logWindow.Activate();
-                            }
-                            return true;
-
-                        case Keys.F7:
-                            showAutoCropGrid = !showAutoCropGrid;
-                            options.ShowAutoCropGrid = showAutoCropGrid;
-                            UpdatePrimary();
-                            break;
-
-                        case Keys.F8:
-                            showPolyUnbiasGrid = !showPolyUnbiasGrid;
-                            options.ShowPolyUnbiasGrid = showPolyUnbiasGrid;
-                            UpdatePrimary();
                             break;
 
                         case Keys.F11:

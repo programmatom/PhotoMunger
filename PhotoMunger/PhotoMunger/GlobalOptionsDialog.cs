@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -35,6 +36,7 @@ namespace AdaptiveImageSizeReducer
     {
         private readonly GlobalOptions originalOptions;
         private readonly GlobalOptions options;
+        private readonly Bitmap samplePreview;
 
         public GlobalOptionsDialog(GlobalOptions originalOptions, string directory)
         {
@@ -68,7 +70,24 @@ namespace AdaptiveImageSizeReducer
                 });
             if (!String.IsNullOrEmpty(sampleFile) && File.Exists(sampleFile))
             {
-                pictureBox.ImageLocation = sampleFile;
+                try
+                {
+                    samplePreview = Transforms.LoadAndOrientGDI(sampleFile);
+                    pictureBox.Image = samplePreview;
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+
+            if (samplePreview != null)
+            {
+                samplePreview.Dispose();
             }
         }
 
