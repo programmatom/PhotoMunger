@@ -210,6 +210,7 @@
     <Content Include="jpegtran.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SetNormalizeGeometryRectToIdentity.png" />
     <None Include="Resources\CatchAllMenu.png" />
     <None Include="Resources\TagColor.png" />
     <None Include="Resources\RotateLeft90.png" />

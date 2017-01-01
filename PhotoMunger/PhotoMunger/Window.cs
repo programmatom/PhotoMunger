@@ -966,6 +966,18 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
+        private void toolStripButtonResetNormalizedGeometryToIdentity_Click(object sender, EventArgs e)
+        {
+            Item currentItem = this.CurrentItem;
+            if (currentItem != null)
+            {
+                currentItem.SetCornerTL(new Point(0, 0), true/*setByUser*/);
+                currentItem.SetCornerTR(new Point(currentItem.Width, 0), true/*setByUser*/);
+                currentItem.SetCornerBL(new Point(0, currentItem.Height), true/*setByUser*/);
+                currentItem.SetCornerBR(new Point(currentItem.Width, currentItem.Height), true/*setByUser*/);
+            }
+        }
+
         private static void SetPictureBoxImage(ImageBox pictureBox, Bitmap image)
         {
             Image old = pictureBox.Image;

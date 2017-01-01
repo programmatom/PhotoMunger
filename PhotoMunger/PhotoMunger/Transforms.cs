@@ -3485,38 +3485,45 @@ namespace AdaptiveImageSizeReducer
                             Point[] ordered = new Point[] { corners[0], corners[1], corners[3], corners[2] };
                             for (int i = 0; i < ordered.Length; i++)
                             {
-                                Point one = ordered[i];
-                                one.X /= annotationDivisor;
-                                one.Y /= annotationDivisor;
-                                Point two = ordered[(i + 1) % ordered.Length];
-                                two.X /= annotationDivisor;
-                                two.Y /= annotationDivisor;
-
-                                float m, b;
-                                bool reflect;
-                                Point half, twoThirds;
-                                ComputeGeoCornerPadPositions(one, two, out m, out b, out reflect, out half, out twoThirds);
-                                if (!reflect)
+                                try
                                 {
-                                    graphics.DrawLine(pen, 0, b, annotated.Width, m * annotated.Width + b);
-                                }
-                                else
-                                {
-                                    graphics.DrawLine(pen, b, 0, m * annotated.Height + b, annotated.Height);
-                                }
+                                    Point one = ordered[i];
+                                    one.X /= annotationDivisor;
+                                    one.Y /= annotationDivisor;
+                                    Point two = ordered[(i + 1) % ordered.Length];
+                                    two.X /= annotationDivisor;
+                                    two.Y /= annotationDivisor;
 
-                                graphics.DrawRectangle(
-                                    pen,
-                                    half.X - PadRadius * boxThickness,
-                                    half.Y - PadRadius * boxThickness,
-                                    PadRadius * 2 * boxThickness,
-                                    PadRadius * 2 * boxThickness);
-                                graphics.DrawEllipse(
-                                    pen,
-                                    twoThirds.X - PadRadius * boxThickness,
-                                    twoThirds.Y - PadRadius * boxThickness,
-                                    PadRadius * 2 * boxThickness,
-                                    PadRadius * 2 * boxThickness);
+                                    float m, b;
+                                    bool reflect;
+                                    Point half, twoThirds;
+                                    ComputeGeoCornerPadPositions(one, two, out m, out b, out reflect, out half, out twoThirds);
+                                    if (!reflect)
+                                    {
+                                        graphics.DrawLine(pen, 0, b, annotated.Width, m * annotated.Width + b);
+                                    }
+                                    else
+                                    {
+                                        graphics.DrawLine(pen, b, 0, m * annotated.Height + b, annotated.Height);
+                                    }
+
+                                    graphics.DrawRectangle(
+                                        pen,
+                                        half.X - PadRadius * boxThickness,
+                                        half.Y - PadRadius * boxThickness,
+                                        PadRadius * 2 * boxThickness,
+                                        PadRadius * 2 * boxThickness);
+                                    graphics.DrawEllipse(
+                                        pen,
+                                        twoThirds.X - PadRadius * boxThickness,
+                                        twoThirds.Y - PadRadius * boxThickness,
+                                        PadRadius * 2 * boxThickness,
+                                        PadRadius * 2 * boxThickness);
+                                }
+                                catch (OverflowException)
+                                {
+                                    // if geometry autodetection went very wrong, numbers may be out of range for GDI+
+                                }
                             }
                         }
                     }

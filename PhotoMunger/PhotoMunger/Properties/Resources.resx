@@ -172,6 +172,9 @@
   <data name="SetNormalizeGeometryAspect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SetNormalizeGeometryAspect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SetNormalizeGeometryRectToIdentity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SetNormalizeGeometryRectToIdentity.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ShowOriginalOrTransformed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ShowOriginalOrTransformed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

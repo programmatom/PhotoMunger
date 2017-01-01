@@ -243,6 +243,16 @@ namespace AdaptiveImageSizeReducer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SetNormalizeGeometryRectToIdentity {
+            get {
+                object obj = ResourceManager.GetObject("SetNormalizeGeometryRectToIdentity", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ShowOriginalOrTransformed {
             get {
                 object obj = ResourceManager.GetObject("ShowOriginalOrTransformed", resourceCulture);

@@ -82,6 +82,7 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonSetNormalizedGeometryAspectRatioExplicitly = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetNormalizedGeometryAspectRatio = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResetAllNormalizedGeometry = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSetNormalizedGeometryToIdentity = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonOptions = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonGlobalOptions = new System.Windows.Forms.ToolStripButton();
@@ -104,6 +105,13 @@ namespace AdaptiveImageSizeReducer
             this.unsortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.renumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.diagnosticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showLogWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autocropGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unbiasGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxDetail1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxDetail2 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelStats = new System.Windows.Forms.TableLayoutPanel();
@@ -137,13 +145,6 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.diagnosticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showLogWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autocropGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.unbiasGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -299,6 +300,7 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonSetNormalizedGeometryAspectRatioExplicitly,
             this.toolStripButtonResetNormalizedGeometryAspectRatio,
             this.toolStripButtonResetAllNormalizedGeometry,
+            this.toolStripButtonSetNormalizedGeometryToIdentity,
             this.toolStripSeparator3,
             this.toolStripButtonOptions,
             this.toolStripButtonGlobalOptions,
@@ -510,6 +512,16 @@ namespace AdaptiveImageSizeReducer
             this.toolStripButtonResetAllNormalizedGeometry.ToolTipText = "Reset normalized geometry to automatically detected values";
             this.toolStripButtonResetAllNormalizedGeometry.Click += new System.EventHandler(this.toolStripButtonResetAllNormalizedGeometry_Click);
             // 
+            // toolStripButtonSetNormalizedGeometryToIdentity
+            // 
+            this.toolStripButtonSetNormalizedGeometryToIdentity.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSetNormalizedGeometryToIdentity.Image = global::AdaptiveImageSizeReducer.Properties.Resources.SetNormalizeGeometryRectToIdentity;
+            this.toolStripButtonSetNormalizedGeometryToIdentity.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSetNormalizedGeometryToIdentity.Name = "toolStripButtonSetNormalizedGeometryToIdentity";
+            this.toolStripButtonSetNormalizedGeometryToIdentity.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButtonSetNormalizedGeometryToIdentity.ToolTipText = "Set normalized geometry rectangle to identity transform";
+            this.toolStripButtonSetNormalizedGeometryToIdentity.Click += new System.EventHandler(this.toolStripButtonResetNormalizedGeometryToIdentity_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -686,6 +698,63 @@ namespace AdaptiveImageSizeReducer
             this.renumberToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.renumberToolStripMenuItem.Text = "Renumber...";
             this.renumberToolStripMenuItem.Click += new System.EventHandler(this.renumberToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(211, 6);
+            // 
+            // diagnosticsToolStripMenuItem
+            // 
+            this.diagnosticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showCacheToolStripMenuItem,
+            this.refreshImageToolStripMenuItem,
+            this.showLogWindowToolStripMenuItem,
+            this.autocropGridToolStripMenuItem,
+            this.unbiasGridToolStripMenuItem});
+            this.diagnosticsToolStripMenuItem.Name = "diagnosticsToolStripMenuItem";
+            this.diagnosticsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.diagnosticsToolStripMenuItem.Text = "Diagnostics";
+            // 
+            // showCacheToolStripMenuItem
+            // 
+            this.showCacheToolStripMenuItem.Name = "showCacheToolStripMenuItem";
+            this.showCacheToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.showCacheToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.showCacheToolStripMenuItem.Text = "Show Cache";
+            this.showCacheToolStripMenuItem.Click += new System.EventHandler(this.showCacheToolStripMenuItem_Click);
+            // 
+            // refreshImageToolStripMenuItem
+            // 
+            this.refreshImageToolStripMenuItem.Name = "refreshImageToolStripMenuItem";
+            this.refreshImageToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshImageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.refreshImageToolStripMenuItem.Text = "Refresh Image";
+            this.refreshImageToolStripMenuItem.Click += new System.EventHandler(this.refreshImageToolStripMenuItem_Click);
+            // 
+            // showLogWindowToolStripMenuItem
+            // 
+            this.showLogWindowToolStripMenuItem.Name = "showLogWindowToolStripMenuItem";
+            this.showLogWindowToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.showLogWindowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.showLogWindowToolStripMenuItem.Text = "Show Log Window";
+            this.showLogWindowToolStripMenuItem.Click += new System.EventHandler(this.showLogWindowToolStripMenuItem_Click);
+            // 
+            // autocropGridToolStripMenuItem
+            // 
+            this.autocropGridToolStripMenuItem.Name = "autocropGridToolStripMenuItem";
+            this.autocropGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.autocropGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.autocropGridToolStripMenuItem.Text = "Autocrop Grid";
+            this.autocropGridToolStripMenuItem.Click += new System.EventHandler(this.autocropGridToolStripMenuItem_Click);
+            // 
+            // unbiasGridToolStripMenuItem
+            // 
+            this.unbiasGridToolStripMenuItem.Name = "unbiasGridToolStripMenuItem";
+            this.unbiasGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.unbiasGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.unbiasGridToolStripMenuItem.Text = "Unbias Grid";
+            this.unbiasGridToolStripMenuItem.Click += new System.EventHandler(this.unbiasGridToolStripMenuItem_Click);
             // 
             // pictureBoxDetail1
             // 
@@ -1046,63 +1115,6 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(211, 6);
-            // 
-            // diagnosticsToolStripMenuItem
-            // 
-            this.diagnosticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showCacheToolStripMenuItem,
-            this.refreshImageToolStripMenuItem,
-            this.showLogWindowToolStripMenuItem,
-            this.autocropGridToolStripMenuItem,
-            this.unbiasGridToolStripMenuItem});
-            this.diagnosticsToolStripMenuItem.Name = "diagnosticsToolStripMenuItem";
-            this.diagnosticsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.diagnosticsToolStripMenuItem.Text = "Diagnostics";
-            // 
-            // showCacheToolStripMenuItem
-            // 
-            this.showCacheToolStripMenuItem.Name = "showCacheToolStripMenuItem";
-            this.showCacheToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.showCacheToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.showCacheToolStripMenuItem.Text = "Show Cache";
-            this.showCacheToolStripMenuItem.Click += new System.EventHandler(this.showCacheToolStripMenuItem_Click);
-            // 
-            // refreshImageToolStripMenuItem
-            // 
-            this.refreshImageToolStripMenuItem.Name = "refreshImageToolStripMenuItem";
-            this.refreshImageToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshImageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.refreshImageToolStripMenuItem.Text = "Refresh Image";
-            this.refreshImageToolStripMenuItem.Click += new System.EventHandler(this.refreshImageToolStripMenuItem_Click);
-            // 
-            // showLogWindowToolStripMenuItem
-            // 
-            this.showLogWindowToolStripMenuItem.Name = "showLogWindowToolStripMenuItem";
-            this.showLogWindowToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.showLogWindowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.showLogWindowToolStripMenuItem.Text = "Show Log Window";
-            this.showLogWindowToolStripMenuItem.Click += new System.EventHandler(this.showLogWindowToolStripMenuItem_Click);
-            // 
-            // autocropGridToolStripMenuItem
-            // 
-            this.autocropGridToolStripMenuItem.Name = "autocropGridToolStripMenuItem";
-            this.autocropGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.autocropGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.autocropGridToolStripMenuItem.Text = "Autocrop Grid";
-            this.autocropGridToolStripMenuItem.Click += new System.EventHandler(this.autocropGridToolStripMenuItem_Click);
-            // 
-            // unbiasGridToolStripMenuItem
-            // 
-            this.unbiasGridToolStripMenuItem.Name = "unbiasGridToolStripMenuItem";
-            this.unbiasGridToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            this.unbiasGridToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.unbiasGridToolStripMenuItem.Text = "Unbias Grid";
-            this.unbiasGridToolStripMenuItem.Click += new System.EventHandler(this.unbiasGridToolStripMenuItem_Click);
-            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1238,6 +1250,7 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripMenuItem showLogWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autocropGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unbiasGridToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSetNormalizedGeometryToIdentity;
     }
 }
 
