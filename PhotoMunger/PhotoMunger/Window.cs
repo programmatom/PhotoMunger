@@ -375,8 +375,10 @@ namespace AdaptiveImageSizeReducer
                 {
                     if (i != e.RowIndex)
                     {
-                        if (String.Equals(items[i].SourceFileName, e.FormattedValue)
-                            || String.Equals(items[i].RenamedFileName, e.FormattedValue))
+                        // sources are read from back directory so may be overwritten in target (e.g. A-->B & B-->A won't
+                        // overwrite each other)
+                        if (/*String.Equals(items[i].SourceFileName, e.FormattedValue)
+                            || */String.Equals(items[i].RenamedFileName, e.FormattedValue))
                         {
                             e.Cancel = true;
                             MessageBox.Show("File cannot be renamed to the name of another file");
@@ -1474,21 +1476,35 @@ namespace AdaptiveImageSizeReducer
             if (!Directory.Exists(sourceDirectory))
             {
                 Directory.CreateDirectory(sourceDirectory);
-                string[] files = Directory.GetFiles(directory);
-                Array.Reverse(files); // last to first, so firsts are likely to be resident in system file cache
-                foreach (string source in files)
+                string[] targetFiles = Directory.GetFiles(directory);
+                Array.Reverse(targetFiles); // last to first, so firsts are likely to be resident in system file cache
+                foreach (string targetFilePath in targetFiles)
                 {
-                    if (String.Equals(Path.GetFileName(source), Program.SettingsFile, StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(Path.GetFileName(targetFilePath), Program.SettingsFile, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
-                    string target = Path.Combine(sourceDirectory, Path.GetFileName(source));
-                    if (File.Exists(source) && !File.Exists(target))
+                    string backupFilePath = Path.Combine(sourceDirectory, Path.GetFileName(targetFilePath));
+                    if (File.Exists(targetFilePath) && !File.Exists(backupFilePath))
                     {
-                        File.Copy(source, target, true/*overwrite*/);
-                        File.SetCreationTime(target, File.GetCreationTime(source));
-                        File.SetLastWriteTime(target, File.GetLastWriteTime(source));
+                        File.Copy(targetFilePath, backupFilePath, true/*overwrite*/);
+                        const int Retry = 5, Sleep = 1000;
+                        for (int i = 0; i < Retry; i++)
+                        {
+                            try
+                            {
+                                File.SetCreationTime(backupFilePath, File.GetCreationTime(targetFilePath));
+                                File.SetLastWriteTime(backupFilePath, File.GetLastWriteTime(targetFilePath));
+                                break;
+                            }
+                            catch (IOException)
+                            {
+                                // If folder is on desktop or in open window, Explorer sometimes read-locks the file as it
+                                // updates thumbnails.
+                                Thread.Sleep(Sleep);
+                            }
+                        }
                     }
                 }
 
@@ -1613,6 +1629,30 @@ namespace AdaptiveImageSizeReducer
                 options.LastSelectedSwap = this.swapIndex;
                 this.dataGridViewFiles.InvalidateRow(this.swapIndex);
             }
+        }
+
+        private void duplicateItemToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.dataGridViewFiles.EndEdit(); // if filename is being edited, validate and commit
+            }
+            catch (InvalidOperationException)
+            {
+                return; // don't proceed if filename is invalid
+            }
+
+            Item currentItem = this.CurrentItem;
+            Item newItem = new Item(currentItem, options, cache);
+
+            int newIndex = dataGridViewFiles.CurrentCell.RowIndex + 1;
+            this.items.Insert(newIndex, newItem);
+
+            this.dataGridViewFiles.CellValidating -= DataGridViewFiles_CellValidating;
+            this.dataGridViewFiles.CurrentCell = this.dataGridViewFiles.Rows[newIndex].Cells[0];
+            this.dataGridViewFiles.CellValidating += DataGridViewFiles_CellValidating;
+
+            this.dataGridViewFiles.BeginEdit(false);
         }
 
         private void showCacheToolStripMenuItem_Click(object sender, EventArgs e)

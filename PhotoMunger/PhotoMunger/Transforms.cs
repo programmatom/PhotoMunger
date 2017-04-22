@@ -48,13 +48,6 @@ namespace AdaptiveImageSizeReducer
         [Flags]
         public enum Channel { Invalid = 0, R = 1 << 0, G = 1 << 1, B = 1 << 2, Composite = R | G | B };
 
-        private const bool EnableVectors = true;
-#if DEBUG
-        private const bool VectorHardwareAcceleratedOverride = true;
-#else
-        private const bool VectorHardwareAcceleratedOverride = false;
-#endif
-
         public delegate void AddMessageMethod(string text);
 
         public static MemoryStream ReadAllBytes(string path)

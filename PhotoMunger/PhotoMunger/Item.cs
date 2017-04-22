@@ -1125,6 +1125,63 @@ namespace AdaptiveImageSizeReducer
             ResetAnalyzeTask(false/*invalidateCurrentView*/);
         }
 
+        public Item(Item source, GlobalOptions options, ImageCache cache)
+            : this(source.targetPath, options, cache)
+        {
+            this.rename = source.rename;
+
+            this.width = source.width;
+            this.height = source.height;
+
+            this.exifOrientation = source.exifOrientation;
+
+            this.jpegQuality = source.jpegQuality;
+            this.jpegUseGdi = source.jpegUseGdi;
+
+            this.shrink = source.shrink;
+            this.shrinkFactor = source.shrinkFactor;
+
+            this.delete = source.delete;
+
+            this.rightRotations = source.rightRotations;
+
+            this.brightAdjust = source.brightAdjust;
+            this.brightAdjustMinClusterFrac = source.brightAdjustMinClusterFrac;
+            this.brightAdjustWhiteCorrect = source.brightAdjustWhiteCorrect;
+
+            this.unbias = source.unbias;
+            this.unbiasMaxDegree = source.unbiasMaxDegree;
+            this.unbiasMaxChisq = source.unbiasMaxChisq;
+            this.unbiasMaxS = source.unbiasMaxS;
+            this.unbiasMinV = source.unbiasMinV;
+
+            this.oneBit = source.oneBit;
+            this.oneBitChannel = source.oneBitChannel;
+            this.oneBitThreshhold = source.oneBitThreshhold;
+
+            this.staticSaturate = source.staticSaturate;
+            this.staticSaturateWhiteThreshhold = source.staticSaturateWhiteThreshhold;
+            this.staticSaturateBlackThreshhold = source.staticSaturateBlackThreshhold;
+            this.staticSaturateExponent = source.staticSaturateExponent;
+
+            this.normalizeGeometry = source.normalizeGeometry;
+            this.normalizeGeometryExplicitlySet = source.normalizeGeometryExplicitlySet;
+            this.cornerTL = source.cornerTL;
+            this.cornerTR = source.cornerTR;
+            this.cornerBL = source.cornerBL;
+            this.cornerBR = source.cornerBR;
+            this.cornerRotation = source.cornerRotation;
+            this.normalizedGeometryAspectRatio = source.normalizedGeometryAspectRatio;
+
+            this.fineRotateDegrees = source.fineRotateDegrees;
+
+            this.cropRect = source.cropRect;
+            this.cropRectExplicitlySet = source.cropRectExplicitlySet;
+            this.cropRectRotation = source.cropRectRotation;
+
+            this.tagColor = source.tagColor;
+        }
+
         public void ResetAnalyzeTask(bool invalidateCurrentView)
         {
             this.hf = null;

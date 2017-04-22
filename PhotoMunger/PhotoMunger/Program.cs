@@ -185,8 +185,8 @@ namespace AdaptiveImageSizeReducer
                     return;
                 }
 
+                // load xml file
                 XPathNavigator settingsNav;
-                Dictionary<string, int> sourceFileNameToSequenceNumber = new Dictionary<string, int>();
                 {
                     XmlDocument settings = new XmlDocument();
                     string settingsPath = Path.Combine(scanDirectory, SettingsFile);
@@ -195,12 +195,6 @@ namespace AdaptiveImageSizeReducer
                         settings.Load(settingsPath);
                     }
                     settingsNav = settings.CreateNavigator();
-
-                    int i = 0;
-                    foreach (XPathNavigator nav in settingsNav.Select("/*/items/item/file"))
-                    {
-                        sourceFileNameToSequenceNumber.Add(nav.Value, i++);
-                    }
                 }
 
                 GlobalOptions options = new GlobalOptions(settingsNav.SelectSingleNode("/*/options"));
@@ -221,8 +215,25 @@ namespace AdaptiveImageSizeReducer
                     logWindow.Show();
                 }
 
-                // scan items
+                // read saved items from xml
                 List<Item> items = new List<Item>();
+                Dictionary<string, bool> filesWithItems = new Dictionary<string, bool>();
+                foreach (XPathNavigator itemNav in settingsNav.Select("/*/items/item"))
+                {
+                    string fileName = itemNav.SelectSingleNode("file").Value;
+                    string filePath = Path.Combine(directory, fileName);
+                    if (File.Exists(filePath)) // drop item records for which file no longer exists
+                    {
+                        Item item = new Item(Path.Combine(directory, fileName), options, cache);
+                        item.ReadXml(itemNav);
+
+                        items.Add(item);
+
+                        filesWithItems[fileName.ToLowerInvariant()] = false;
+                    }
+                }
+
+                // add new records for any files that don't have a record
                 foreach (string filePath in Directory.GetFiles(scanDirectory))
                 {
                     string fileName = Path.GetFileName(filePath);
@@ -231,42 +242,14 @@ namespace AdaptiveImageSizeReducer
                         continue;
                     }
 
-                    bool extUpper = String.Equals(Path.GetExtension(fileName), Path.GetExtension(fileName).ToUpper());
-
-                    Item item = new Item(Path.Combine(directory, fileName), options, cache);
-                    items.Add(item);
-
-                    XPathNavigator itemNav = settingsNav.SelectSingleNode(String.Format("/*/items/item[file=\"{0}\"]", fileName));
-                    if (itemNav != null)
+                    if (!filesWithItems.ContainsKey(fileName.ToLowerInvariant()))
                     {
-                        item.ReadXml(itemNav);
-                        itemNav.DeleteSelf();
-                    }
-                    else
-                    {
+                        Item item = new Item(Path.Combine(directory, fileName), options, cache);
+                        items.Add(item);
+
                         item.SettingsNav = settingsNav; // no match; try after hash has been computed
                     }
                 }
-                items.Sort(
-                    delegate (Item l, Item r)
-                    {
-                        int c;
-                        int li, ri;
-                        if (!sourceFileNameToSequenceNumber.TryGetValue(l.SourceFileName, out li))
-                        {
-                            li = Int32.MaxValue;
-                        }
-                        if (!sourceFileNameToSequenceNumber.TryGetValue(r.SourceFileName, out ri))
-                        {
-                            ri = Int32.MaxValue;
-                        }
-                        c = li.CompareTo(ri);
-                        if (c == 0)
-                        {
-                            c = String.Compare(l.SourceFileName, r.SourceFileName, StringComparison.CurrentCultureIgnoreCase);
-                        }
-                        return c;
-                    });
 
                 if (items.Count != 0)
                 {

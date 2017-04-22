@@ -145,6 +145,8 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain = new AdaptiveImageSizeReducer.ImageBox();
             this.toolTipDetail2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipDetail1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.duplicateItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -640,6 +642,8 @@ namespace AdaptiveImageSizeReducer
             this.toolStripDropDownButtonCatchAllMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.markToolStripMenuItem,
             this.swapToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.duplicateItemToolStripMenuItem,
             this.toolStripMenuItem1,
             this.sortByNameToolStripMenuItem,
             this.unsortToolStripMenuItem,
@@ -1115,6 +1119,18 @@ namespace AdaptiveImageSizeReducer
             this.pictureBoxMain.TabIndex = 1;
             this.pictureBoxMain.TabStop = false;
             // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(211, 6);
+            // 
+            // duplicateItemToolStripMenuItem
+            // 
+            this.duplicateItemToolStripMenuItem.Name = "duplicateItemToolStripMenuItem";
+            this.duplicateItemToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.duplicateItemToolStripMenuItem.Text = "Duplicate Item";
+            this.duplicateItemToolStripMenuItem.Click += new System.EventHandler(this.duplicateItemToolStripMenuItem_Click);
+            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1251,6 +1267,8 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.ToolStripMenuItem autocropGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unbiasGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButtonSetNormalizedGeometryToIdentity;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem duplicateItemToolStripMenuItem;
     }
 }
 

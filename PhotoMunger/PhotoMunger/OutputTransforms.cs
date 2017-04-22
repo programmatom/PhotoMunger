@@ -60,6 +60,8 @@ namespace AdaptiveImageSizeReducer
                     {
                         Program.Log(LogCat.All, "++++ BEGIN OUTPUT PROCESSING ++++" + Environment.NewLine);
 
+                        Dictionary<string, bool> createdFiles = new Dictionary<string, bool>();
+
                         ParallelOptions options = Program.GetProcessorConstrainedParallelOptions(CancellationToken.None);
                         options.CancellationToken = cancel.Token;
                         Parallel.ForEach(
@@ -67,10 +69,20 @@ namespace AdaptiveImageSizeReducer
                             options,
                             delegate (Item item)
                             {
-                                FinalOutputOne(item, stats, cancel);
+                                FinalOutputOne(item, stats, createdFiles, cancel);
                                 progressDialog.BumpFromAnyThread(!item.Delete);
                             });
 
+                        // remove all non-emitted files
+                        foreach (string file in Directory.GetFiles(Path.GetDirectoryName(items[0].TargetPath)))
+                        {
+                            if (!createdFiles.ContainsKey(Path.GetFileName(file).ToLowerInvariant()))
+                            {
+                                File.Delete(file);
+                            }
+                        }
+
+                        // Maintain a list of all directories visited by program, ever. Forgot why I do this.
                         string recordPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PhotoMunger", "visited.txt");
                         Directory.CreateDirectory(Path.GetDirectoryName(recordPath));
                         List<string> files = new List<string>();
@@ -107,7 +119,7 @@ namespace AdaptiveImageSizeReducer
         }
 
         // use highest quality transforms and no cached bitmaps
-        public static void FinalOutputOne(Item item, Stats stats, CancellationTokenSource cancel)
+        public static void FinalOutputOne(Item item, Stats stats, Dictionary<string, bool> createdFiles, CancellationTokenSource cancel)
         {
             Profile profile = new Profile("FinalOutput {0}", item.RenamedFileName);
 
@@ -118,21 +130,11 @@ namespace AdaptiveImageSizeReducer
             DateTime originalCreationTime = File.GetCreationTime(item.SourcePath);
             DateTime originalLastWriteTime = File.GetLastWriteTime(item.SourcePath);
 
-            if (!String.Equals(item.SourceFileName, item.RenamedFileName))
-            {
-                string old = Path.Combine(Path.GetDirectoryName(item.TargetPath), item.SourceFileName);
-                if (File.Exists(old))
-                {
-                    File.Delete(old);
-                }
-            }
-
             string renamedTargetPath = Path.Combine(Path.GetDirectoryName(item.TargetPath), item.RenamedFileName);
 
             if (item.Delete)
             {
-                File.Delete(item.TargetPath);
-
+                // actual deletion occurs after end of run, by file being omitted from createdFiles
                 Interlocked.Increment(ref stats.deleted);
             }
             else if (item.Valid)
@@ -350,57 +352,28 @@ namespace AdaptiveImageSizeReducer
 
                 // write target
 
-                bool extUpper = String.Equals(Path.GetExtension(renamedTargetPath), Path.GetExtension(renamedTargetPath).ToUpper());
-                string targetJpeg = Path.ChangeExtension(renamedTargetPath, extUpper ? ".JPG" : ".jpg");
-                string targetBmp = Path.ChangeExtension(renamedTargetPath, extUpper ? ".BMP" : ".bmp");
-                string targetPng = Path.ChangeExtension(renamedTargetPath, extUpper ? ".PNG" : ".png");
-                for (int i = 0; i <= RetryCount; i++)
-                {
-                    try
-                    {
-                        if (File.Exists(targetJpeg))
-                        {
-                            File.Delete(targetJpeg);
-                        }
-                        if (File.Exists(targetBmp))
-                        {
-                            File.Delete(targetBmp);
-                        }
-                        if (File.Exists(targetPng))
-                        {
-                            File.Delete(targetPng);
-                        }
-                        break;
-                    }
-                    catch (IOException) when (i < RetryCount)
-                    {
-                        // HACK: If folder is open, Explorer may have file locked to refresh thumbnail
-                        Thread.Sleep(SleepRetry);
-                    }
-                }
-
                 string targetPath;
+                bool extUpper = String.Equals(Path.GetExtension(renamedTargetPath), Path.GetExtension(renamedTargetPath).ToUpper());
                 switch (item.OutputFormat)
                 {
                     default:
                         Debug.Assert(false);
                         throw new ArgumentException();
                     case OutputFormat.Jpeg:
-                        targetPath = targetJpeg;
+                        targetPath = Path.ChangeExtension(renamedTargetPath, extUpper ? ".JPG" : ".jpg");
                         break;
                     case OutputFormat.Bmp:
-                        targetPath = targetBmp;
+                        targetPath = Path.ChangeExtension(renamedTargetPath, extUpper ? ".BMP" : ".bmp");
                         break;
                     case OutputFormat.Png:
-                        targetPath = targetPng;
+                        targetPath = Path.ChangeExtension(renamedTargetPath, extUpper ? ".PNG" : ".png");
                         break;
                 }
-                File.Copy(tempFile, targetPath, true/*overwrite*/);
-
                 for (int i = 0; i <= RetryCount; i++)
                 {
                     try
                     {
+                        File.Copy(tempFile, targetPath, true/*overwrite*/);
                         File.SetCreationTime(targetPath, originalCreationTime);
                         File.SetLastWriteTime(targetPath, DateTime.Now);
                     }
@@ -409,6 +382,11 @@ namespace AdaptiveImageSizeReducer
                         // HACK: If folder is open, Explorer may have file locked to refresh thumbnail
                         Thread.Sleep(SleepRetry);
                     }
+                }
+
+                lock (createdFiles)
+                {
+                    createdFiles.Add(Path.GetFileName(targetPath).ToLowerInvariant(), false);
                 }
 
                 File.Delete(tempFile);
