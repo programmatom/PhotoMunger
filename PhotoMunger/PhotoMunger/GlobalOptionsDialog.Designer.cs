@@ -143,6 +143,11 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonTimestampDoNothing = new System.Windows.Forms.RadioButton();
             this.radioButtonTimestampAdd = new System.Windows.Forms.RadioButton();
             this.radioButtonTimestampRemove = new System.Windows.Forms.RadioButton();
+            this.checkBoxTimestampOverwriteExisting = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.radioButtonTimestampFileCreated = new System.Windows.Forms.RadioButton();
+            this.radioButtonTimestampFileLastModified = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
@@ -160,6 +165,7 @@ namespace AdaptiveImageSizeReducer
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel13.SuspendLayout();
+            this.flowLayoutPanel14.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -171,7 +177,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 14);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 15);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel7, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 4, 5);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 4, 9);
@@ -197,10 +203,11 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 4, 8);
             this.tableLayoutPanel1.Controls.Add(this.label12, 2, 13);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel13, 4, 13);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel14, 4, 14);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 15;
+            this.tableLayoutPanel1.RowCount = 16;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
@@ -215,8 +222,9 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(727, 357);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(727, 375);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -231,7 +239,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.2119F));
             this.tableLayoutPanel2.Controls.Add(this.buttonOK, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonCancel, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(11, 325);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(11, 343);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -1169,7 +1177,7 @@ namespace AdaptiveImageSizeReducer
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(142, 13);
             this.label9.TabIndex = 2;
-            this.label9.Text = "Jpeg:";
+            this.label9.Text = "Jpeg";
             // 
             // flowLayoutPanel4
             // 
@@ -1250,7 +1258,7 @@ namespace AdaptiveImageSizeReducer
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(142, 13);
             this.label12.TabIndex = 68;
-            this.label12.Text = "Timestamp in File Name:";
+            this.label12.Text = "Timestamp in File Name";
             // 
             // flowLayoutPanel13
             // 
@@ -1259,10 +1267,11 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampDoNothing);
             this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampAdd);
             this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampRemove);
-            this.flowLayoutPanel13.Location = new System.Drawing.Point(212, 289);
+            this.flowLayoutPanel13.Controls.Add(this.checkBoxTimestampOverwriteExisting);
+            this.flowLayoutPanel13.Location = new System.Drawing.Point(212, 286);
             this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
-            this.flowLayoutPanel13.Size = new System.Drawing.Size(206, 17);
+            this.flowLayoutPanel13.Size = new System.Drawing.Size(322, 23);
             this.flowLayoutPanel13.TabIndex = 69;
             this.flowLayoutPanel13.WrapContents = false;
             // 
@@ -1270,7 +1279,7 @@ namespace AdaptiveImageSizeReducer
             // 
             this.radioButtonTimestampDoNothing.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.radioButtonTimestampDoNothing.AutoSize = true;
-            this.radioButtonTimestampDoNothing.Location = new System.Drawing.Point(3, 0);
+            this.radioButtonTimestampDoNothing.Location = new System.Drawing.Point(3, 3);
             this.radioButtonTimestampDoNothing.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonTimestampDoNothing.Name = "radioButtonTimestampDoNothing";
             this.radioButtonTimestampDoNothing.Size = new System.Drawing.Size(79, 17);
@@ -1284,7 +1293,7 @@ namespace AdaptiveImageSizeReducer
             // 
             this.radioButtonTimestampAdd.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.radioButtonTimestampAdd.AutoSize = true;
-            this.radioButtonTimestampAdd.Location = new System.Drawing.Point(88, 0);
+            this.radioButtonTimestampAdd.Location = new System.Drawing.Point(88, 3);
             this.radioButtonTimestampAdd.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonTimestampAdd.Name = "radioButtonTimestampAdd";
             this.radioButtonTimestampAdd.Size = new System.Drawing.Size(44, 17);
@@ -1298,7 +1307,7 @@ namespace AdaptiveImageSizeReducer
             // 
             this.radioButtonTimestampRemove.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.radioButtonTimestampRemove.AutoSize = true;
-            this.radioButtonTimestampRemove.Location = new System.Drawing.Point(138, 0);
+            this.radioButtonTimestampRemove.Location = new System.Drawing.Point(138, 3);
             this.radioButtonTimestampRemove.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.radioButtonTimestampRemove.Name = "radioButtonTimestampRemove";
             this.radioButtonTimestampRemove.Size = new System.Drawing.Size(65, 17);
@@ -1308,6 +1317,67 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonTimestampRemove.UseVisualStyleBackColor = true;
             this.radioButtonTimestampRemove.CheckedChanged += new System.EventHandler(this.radioButtonTimestampRemove_CheckedChanged);
             // 
+            // checkBoxTimestampOverwriteExisting
+            // 
+            this.checkBoxTimestampOverwriteExisting.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.checkBoxTimestampOverwriteExisting.AutoSize = true;
+            this.checkBoxTimestampOverwriteExisting.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.globalOptionsBindingSource, "TimestampsOverwriteExisting", true));
+            this.checkBoxTimestampOverwriteExisting.Location = new System.Drawing.Point(209, 3);
+            this.checkBoxTimestampOverwriteExisting.Name = "checkBoxTimestampOverwriteExisting";
+            this.checkBoxTimestampOverwriteExisting.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxTimestampOverwriteExisting.TabIndex = 72;
+            this.checkBoxTimestampOverwriteExisting.Text = "Overwrite Existing";
+            this.checkBoxTimestampOverwriteExisting.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel14
+            // 
+            this.flowLayoutPanel14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.flowLayoutPanel14.AutoSize = true;
+            this.flowLayoutPanel14.Controls.Add(this.label13);
+            this.flowLayoutPanel14.Controls.Add(this.radioButtonTimestampFileCreated);
+            this.flowLayoutPanel14.Controls.Add(this.radioButtonTimestampFileLastModified);
+            this.flowLayoutPanel14.Location = new System.Drawing.Point(212, 309);
+            this.flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel14.Name = "flowLayoutPanel14";
+            this.flowLayoutPanel14.Size = new System.Drawing.Size(362, 23);
+            this.flowLayoutPanel14.TabIndex = 73;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 5);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(156, 13);
+            this.label13.TabIndex = 73;
+            this.label13.Text = "If Exif timestamp is missing, use:";
+            // 
+            // radioButtonTimestampFileCreated
+            // 
+            this.radioButtonTimestampFileCreated.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radioButtonTimestampFileCreated.AutoSize = true;
+            this.radioButtonTimestampFileCreated.Location = new System.Drawing.Point(165, 3);
+            this.radioButtonTimestampFileCreated.Name = "radioButtonTimestampFileCreated";
+            this.radioButtonTimestampFileCreated.Size = new System.Drawing.Size(81, 17);
+            this.radioButtonTimestampFileCreated.TabIndex = 74;
+            this.radioButtonTimestampFileCreated.TabStop = true;
+            this.radioButtonTimestampFileCreated.Text = "File Created";
+            this.radioButtonTimestampFileCreated.UseVisualStyleBackColor = true;
+            this.radioButtonTimestampFileCreated.CheckedChanged += new System.EventHandler(this.radioButtonTimestampFileCreated_CheckedChanged);
+            // 
+            // radioButtonTimestampFileLastModified
+            // 
+            this.radioButtonTimestampFileLastModified.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radioButtonTimestampFileLastModified.AutoSize = true;
+            this.radioButtonTimestampFileLastModified.Location = new System.Drawing.Point(252, 3);
+            this.radioButtonTimestampFileLastModified.Name = "radioButtonTimestampFileLastModified";
+            this.radioButtonTimestampFileLastModified.Size = new System.Drawing.Size(107, 17);
+            this.radioButtonTimestampFileLastModified.TabIndex = 75;
+            this.radioButtonTimestampFileLastModified.TabStop = true;
+            this.radioButtonTimestampFileLastModified.Text = "File Last Modified";
+            this.radioButtonTimestampFileLastModified.UseVisualStyleBackColor = true;
+            this.radioButtonTimestampFileLastModified.CheckedChanged += new System.EventHandler(this.radioButtonTimestampFileLastModified_CheckedChanged);
+            // 
             // GlobalOptionsDialog
             // 
             this.AcceptButton = this.buttonOK;
@@ -1315,7 +1385,7 @@ namespace AdaptiveImageSizeReducer
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(727, 357);
+            this.ClientSize = new System.Drawing.Size(727, 375);
             this.Controls.Add(this.tableLayoutPanel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -1353,6 +1423,8 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel13.ResumeLayout(false);
             this.flowLayoutPanel13.PerformLayout();
+            this.flowLayoutPanel14.ResumeLayout(false);
+            this.flowLayoutPanel14.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1452,5 +1524,10 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.RadioButton radioButtonTimestampDoNothing;
         private System.Windows.Forms.RadioButton radioButtonTimestampAdd;
         private System.Windows.Forms.RadioButton radioButtonTimestampRemove;
+        private System.Windows.Forms.CheckBox checkBoxTimestampOverwriteExisting;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.RadioButton radioButtonTimestampFileCreated;
+        private System.Windows.Forms.RadioButton radioButtonTimestampFileLastModified;
     }
 }

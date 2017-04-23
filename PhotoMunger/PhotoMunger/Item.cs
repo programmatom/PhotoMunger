@@ -144,6 +144,9 @@ namespace AdaptiveImageSizeReducer
             }
         }
 
+        // TODO: TargetPath should return the path incorporating the rename value. I don't recall why it doesn't. Before making
+        // the change ensure that nothing will break.
+
         // always the path to the user's folder, i.e. to which file modifications will be written
         [Bindable(true)]
         public string TargetPath { get { return targetPath; } }

@@ -58,6 +58,7 @@ namespace AdaptiveImageSizeReducer
             SelectOneBitFormat(this.options.OneBitOutputFormat, false/*updateSource*/);
             SelectJpegEncoder(this.options.JpegUseGDI, false/*updateSource*/);
             SelectTimestamps(this.options.Timestamps, false/*updateSource*/);
+            SelectTimestampsCreatedModified(this.options.TimestampsExifMissingModifiedInsteadOfCreated, false/*updateSource*/);
 
             this.comboBoxNormalizeGeometryPreviewResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryPreviewInterp;
             this.comboBoxNormalizeGeometryFinalResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryFinalInterp;
@@ -373,6 +374,42 @@ namespace AdaptiveImageSizeReducer
         {
             SelectTimestamps(false/*timestamps*/, true/*updateSource*/);
         }
+
+        private int lockoutTimestampsCreatedModified;
+        private void SelectTimestampsCreatedModified(bool timestampsExifMissingModifiedInsteadOfCreated, bool updateSource)
+        {
+            if (lockoutTimestampsCreatedModified != 0)
+            {
+                return;
+            }
+
+            try
+            {
+                lockoutTimestampsCreatedModified++;
+
+                radioButtonTimestampFileCreated.Checked = !timestampsExifMissingModifiedInsteadOfCreated;
+                radioButtonTimestampFileLastModified.Checked = timestampsExifMissingModifiedInsteadOfCreated;
+
+                if (updateSource)
+                {
+                    options.TimestampsExifMissingModifiedInsteadOfCreated = timestampsExifMissingModifiedInsteadOfCreated;
+                }
+            }
+            finally
+            {
+                lockoutTimestampsCreatedModified--;
+            }
+        }
+
+        private void radioButtonTimestampFileCreated_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTimestampsCreatedModified(false/*timestampsExifMissingModifiedInsteadOfCreated*/ , true/*updateSource*/);
+        }
+
+        private void radioButtonTimestampFileLastModified_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTimestampsCreatedModified(true/*timestampsExifMissingModifiedInsteadOfCreated*/ , true/*updateSource*/);
+        }
     }
 
     public class GlobalOptions
@@ -418,6 +455,8 @@ namespace AdaptiveImageSizeReducer
         private Transforms.InterpMethod normalizeGeometryFinalInterp = Transforms.InterpMethod.Bicubic;
 
         private bool? timestamps;
+        private bool timestampsOverwriteExisting;
+        private bool timestampsExifMissingModifiedInsteadOfCreated;
 
         // UI options
         private bool showOriginalInsteadOfProcessed = false;
@@ -515,6 +554,10 @@ namespace AdaptiveImageSizeReducer
 
         [Bindable(true)]
         public bool? Timestamps { get { return timestamps; } set { timestamps = value; } }
+        [Bindable(true)]
+        public bool TimestampsOverwriteExisting { get { return timestampsOverwriteExisting; } set { timestampsOverwriteExisting = value; } }
+        [Bindable(true)]
+        public bool TimestampsExifMissingModifiedInsteadOfCreated { get { return timestampsExifMissingModifiedInsteadOfCreated; } set { timestampsExifMissingModifiedInsteadOfCreated = value; } }
 
         // UI options
         [Bindable(true)]
@@ -589,6 +632,8 @@ namespace AdaptiveImageSizeReducer
             this.normalizeGeometryFinalInterp = source.normalizeGeometryFinalInterp;
 
             this.timestamps = source.timestamps;
+            this.timestampsOverwriteExisting = source.timestampsOverwriteExisting;
+            this.timestampsExifMissingModifiedInsteadOfCreated = source.timestampsExifMissingModifiedInsteadOfCreated;
         }
 
         public GlobalOptions(GlobalOptions source)
@@ -659,7 +704,19 @@ namespace AdaptiveImageSizeReducer
                 this.normalizeGeometryPreviewInterp = (Transforms.InterpMethod)Enum.Parse(typeof(Transforms.InterpMethod), nav.SelectSingleNode("normalizeGeometry/normalizeGeometryPreviewInterp").Value);
                 this.normalizeGeometryFinalInterp = (Transforms.InterpMethod)Enum.Parse(typeof(Transforms.InterpMethod), nav.SelectSingleNode("normalizeGeometry/normalizeGeometryFinalInterp").Value);
 
-                this.timestamps = nav.SelectSingleNode("timestamps")?.ValueAsBoolean;
+                this.timestamps = nav.SelectSingleNode("timestamps/enable")?.ValueAsBoolean;
+                {
+                    XPathNavigator nav2 = nav.SelectSingleNode("timestamps/overwriteExisting");
+                    if (nav2 != null)
+                    {
+                        this.timestampsOverwriteExisting = nav2.ValueAsBoolean;
+                    }
+                    nav2 = nav.SelectSingleNode("timestamps/timestampsExifMissingModifiedInsteadOfCreated");
+                    if (nav2 != null)
+                    {
+                        this.timestampsExifMissingModifiedInsteadOfCreated = nav2.ValueAsBoolean;
+                    }
+                }
             }
         }
 
@@ -878,12 +935,22 @@ namespace AdaptiveImageSizeReducer
             //
             writer.WriteEndElement(); // normalizeGeometry
 
+            writer.WriteStartElement("timestamps");
             if (this.timestamps.HasValue)
             {
-                writer.WriteStartElement("Timestamps");
+                writer.WriteStartElement("enable");
                 writer.WriteValue(this.timestamps.Value);
-                writer.WriteEndElement(); // Timestamps
+                writer.WriteEndElement(); // enable
+                //
+                writer.WriteStartElement("timestampsOverwriteExisting");
+                writer.WriteValue(this.timestampsOverwriteExisting);
+                writer.WriteEndElement(); // timestampsOverwriteExisting
+                //
+                writer.WriteStartElement("timestampsExifMissingModifiedInsteadOfCreated");
+                writer.WriteValue(this.timestampsExifMissingModifiedInsteadOfCreated);
+                writer.WriteEndElement(); // timestampsExifMissingModifiedInsteadOfCreated
             }
+            writer.WriteEndElement(); // timestamps
 
             writer.WriteEndElement(); // options
         }

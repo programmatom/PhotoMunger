@@ -286,7 +286,6 @@ namespace AdaptiveImageSizeReducer
                 // timestamp actions
                 if (options.Timestamps.HasValue)
                 {
-                    const bool UseCreatedForMissingProperty = true; // otherwise use LastModified
                     Parallel.ForEach(
                         items,
                         GetProcessorConstrainedParallelOptions2(CancellationToken.None),
@@ -294,6 +293,15 @@ namespace AdaptiveImageSizeReducer
                         {
                             if (options.Timestamps.Value)
                             {
+                                if (!options.TimestampsOverwriteExisting)
+                                {
+                                    DateTime existingTimestamp;
+                                    if (TryParseFilenameTimestamp(Path.GetFileName(item.TargetPath), out existingTimestamp))
+                                    {
+                                        return;
+                                    }
+                                }
+
                                 DateTime fsCreated, fsModified, exifCreated;
                                 bool found = TryGetTimestamps(
                                     item.SourcePath,
@@ -306,7 +314,10 @@ namespace AdaptiveImageSizeReducer
                                 string exif = found ? exifCreated.ToString("s").Replace("T", ".") : "<no data>";
 
                                 string newName = StripFilenameTimestamp(Path.GetFileName(item.TargetPath));
-                                string text = FormatFilenameTimestamp(found ? exifCreated : (UseCreatedForMissingProperty ? fsCreated : fsModified));
+                                string text = FormatFilenameTimestamp(
+                                    found
+                                        ? exifCreated
+                                        : (!options.TimestampsExifMissingModifiedInsteadOfCreated ? fsCreated : fsModified));
                                 newName = String.Concat(text, " ", newName);
 
                                 item.RenamedFileName = newName;
@@ -317,7 +328,25 @@ namespace AdaptiveImageSizeReducer
                             }
                         });
 
-                    // TODO: ensure no duplicate names
+                    // ensure no duplicate names
+                    Dictionary<string, bool> usedName = new Dictionary<string, bool>();
+                    foreach (Item item in items)
+                    {
+                        if (usedName.ContainsKey(item.RenamedFileName))
+                        {
+                            int suffix = 0;
+                            while (true)
+                            {
+                                string newName = String.Concat(Path.GetFileNameWithoutExtension(item.RenamedFileName), "-", ++suffix, Path.GetExtension(item.RenamedFileName));
+                                if (!usedName.ContainsKey(newName))
+                                {
+                                    item.RenamedFileName = newName;
+                                    break;
+                                }
+                            }
+                        }
+                        usedName.Add(item.RenamedFileName, false);
+                    }
                 }
 
                 if (items.Count != 0)
