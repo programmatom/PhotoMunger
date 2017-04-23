@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Reflection;
@@ -144,6 +145,42 @@ namespace AdaptiveImageSizeReducer
             if (!SanityCheckValidImageFormatFile(path))
             {
                 throw new NotJpegFormatFileException(String.Format("File header is not a Jpeg/Exif header ({0})", Path.GetFileName(path)));
+            }
+        }
+
+        private const int ExifTimestampPropertyId = 36867;
+
+        public static bool TryGetExifTimestamp(string path, out DateTime exifCreated)
+        {
+            exifCreated = default(DateTime);
+
+            if (!SanityCheckValidImageFormatFile(path))
+            {
+                return false;
+            }
+
+            try
+            {
+                using (Image image = new Bitmap(path))
+                {
+                    PropertyItem p = image.GetPropertyItem(ExifTimestampPropertyId);
+                    if (p == null)
+                    {
+                        return false;
+                    }
+
+                    string text = System.Text.ASCIIEncoding.Default.GetString(p.Value, 0, p.Len - 1);
+                    if (String.IsNullOrEmpty(text))
+                    {
+                        return false;
+                    }
+
+                    return DateTime.TryParseExact(text, "yyyy:MM:dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out exifCreated);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

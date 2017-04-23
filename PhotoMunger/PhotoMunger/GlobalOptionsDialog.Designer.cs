@@ -112,6 +112,10 @@ namespace AdaptiveImageSizeReducer
             this.textBoxUnbiasMaxDegree = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.textBoxUnbiasMaxChiSq = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxMaxS = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBoxMinV = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxJpegQuality = new System.Windows.Forms.TextBox();
@@ -134,10 +138,11 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation90 = new System.Windows.Forms.RadioButton();
             this.radioButtonRotation180 = new System.Windows.Forms.RadioButton();
             this.radioButtonRotation270 = new System.Windows.Forms.RadioButton();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textBoxMaxS = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBoxMinV = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel13 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radioButtonTimestampDoNothing = new System.Windows.Forms.RadioButton();
+            this.radioButtonTimestampAdd = new System.Windows.Forms.RadioButton();
+            this.radioButtonTimestampRemove = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
@@ -154,6 +159,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.flowLayoutPanel4.SuspendLayout();
+            this.flowLayoutPanel13.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -165,7 +171,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 13);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 14);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel7, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 4, 5);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 4, 9);
@@ -189,10 +195,12 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.Controls.Add(this.label7, 2, 8);
             this.tableLayoutPanel1.Controls.Add(this.label9, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 4, 8);
+            this.tableLayoutPanel1.Controls.Add(this.label12, 2, 13);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel13, 4, 13);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 14;
+            this.tableLayoutPanel1.RowCount = 15;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
@@ -206,8 +214,9 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(727, 330);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(727, 357);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -222,7 +231,7 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.2119F));
             this.tableLayoutPanel2.Controls.Add(this.buttonOK, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonCancel, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(11, 298);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(11, 325);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -916,6 +925,44 @@ namespace AdaptiveImageSizeReducer
             this.textBoxUnbiasMaxChiSq.Size = new System.Drawing.Size(60, 20);
             this.textBoxUnbiasMaxChiSq.TabIndex = 37;
             // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(244, 3);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "MaxS:";
+            // 
+            // textBoxMaxS
+            // 
+            this.textBoxMaxS.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "UnbiasMaxS", true));
+            this.textBoxMaxS.Location = new System.Drawing.Point(284, 0);
+            this.textBoxMaxS.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxMaxS.Name = "textBoxMaxS";
+            this.textBoxMaxS.Size = new System.Drawing.Size(40, 20);
+            this.textBoxMaxS.TabIndex = 37;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(327, 3);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(34, 13);
+            this.label11.TabIndex = 37;
+            this.label11.Text = "MinV:";
+            // 
+            // textBoxMinV
+            // 
+            this.textBoxMinV.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "UnbiasMinV", true));
+            this.textBoxMinV.Location = new System.Drawing.Point(364, 0);
+            this.textBoxMinV.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxMinV.Name = "textBoxMinV";
+            this.textBoxMinV.Size = new System.Drawing.Size(40, 20);
+            this.textBoxMinV.TabIndex = 37;
+            // 
             // flowLayoutPanel12
             // 
             this.flowLayoutPanel12.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -1195,43 +1242,71 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonRotation270.UseVisualStyleBackColor = true;
             this.radioButtonRotation270.CheckedChanged += new System.EventHandler(this.radioButtonRotation270_CheckedChanged);
             // 
-            // label8
+            // label12
             // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(244, 3);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(37, 13);
-            this.label8.TabIndex = 37;
-            this.label8.Text = "MaxS:";
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(27, 291);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(142, 13);
+            this.label12.TabIndex = 68;
+            this.label12.Text = "Timestamp in File Name:";
             // 
-            // textBoxMaxS
+            // flowLayoutPanel13
             // 
-            this.textBoxMaxS.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "UnbiasMaxS", true));
-            this.textBoxMaxS.Location = new System.Drawing.Point(284, 0);
-            this.textBoxMaxS.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxMaxS.Name = "textBoxMaxS";
-            this.textBoxMaxS.Size = new System.Drawing.Size(40, 20);
-            this.textBoxMaxS.TabIndex = 37;
+            this.flowLayoutPanel13.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.flowLayoutPanel13.AutoSize = true;
+            this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampDoNothing);
+            this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampAdd);
+            this.flowLayoutPanel13.Controls.Add(this.radioButtonTimestampRemove);
+            this.flowLayoutPanel13.Location = new System.Drawing.Point(212, 289);
+            this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel13.Name = "flowLayoutPanel13";
+            this.flowLayoutPanel13.Size = new System.Drawing.Size(206, 17);
+            this.flowLayoutPanel13.TabIndex = 69;
+            this.flowLayoutPanel13.WrapContents = false;
             // 
-            // label11
+            // radioButtonTimestampDoNothing
             // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(327, 3);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(34, 13);
-            this.label11.TabIndex = 37;
-            this.label11.Text = "MinV:";
+            this.radioButtonTimestampDoNothing.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radioButtonTimestampDoNothing.AutoSize = true;
+            this.radioButtonTimestampDoNothing.Location = new System.Drawing.Point(3, 0);
+            this.radioButtonTimestampDoNothing.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.radioButtonTimestampDoNothing.Name = "radioButtonTimestampDoNothing";
+            this.radioButtonTimestampDoNothing.Size = new System.Drawing.Size(79, 17);
+            this.radioButtonTimestampDoNothing.TabIndex = 69;
+            this.radioButtonTimestampDoNothing.TabStop = true;
+            this.radioButtonTimestampDoNothing.Text = "Do Nothing";
+            this.radioButtonTimestampDoNothing.UseVisualStyleBackColor = true;
+            this.radioButtonTimestampDoNothing.CheckedChanged += new System.EventHandler(this.radioButtonTimestampDoNothing_CheckedChanged);
             // 
-            // textBoxMinV
+            // radioButtonTimestampAdd
             // 
-            this.textBoxMinV.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "UnbiasMinV", true));
-            this.textBoxMinV.Location = new System.Drawing.Point(364, 0);
-            this.textBoxMinV.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxMinV.Name = "textBoxMinV";
-            this.textBoxMinV.Size = new System.Drawing.Size(40, 20);
-            this.textBoxMinV.TabIndex = 37;
+            this.radioButtonTimestampAdd.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radioButtonTimestampAdd.AutoSize = true;
+            this.radioButtonTimestampAdd.Location = new System.Drawing.Point(88, 0);
+            this.radioButtonTimestampAdd.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.radioButtonTimestampAdd.Name = "radioButtonTimestampAdd";
+            this.radioButtonTimestampAdd.Size = new System.Drawing.Size(44, 17);
+            this.radioButtonTimestampAdd.TabIndex = 70;
+            this.radioButtonTimestampAdd.TabStop = true;
+            this.radioButtonTimestampAdd.Text = "Add";
+            this.radioButtonTimestampAdd.UseVisualStyleBackColor = true;
+            this.radioButtonTimestampAdd.CheckedChanged += new System.EventHandler(this.radioButtonTimestampAdd_CheckedChanged);
+            // 
+            // radioButtonTimestampRemove
+            // 
+            this.radioButtonTimestampRemove.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radioButtonTimestampRemove.AutoSize = true;
+            this.radioButtonTimestampRemove.Location = new System.Drawing.Point(138, 0);
+            this.radioButtonTimestampRemove.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.radioButtonTimestampRemove.Name = "radioButtonTimestampRemove";
+            this.radioButtonTimestampRemove.Size = new System.Drawing.Size(65, 17);
+            this.radioButtonTimestampRemove.TabIndex = 71;
+            this.radioButtonTimestampRemove.TabStop = true;
+            this.radioButtonTimestampRemove.Text = "Remove";
+            this.radioButtonTimestampRemove.UseVisualStyleBackColor = true;
+            this.radioButtonTimestampRemove.CheckedChanged += new System.EventHandler(this.radioButtonTimestampRemove_CheckedChanged);
             // 
             // GlobalOptionsDialog
             // 
@@ -1240,7 +1315,7 @@ namespace AdaptiveImageSizeReducer
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(727, 330);
+            this.ClientSize = new System.Drawing.Size(727, 357);
             this.Controls.Add(this.tableLayoutPanel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -1276,6 +1351,8 @@ namespace AdaptiveImageSizeReducer
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
+            this.flowLayoutPanel13.ResumeLayout(false);
+            this.flowLayoutPanel13.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1370,5 +1447,10 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.TextBox textBoxMaxS;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBoxMinV;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel13;
+        private System.Windows.Forms.RadioButton radioButtonTimestampDoNothing;
+        private System.Windows.Forms.RadioButton radioButtonTimestampAdd;
+        private System.Windows.Forms.RadioButton radioButtonTimestampRemove;
     }
 }

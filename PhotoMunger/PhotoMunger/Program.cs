@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,6 +57,37 @@ namespace AdaptiveImageSizeReducer
             options.MaxDegreeOfParallelism = Environment.ProcessorCount;
             options.CancellationToken = cancel;
             return options;
+        }
+
+        const int TimestampStringLength = 19;
+
+        private static bool TryGetTimestamps(string path, out DateTime fsCreated, out DateTime fsModified, out DateTime exifCreated)
+        {
+            exifCreated = default(DateTime);
+            fsCreated = File.GetCreationTime(path);
+            fsModified = File.GetLastWriteTime(path);
+
+            return ImageClient.QueryTimestampProperty(new Profile(), path, out exifCreated);
+        }
+
+        private static string FormatFilenameTimestamp(DateTime when)
+        {
+            return when.ToString("s").Replace(":", ".");
+        }
+
+        private static bool TryParseFilenameTimestamp(string name, out DateTime when)
+        {
+            return DateTime.TryParseExact(name.Substring(0, TimestampStringLength).Replace(".", ":"), "s", CultureInfo.CurrentCulture, DateTimeStyles.None, out when);
+        }
+
+        private static string StripFilenameTimestamp(string name)
+        {
+            DateTime when;
+            if ((name.Length >= TimestampStringLength) && TryParseFilenameTimestamp(name, out when))
+            {
+                name = name.Substring(TimestampStringLength).TrimStart();
+            }
+            return name;
         }
 
         public static void Log(LogCat cat, string text)
@@ -249,6 +281,43 @@ namespace AdaptiveImageSizeReducer
 
                         item.SettingsNav = settingsNav; // no match; try after hash has been computed
                     }
+                }
+
+                // timestamp actions
+                if (options.Timestamps.HasValue)
+                {
+                    const bool UseCreatedForMissingProperty = true; // otherwise use LastModified
+                    Parallel.ForEach(
+                        items,
+                        GetProcessorConstrainedParallelOptions2(CancellationToken.None),
+                        delegate (Item item)
+                        {
+                            if (options.Timestamps.Value)
+                            {
+                                DateTime fsCreated, fsModified, exifCreated;
+                                bool found = TryGetTimestamps(
+                                    item.SourcePath,
+                                    out fsCreated,
+                                    out fsModified,
+                                    out exifCreated);
+
+                                string created = fsCreated.ToString("s").Replace("T", ".");
+                                string modified = fsModified.ToString("s").Replace("T", ".");
+                                string exif = found ? exifCreated.ToString("s").Replace("T", ".") : "<no data>";
+
+                                string newName = StripFilenameTimestamp(Path.GetFileName(item.TargetPath));
+                                string text = FormatFilenameTimestamp(found ? exifCreated : (UseCreatedForMissingProperty ? fsCreated : fsModified));
+                                newName = String.Concat(text, " ", newName);
+
+                                item.RenamedFileName = newName;
+                            }
+                            else
+                            {
+                                item.RenamedFileName = StripFilenameTimestamp(Path.GetFileName(item.TargetPath));
+                            }
+                        });
+
+                    // TODO: ensure no duplicate names
                 }
 
                 if (items.Count != 0)

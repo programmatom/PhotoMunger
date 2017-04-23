@@ -53,6 +53,7 @@ namespace AdaptiveImageSizeReducer
             CreateTileGDI = 7,
             ShrinkExpandGDI = 8,
             ShrinkExpandWPF = 9,
+            QueryTimestampProperty = 10,
         };
 
         private static byte[] ReadCommandPacket(PipeStream channel)
@@ -187,6 +188,11 @@ namespace AdaptiveImageSizeReducer
                                 writer.Write((int)((byte[])o).Length);
                                 writer.Write((byte[])o);
                             }
+                            else if (o is DateTime)
+                            {
+                                writer.Write((byte)9);
+                                writer.Write(((DateTime)o).ToString("o"));
+                            }
                             else
                             {
                                 throw new NotSupportedException(o.GetType().Name);
@@ -259,6 +265,9 @@ namespace AdaptiveImageSizeReducer
                         case 8:
                             int l = reader.ReadInt32();
                             payload[i] = reader.ReadBytes(l);
+                            break;
+                        case 9:
+                            payload[i] = DateTime.Parse(reader.ReadString());
                             break;
                     }
                     if (log != null)
@@ -343,6 +352,37 @@ namespace AdaptiveImageSizeReducer
                     }
                     object[] extra = new object[args.Length - 4];
                     Array.Copy(args, 4, extra, 0, extra.Length);
+                    return extra;
+
+                case Commands.Exception:
+                    Debug.Assert(args.Length == 1);
+                    string s = (string)args[0];
+                    throw new RemoteException(s);
+            }
+        }
+
+        public static object[] WaitForDone(PipeStream channel, out Profile profile, out bool valid, out DateTime timestamp)
+        {
+            Commands command;
+            object[] args;
+            ReceiveMessage(null/*log*/, channel, out command, out args);
+
+            switch (command)
+            {
+                default:
+                    throw new NotSupportedException("Unexpected response from server " + command.ToString());
+
+                case Commands.Done:
+                    Debug.Assert(args.Length >= 3);
+                    valid = (bool)args[1];
+                    timestamp = (DateTime)args[2];
+                    byte[] d = (byte[])args[0];
+                    using (MemoryStream stream = new MemoryStream(d))
+                    {
+                        profile = (Profile)new BinaryFormatter().Deserialize(stream);
+                    }
+                    object[] extra = new object[args.Length - 3];
+                    Array.Copy(args, 3, extra, 0, extra.Length);
                     return extra;
 
                 case Commands.Exception:
@@ -588,6 +628,24 @@ namespace AdaptiveImageSizeReducer
                                         (string)args[4],
                                         (double)args[5]);
                                     break;
+
+                                case ClientServerCommunication.Commands.QueryTimestampProperty:
+                                    if (args.Length != 2)
+                                    {
+                                        const string Message = "remote command: wrong number of arguments";
+                                        Debug.Assert(false, Message);
+                                        throw new ArgumentException(Message);
+                                    }
+                                    Thread.CurrentThread.Priority = (ThreadPriority)args[0];
+                                    bool valid;
+                                    DateTime timestamp;
+                                    QueryTimestampProperty(
+                                        profile,
+                                        (string)args[1],
+                                        out valid,
+                                        out timestamp);
+                                    extraResults = new object[] { (bool)valid, (DateTime)timestamp };
+                                    break;
                             }
 
                             profile.End();
@@ -641,7 +699,8 @@ namespace AdaptiveImageSizeReducer
                                     log,
                                     channel,
                                     ClientServerCommunication.Commands.Done,
-                                    new object[] { serializedProfileStream.ToArray() });
+                                    new object[] { serializedProfileStream.ToArray() },
+                                    extraResults);
                             }
                             else
                             {
@@ -804,6 +863,15 @@ namespace AdaptiveImageSizeReducer
                 }
                 profile.Pop();
             }
+
+            profile.Pop();
+        }
+
+        private static void QueryTimestampProperty(Profile profile, string gdiPath, out bool valid, out DateTime timestamp)
+        {
+            profile.Push("QueryTimestampProperty [GDI]");
+
+            valid = Transforms.TryGetExifTimestamp(gdiPath, out timestamp);
 
             profile.Pop();
         }
@@ -1118,6 +1186,36 @@ namespace AdaptiveImageSizeReducer
 
             return result;
         }
+
+        public void QueryTimestampProperty(string path, out bool valid, out DateTime timestamp, Profile profile)
+        {
+            EnsureStarted(profile);
+
+            valid = false;
+            timestamp = default(DateTime);
+
+            Profile serverProfile;
+
+            profile.Push("Remote call");
+            ClientServerCommunication.SendMessage(
+                null/*log*/,
+                channel,
+                ClientServerCommunication.Commands.QueryTimestampProperty,
+                new object[]
+                {
+                    (int)Thread.CurrentThread.Priority,
+                    (string)path,
+                });
+            try
+            {
+                object[] extra = ClientServerCommunication.WaitForDone(channel, out serverProfile, out valid, out timestamp);
+                profile.Add(serverProfile);
+            }
+            catch (ClientServerCommunication.RemoteException)
+            {
+            }
+            profile.Pop();
+        }
     }
 
 
@@ -1268,6 +1366,23 @@ namespace AdaptiveImageSizeReducer
             {
                 ManagedBitmap result = server.ShrinkExpandWPF(source, factor, profile);
                 return result;
+            }
+            finally
+            {
+                serverPool.ReleaseProxy(server);
+                profile.Pop();
+            }
+        }
+
+        public static bool QueryTimestampProperty(Profile profile, string path, out DateTime timestamp)
+        {
+            profile.Push("ImageClient.QueryTimestampProperty");
+            ImageServerProxy server = serverPool.ObtainProxy(profile);
+            try
+            {
+                bool valid;
+                server.QueryTimestampProperty(path, out valid, out timestamp, profile);
+                return valid;
             }
             finally
             {

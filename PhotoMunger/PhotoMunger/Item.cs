@@ -176,9 +176,16 @@ namespace AdaptiveImageSizeReducer
             {
                 if (String.IsNullOrEmpty(value))
                 {
-                    this.rename = null;
-                    return;
+                    value = null;
                 }
+                else
+                {
+                    if (String.Equals(value, this.SourceFileName))
+                    {
+                        value = null;
+                    }
+                }
+
                 this.rename = value;
 
                 FirePropertyChanged("RenamedFileName");

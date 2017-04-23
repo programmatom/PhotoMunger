@@ -57,6 +57,7 @@ namespace AdaptiveImageSizeReducer
             SelectOneBitChannel(this.options.OneBitChannel, false/*updateSource*/);
             SelectOneBitFormat(this.options.OneBitOutputFormat, false/*updateSource*/);
             SelectJpegEncoder(this.options.JpegUseGDI, false/*updateSource*/);
+            SelectTimestamps(this.options.Timestamps, false/*updateSource*/);
 
             this.comboBoxNormalizeGeometryPreviewResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryPreviewInterp;
             this.comboBoxNormalizeGeometryFinalResizeMethod.SelectedIndex = (int)this.options.NormalizeGeometryFinalInterp;
@@ -330,6 +331,48 @@ namespace AdaptiveImageSizeReducer
         {
             SelectJpegEncoder(false/*useGdiEncoder*/, true/*updateSource*/);
         }
+
+        private int lockoutTimestamps;
+        private void SelectTimestamps(bool? timestamps, bool updateSource)
+        {
+            if (lockoutTimestamps != 0)
+            {
+                return;
+            }
+
+            try
+            {
+                lockoutTimestamps++;
+
+                radioButtonTimestampDoNothing.Checked = !timestamps.HasValue;
+                radioButtonTimestampAdd.Checked = timestamps.HasValue && timestamps.Value;
+                radioButtonTimestampRemove.Checked = timestamps.HasValue && !timestamps.Value;
+
+                if (updateSource)
+                {
+                    options.Timestamps = timestamps;
+                }
+            }
+            finally
+            {
+                lockoutTimestamps--;
+            }
+        }
+
+        private void radioButtonTimestampDoNothing_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTimestamps(null/*timestamps*/, true/*updateSource*/);
+        }
+
+        private void radioButtonTimestampAdd_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTimestamps(true/*timestamps*/, true/*updateSource*/);
+        }
+
+        private void radioButtonTimestampRemove_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTimestamps(false/*timestamps*/, true/*updateSource*/);
+        }
     }
 
     public class GlobalOptions
@@ -373,6 +416,8 @@ namespace AdaptiveImageSizeReducer
         private float? autoNormalizeGeometryAspectWidth;
         private Transforms.InterpMethod normalizeGeometryPreviewInterp = Transforms.InterpMethod.NearestNeighbor;
         private Transforms.InterpMethod normalizeGeometryFinalInterp = Transforms.InterpMethod.Bicubic;
+
+        private bool? timestamps;
 
         // UI options
         private bool showOriginalInsteadOfProcessed = false;
@@ -468,6 +513,9 @@ namespace AdaptiveImageSizeReducer
         [Bindable(true)]
         public Transforms.InterpMethod NormalizeGeometryFinalInterp { get { return normalizeGeometryFinalInterp; } set { normalizeGeometryFinalInterp = value; } }
 
+        [Bindable(true)]
+        public bool? Timestamps { get { return timestamps; } set { timestamps = value; } }
+
         // UI options
         [Bindable(true)]
         public bool ShowOriginalInsteadOfProcessed { get { return showOriginalInsteadOfProcessed; } set { showOriginalInsteadOfProcessed = value; } }
@@ -539,6 +587,8 @@ namespace AdaptiveImageSizeReducer
             this.autoNormalizeGeometryAspectWidth = source.autoNormalizeGeometryAspectWidth;
             this.normalizeGeometryPreviewInterp = source.normalizeGeometryPreviewInterp;
             this.normalizeGeometryFinalInterp = source.normalizeGeometryFinalInterp;
+
+            this.timestamps = source.timestamps;
         }
 
         public GlobalOptions(GlobalOptions source)
@@ -608,6 +658,8 @@ namespace AdaptiveImageSizeReducer
                 this.autoNormalizeGeometryAspectWidth = (float?)nav.SelectSingleNode("normalizeGeometry/autoNormalizeGeometryAspectWidth")?.ValueAsDouble;
                 this.normalizeGeometryPreviewInterp = (Transforms.InterpMethod)Enum.Parse(typeof(Transforms.InterpMethod), nav.SelectSingleNode("normalizeGeometry/normalizeGeometryPreviewInterp").Value);
                 this.normalizeGeometryFinalInterp = (Transforms.InterpMethod)Enum.Parse(typeof(Transforms.InterpMethod), nav.SelectSingleNode("normalizeGeometry/normalizeGeometryFinalInterp").Value);
+
+                this.timestamps = nav.SelectSingleNode("timestamps")?.ValueAsBoolean;
             }
         }
 
@@ -825,6 +877,13 @@ namespace AdaptiveImageSizeReducer
             writer.WriteEndElement(); // normalizeGeometryFinalInterp
             //
             writer.WriteEndElement(); // normalizeGeometry
+
+            if (this.timestamps.HasValue)
+            {
+                writer.WriteStartElement("Timestamps");
+                writer.WriteValue(this.timestamps.Value);
+                writer.WriteEndElement(); // Timestamps
+            }
 
             writer.WriteEndElement(); // options
         }
