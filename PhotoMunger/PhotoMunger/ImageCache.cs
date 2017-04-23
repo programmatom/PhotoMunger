@@ -71,12 +71,21 @@ namespace AdaptiveImageSizeReducer
             Task<bool> onCompleted = new Task<bool>(
                 delegate ()
                 {
-                    this.bitmap.Wait();
                     BitmapCompletedDelegate localBitmapCompleted = this.BitmapCompleted;
+                    Task<ManagedBitmap> bitmap = this.bitmap;
+
+                    if (bitmap == null) // object disposed before task started
+                    {
+                        return false;
+                    }
+
+                    bitmap.Wait();
+
                     if (localBitmapCompleted != null)
                     {
                         localBitmapCompleted.Invoke(this, EventArgs.Empty);
                     }
+
                     return false;
                 });
             onCompleted.Start();

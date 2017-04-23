@@ -112,6 +112,9 @@ namespace AdaptiveImageSizeReducer
         private delegate void FirePropertyChangedDelegate(string name);
         private readonly FirePropertyChangedDelegate propertyChangedDelegate;
 
+        private static int uniqueIdGen;
+        private readonly int uniqueId = uniqueIdGen++;
+
 
         public override string ToString()
         {
@@ -932,7 +935,7 @@ namespace AdaptiveImageSizeReducer
 
         // providers
 
-        public string SourceId { get { return SourceFileName; } }
+        public string SourceId { get { return String.Format("{0}<{1}>", SourceFileName, uniqueId); } }
 
         private ManagedBitmap GetSourceBitmap(Profile profile)
         {
@@ -1001,7 +1004,7 @@ namespace AdaptiveImageSizeReducer
 
         private string GetPreviewId(float shrinkExpandFactor, bool inDrag, bool showNormalizedGeometry)
         {
-            return String.Format("{0}:Post:{1}(shrinkExpand={2}, inDrag={3}, normalizeGeometry={4})", SourceFileName, "Preview", shrinkExpandFactor, inDrag, showNormalizedGeometry);
+            return String.Format("{0}:Post:{1}(shrinkExpand={2}, inDrag={3}, normalizeGeometry={4})", SourceId, "Preview", shrinkExpandFactor, inDrag, showNormalizedGeometry);
         }
 
         public BitmapHolder GetPreviewBitmapHolder(bool shrinkExpand, bool inDrag, bool showNormalizedGeometry)
@@ -1064,7 +1067,7 @@ namespace AdaptiveImageSizeReducer
 
         private string GetAnnotatedId(bool showHF, bool inDrag, bool showNormalizedGeometry, bool showAutoCropGrid, bool showPolyUnbiasGrid, bool showCropDragPads)
         {
-            return String.Format("{0}:Post:{1}(showHF={2}, inDrag={3}, normalizedGeometry={4}, autoCropGrid={5}, polyUnbiasGrid={6}, showCropDragPads={7})", SourceFileName, "Annotated", showHF, inDrag, showNormalizedGeometry, showAutoCropGrid, showPolyUnbiasGrid, showCropDragPads);
+            return String.Format("{0}:Post:{1}(showHF={2}, inDrag={3}, normalizedGeometry={4}, autoCropGrid={5}, polyUnbiasGrid={6}, showCropDragPads={7})", SourceId, "Annotated", showHF, inDrag, showNormalizedGeometry, showAutoCropGrid, showPolyUnbiasGrid, showCropDragPads);
         }
 
         public BitmapHolder GetAnnotatedBitmapHolder(bool shrinkExpand, bool inDrag, bool showHF, bool showNormalizedGeometry, bool showAutoCropGrid, bool showPolyUnbiasGrid, bool showCropDragPads)
