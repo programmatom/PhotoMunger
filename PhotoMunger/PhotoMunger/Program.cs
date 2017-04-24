@@ -77,6 +77,11 @@ namespace AdaptiveImageSizeReducer
 
         private static bool TryParseFilenameTimestamp(string name, out DateTime when)
         {
+            when = default(DateTime);
+            if (name.Length < TimestampStringLength)
+            {
+                return false;
+            }
             return DateTime.TryParseExact(name.Substring(0, TimestampStringLength).Replace(".", ":"), "s", CultureInfo.CurrentCulture, DateTimeStyles.None, out when);
         }
 
