@@ -391,6 +391,16 @@ namespace AdaptiveImageSizeReducer
 
                 File.Delete(tempFile);
             }
+            else
+            {
+                lock (createdFiles)
+                {
+                    createdFiles.Add(Path.GetFileName(renamedTargetPath).ToLowerInvariant(), false);
+                }
+
+                File.Copy(item.SourcePath, renamedTargetPath, true/*overwrite*/);
+
+            }
 
             profile.End();
             Program.Log(LogCat.Perf, profile.Report());

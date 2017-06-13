@@ -105,6 +105,8 @@ namespace AdaptiveImageSizeReducer
             this.dataGridViewFiles.CellValidating += DataGridViewFiles_CellValidating;
             this.dataGridViewFiles.EditingControlShowing += DataGridViewFiles_EditingControlShowing;
             this.dataGridViewFiles.ColumnHeaderMouseClick += DataGridViewFiles_ColumnHeaderMouseClick;
+            this.dataGridViewFiles.CellBeginEdit += DataGridViewFiles_CellBeginEdit;
+            this.dataGridViewFiles.CellEndEdit += DataGridViewFiles_CellEndEdit;
 
             this.pictureBoxMain.MouseMove += PictureBoxMain_MouseMove;
             this.pictureBoxMain.MouseDown += PictureBoxMain_MouseDown;
@@ -412,6 +414,18 @@ namespace AdaptiveImageSizeReducer
         {
             Application.Idle += Idle_ReselectDataGridViewCurrentTextEdit;
             e.Control.TextChanged += Control_TextChanged;
+        }
+
+        // Allow copy to go to textbox rather than control
+        // http://stackoverflow.com/questions/11755747/clipboard-copy-fails-when-datagridview-selectionmode-is-fullrowselect
+        private void DataGridViewFiles_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            this.dataGridViewFiles.ClipboardCopyMode = DataGridViewClipboardCopyMode.Disable;
+        }
+
+        private void DataGridViewFiles_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            this.dataGridViewFiles.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
         }
 
         // Another annoying HACK to deal with DataGridView selecting text after BeginEdit() after any applicable event fires,
