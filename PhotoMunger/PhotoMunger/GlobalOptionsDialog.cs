@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright © 2010-2017 Thomas R. Lawrence
+ *  Copyright © 2010-2018 Thomas R. Lawrence
  * 
  *  GNU General Public License
  * 
@@ -665,7 +665,7 @@ namespace AdaptiveImageSizeReducer
                 this.jpegUseGDI = nav.SelectSingleNode("jpegUseGDI").ValueAsBoolean;
 
                 this.shrink = nav.SelectSingleNode("shrink/enable").ValueAsBoolean;
-                this.shrinkFactor = nav.SelectSingleNode("shrink/shrinkFactor").ValueAsInt;
+                this.shrinkFactor = (float)nav.SelectSingleNode("shrink/shrinkFactor").ValueAsDouble;
 
                 this.autoCrop = nav.SelectSingleNode("autoCrop/enable").ValueAsBoolean;
                 this.autoCropLeftLimit = (float)nav.SelectSingleNode("autoCrop/leftLimit").ValueAsDouble;
