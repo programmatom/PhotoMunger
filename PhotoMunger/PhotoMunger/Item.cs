@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright © 2010-2017 Thomas R. Lawrence
+ *  Copyright © 2010-2018 Thomas R. Lawrence
  * 
  *  GNU General Public License
  * 
@@ -257,6 +257,15 @@ namespace AdaptiveImageSizeReducer
         }
 
         [Bindable(true)]
+        public bool ShrinkFixed
+        {
+            get
+            {
+                return options.ShrinkFixed;
+            }
+        }
+
+        [Bindable(true)]
         public float ShrinkFactor
         {
             get
@@ -268,6 +277,24 @@ namespace AdaptiveImageSizeReducer
                 shrinkFactor = value;
 
                 FirePropertyChanged("ShrinkFactor");
+            }
+        }
+
+        [Bindable(true)]
+        public bool ShrinkFactorEnable
+        {
+            get
+            {
+                return shrink.HasValue || shrinkFactor.HasValue || options.ShrinkFixed;
+            }
+        }
+
+        [Bindable(true)]
+        public int ShrinkTargetKB
+        {
+            get
+            {
+                return options.ShrinkTargetKB;
             }
         }
 

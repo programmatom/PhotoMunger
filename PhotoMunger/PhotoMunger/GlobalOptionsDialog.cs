@@ -53,6 +53,7 @@ namespace AdaptiveImageSizeReducer
 
             globalOptionsBindingSource.Add(this.options);
 
+            SelectShrinkFixed(this.options.ShrinkFixed, false/*updateSource*/);
             SelectRightRotation(this.options.RightRotations, false/*updateSource*/);
             SelectOneBitChannel(this.options.OneBitChannel, false/*updateSource*/);
             SelectOneBitFormat(this.options.OneBitOutputFormat, false/*updateSource*/);
@@ -410,6 +411,47 @@ namespace AdaptiveImageSizeReducer
         {
             SelectTimestampsCreatedModified(true/*timestampsExifMissingModifiedInsteadOfCreated*/ , true/*updateSource*/);
         }
+
+        //
+
+        private int lockOutShrinkFixed;
+        private void SelectShrinkFixed(bool shrinkFixed, bool updateSource)
+        {
+            if (lockOutShrinkFixed != 0)
+            {
+                return;
+            }
+
+            try
+            {
+                lockOutShrinkFixed++;
+
+                radioButtonShrinkFixed.Checked = shrinkFixed;
+                radioButtonShrinkTargeted.Checked = !shrinkFixed;
+
+                if (updateSource)
+                {
+                    options.ShrinkFixed = shrinkFixed;
+                }
+
+                textBoxShrinkFactor.Enabled = shrinkFixed;
+                textBoxShrinkTargetSize.Enabled = !shrinkFixed;
+            }
+            finally
+            {
+                lockOutShrinkFixed--;
+            }
+        }
+
+        private void radioButtonShrinkFixed_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectShrinkFixed(true/*shrinkFixed*/, true/*updateSource*/);
+        }
+
+        private void radioButtonShrinkTargeted_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectShrinkFixed(false/*shrinkFixed*/, true/*updateSource*/);
+        }
     }
 
     public class GlobalOptions
@@ -418,7 +460,9 @@ namespace AdaptiveImageSizeReducer
         private bool jpegUseGDI = false;
 
         private bool shrink;
+        private bool shrinkFixed = true;
         private float shrinkFactor = 2f;
+        private int shrinkTargetKB = 100;
 
         private bool autoCrop;
         private float autoCropLeftLimit = .25f, autoCropTopLimit = .25f, autoCropRightLimit = .25f, autoCropBottomLimit = .25f;
@@ -476,7 +520,11 @@ namespace AdaptiveImageSizeReducer
         [Bindable(true)]
         public bool Shrink { get { return shrink; } set { shrink = value; } }
         [Bindable(true)]
+        public bool ShrinkFixed { get { return shrinkFixed; } set { shrinkFixed = value; } }
+        [Bindable(true)]
         public float ShrinkFactor { get { return shrinkFactor; } set { shrinkFactor = value; } }
+        [Bindable(true)]
+        public int ShrinkTargetKB { get { return shrinkTargetKB; } set { shrinkTargetKB = value; } }
 
         [Bindable(true)]
         public bool AutoCrop { get { return autoCrop; } set { autoCrop = value; } }
@@ -592,7 +640,9 @@ namespace AdaptiveImageSizeReducer
             this.jpegUseGDI = source.jpegUseGDI;
 
             this.shrink = source.shrink;
+            this.shrinkFixed = source.shrinkFixed;
             this.shrinkFactor = source.shrinkFactor;
+            this.shrinkTargetKB = source.shrinkTargetKB;
 
             this.autoCrop = source.autoCrop;
             this.autoCropLeftLimit = source.autoCropLeftLimit;
@@ -665,7 +715,9 @@ namespace AdaptiveImageSizeReducer
                 this.jpegUseGDI = nav.SelectSingleNode("jpegUseGDI").ValueAsBoolean;
 
                 this.shrink = nav.SelectSingleNode("shrink/enable").ValueAsBoolean;
+                this.shrinkFixed = nav.SelectSingleNode("shrink/fixed").ValueAsBoolean;
                 this.shrinkFactor = (float)nav.SelectSingleNode("shrink/shrinkFactor").ValueAsDouble;
+                this.shrinkTargetKB = nav.SelectSingleNode("shrink/targetSize").ValueAsInt;
 
                 this.autoCrop = nav.SelectSingleNode("autoCrop/enable").ValueAsBoolean;
                 this.autoCropLeftLimit = (float)nav.SelectSingleNode("autoCrop/leftLimit").ValueAsDouble;
@@ -779,9 +831,17 @@ namespace AdaptiveImageSizeReducer
             writer.WriteValue(this.shrink);
             writer.WriteEndElement(); // shrink
             //
+            writer.WriteStartElement("fixed");
+            writer.WriteValue(this.shrinkFixed);
+            writer.WriteEndElement(); // shrinkFixed
+            //
             writer.WriteStartElement("shrinkFactor");
             writer.WriteValue(this.shrinkFactor);
             writer.WriteEndElement(); // shrinkFactor
+            //
+            writer.WriteStartElement("targetSize");
+            writer.WriteValue(this.shrinkTargetKB);
+            writer.WriteEndElement(); // targetSize
             //
             writer.WriteEndElement(); // shrink
 

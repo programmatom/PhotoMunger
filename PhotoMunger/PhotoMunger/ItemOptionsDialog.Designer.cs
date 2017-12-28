@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright © 2010-2016 Thomas R. Lawrence
+ *  Copyright © 2010-2018 Thomas R. Lawrence
  * 
  *  GNU General Public License
  * 

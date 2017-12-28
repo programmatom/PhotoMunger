@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright © 2010-2016 Thomas R. Lawrence
+ *  Copyright © 2010-2018 Thomas R. Lawrence
  * 
  *  GNU General Public License
  * 
@@ -44,6 +44,8 @@ namespace AdaptiveImageSizeReducer
 
             SelectOneBitChannel(options.OneBitChannel, false/*updateSource*/);
             SelectJpegEncoder(options.JpegUseGdi, false/*updateSource*/);
+
+            textBoxShrinkFactor.Enabled = options.ShrinkFactorEnable;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -220,6 +222,7 @@ namespace AdaptiveImageSizeReducer
         private bool shrink_dirty;
         private float shrinkFactor;
         private bool shrinkFactor_dirty;
+        private bool shrinkFactorEnable; // readonly
 
         private bool brightAdjust;
         private bool brightAdjust_dirty;
@@ -275,6 +278,8 @@ namespace AdaptiveImageSizeReducer
         public bool Shrink { get { return shrink; } set { shrink = value; shrink_dirty = true; Notify("Shrink"); } }
         [Bindable(true)]
         public float ShrinkFactor { get { return shrinkFactor; } set { shrinkFactor = value; shrinkFactor_dirty = true; Notify("ShrinkFactor"); } }
+        [Bindable(true)]
+        public bool ShrinkFactorEnable { get { return shrinkFactorEnable; } }
 
         [Bindable(true)]
         public bool BrightAdjust { get { return brightAdjust; } set { brightAdjust = value; brightAdjust_dirty = true; Notify("BrightAdjust"); } }
@@ -456,6 +461,7 @@ namespace AdaptiveImageSizeReducer
 
             this.shrink = item.Shrink;
             this.shrinkFactor = item.ShrinkFactor;
+            this.shrinkFactorEnable = item.ShrinkFactorEnable;
 
             this.brightAdjust = item.BrightAdjust;
             this.brightAdjustMinClusterFrac = item.BrightAdjustMinClusterFrac;

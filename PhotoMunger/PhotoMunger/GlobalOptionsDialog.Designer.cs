@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright © 2010-2017 Thomas R. Lawrence
+ *  Copyright © 2010-2018 Thomas R. Lawrence
  * 
  *  GNU General Public License
  * 
@@ -55,9 +55,13 @@ namespace AdaptiveImageSizeReducer
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel15 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radioButtonShrinkFixed = new System.Windows.Forms.RadioButton();
+            this.radioButtonShrinkTargeted = new System.Windows.Forms.RadioButton();
             this.label19 = new System.Windows.Forms.Label();
             this.textBoxShrinkFactor = new System.Windows.Forms.TextBox();
-            this.globalOptionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxShrinkTargetSize = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxAutoCropLeftMax = new System.Windows.Forms.TextBox();
@@ -148,10 +152,11 @@ namespace AdaptiveImageSizeReducer
             this.label13 = new System.Windows.Forms.Label();
             this.radioButtonTimestampFileCreated = new System.Windows.Forms.RadioButton();
             this.radioButtonTimestampFileLastModified = new System.Windows.Forms.RadioButton();
+            this.globalOptionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).BeginInit();
+            this.flowLayoutPanel15.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
@@ -166,6 +171,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel13.SuspendLayout();
             this.flowLayoutPanel14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -272,19 +278,57 @@ namespace AdaptiveImageSizeReducer
             // flowLayoutPanel7
             // 
             this.flowLayoutPanel7.AutoSize = true;
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel15);
             this.flowLayoutPanel7.Controls.Add(this.label19);
             this.flowLayoutPanel7.Controls.Add(this.textBoxShrinkFactor);
+            this.flowLayoutPanel7.Controls.Add(this.label16);
+            this.flowLayoutPanel7.Controls.Add(this.textBoxShrinkTargetSize);
             this.flowLayoutPanel7.Location = new System.Drawing.Point(212, 33);
             this.flowLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(86, 20);
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(349, 23);
             this.flowLayoutPanel7.TabIndex = 8;
+            // 
+            // flowLayoutPanel15
+            // 
+            this.flowLayoutPanel15.AutoSize = true;
+            this.flowLayoutPanel15.Controls.Add(this.radioButtonShrinkFixed);
+            this.flowLayoutPanel15.Controls.Add(this.radioButtonShrinkTargeted);
+            this.flowLayoutPanel15.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel15.Name = "flowLayoutPanel15";
+            this.flowLayoutPanel15.Size = new System.Drawing.Size(130, 23);
+            this.flowLayoutPanel15.TabIndex = 7;
+            // 
+            // radioButtonShrinkFixed
+            // 
+            this.radioButtonShrinkFixed.AutoSize = true;
+            this.radioButtonShrinkFixed.Location = new System.Drawing.Point(3, 3);
+            this.radioButtonShrinkFixed.Name = "radioButtonShrinkFixed";
+            this.radioButtonShrinkFixed.Size = new System.Drawing.Size(50, 17);
+            this.radioButtonShrinkFixed.TabIndex = 7;
+            this.radioButtonShrinkFixed.TabStop = true;
+            this.radioButtonShrinkFixed.Text = "Fixed";
+            this.radioButtonShrinkFixed.UseVisualStyleBackColor = true;
+            this.radioButtonShrinkFixed.CheckedChanged += new System.EventHandler(this.radioButtonShrinkFixed_CheckedChanged);
+            // 
+            // radioButtonShrinkTargeted
+            // 
+            this.radioButtonShrinkTargeted.AutoSize = true;
+            this.radioButtonShrinkTargeted.Location = new System.Drawing.Point(59, 3);
+            this.radioButtonShrinkTargeted.Name = "radioButtonShrinkTargeted";
+            this.radioButtonShrinkTargeted.Size = new System.Drawing.Size(68, 17);
+            this.radioButtonShrinkTargeted.TabIndex = 7;
+            this.radioButtonShrinkTargeted.TabStop = true;
+            this.radioButtonShrinkTargeted.Text = "Targeted";
+            this.radioButtonShrinkTargeted.UseVisualStyleBackColor = true;
+            this.radioButtonShrinkTargeted.CheckedChanged += new System.EventHandler(this.radioButtonShrinkTargeted_CheckedChanged);
             // 
             // label19
             // 
             this.label19.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 3);
+            this.label19.Location = new System.Drawing.Point(133, 5);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(40, 13);
             this.label19.TabIndex = 8;
@@ -293,15 +337,30 @@ namespace AdaptiveImageSizeReducer
             // textBoxShrinkFactor
             // 
             this.textBoxShrinkFactor.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "ShrinkFactor", true));
-            this.textBoxShrinkFactor.Location = new System.Drawing.Point(46, 0);
+            this.textBoxShrinkFactor.Location = new System.Drawing.Point(176, 0);
             this.textBoxShrinkFactor.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxShrinkFactor.Name = "textBoxShrinkFactor";
             this.textBoxShrinkFactor.Size = new System.Drawing.Size(40, 20);
             this.textBoxShrinkFactor.TabIndex = 9;
             // 
-            // globalOptionsBindingSource
+            // label16
             // 
-            this.globalOptionsBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.GlobalOptions);
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(219, 5);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(87, 13);
+            this.label16.TabIndex = 11;
+            this.label16.Text = "Target Size (KB):";
+            // 
+            // textBoxShrinkTargetSize
+            // 
+            this.textBoxShrinkTargetSize.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.globalOptionsBindingSource, "ShrinkTargetKB", true));
+            this.textBoxShrinkTargetSize.Location = new System.Drawing.Point(309, 0);
+            this.textBoxShrinkTargetSize.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxShrinkTargetSize.Name = "textBoxShrinkTargetSize";
+            this.textBoxShrinkTargetSize.Size = new System.Drawing.Size(40, 20);
+            this.textBoxShrinkTargetSize.TabIndex = 9;
             // 
             // flowLayoutPanel1
             // 
@@ -1378,6 +1437,10 @@ namespace AdaptiveImageSizeReducer
             this.radioButtonTimestampFileLastModified.UseVisualStyleBackColor = true;
             this.radioButtonTimestampFileLastModified.CheckedChanged += new System.EventHandler(this.radioButtonTimestampFileLastModified_CheckedChanged);
             // 
+            // globalOptionsBindingSource
+            // 
+            this.globalOptionsBindingSource.DataSource = typeof(AdaptiveImageSizeReducer.GlobalOptions);
+            // 
             // GlobalOptionsDialog
             // 
             this.AcceptButton = this.buttonOK;
@@ -1397,7 +1460,8 @@ namespace AdaptiveImageSizeReducer
             this.tableLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).EndInit();
+            this.flowLayoutPanel15.ResumeLayout(false);
+            this.flowLayoutPanel15.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -1425,6 +1489,7 @@ namespace AdaptiveImageSizeReducer
             this.flowLayoutPanel13.PerformLayout();
             this.flowLayoutPanel14.ResumeLayout(false);
             this.flowLayoutPanel14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.globalOptionsBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1529,5 +1594,10 @@ namespace AdaptiveImageSizeReducer
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.RadioButton radioButtonTimestampFileCreated;
         private System.Windows.Forms.RadioButton radioButtonTimestampFileLastModified;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel15;
+        private System.Windows.Forms.RadioButton radioButtonShrinkFixed;
+        private System.Windows.Forms.RadioButton radioButtonShrinkTargeted;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBoxShrinkTargetSize;
     }
 }

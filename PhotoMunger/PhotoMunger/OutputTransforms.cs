@@ -348,12 +348,43 @@ namespace AdaptiveImageSizeReducer
                         bitmap = new SmartBitmap(Transforms.LoadAndOrientGDI(tempFile, profile));
                     }
 
-                    //Bitmap shrunk = Transforms.Shrink(profile, bitmap.AsGDI(profile), item.ShrinkFactor);
-                    int newWidth = (int)Math.Floor(bitmap.Width / item.ShrinkFactor);
-                    int newHeight = (int)Math.Floor(bitmap.Height / item.ShrinkFactor);
-                    ManagedBitmap bitmap2 = ImageClient.ResizeGDI(profile, bitmap.AsManaged(profile), newWidth, newHeight);
-                    bitmap.Dispose();
-                    bitmap = new SmartBitmap(bitmap2);
+                    if (item.ShrinkFixed)
+                    {
+                        int newWidth = (int)Math.Floor(bitmap.Width / item.ShrinkFactor);
+                        int newHeight = (int)Math.Floor(bitmap.Height / item.ShrinkFactor);
+                        ManagedBitmap bitmap2 = ImageClient.ResizeGDI(profile, bitmap.AsManaged(profile), newWidth, newHeight);
+                        bitmap.Dispose();
+                        bitmap = new SmartBitmap(bitmap2);
+                    }
+                    else
+                    {
+                        // shrink until size is less than or equal to target
+
+                        // TODO: smarter search (binary?)
+                        int targetBytes = item.ShrinkTargetKB * 1024;
+                        int shrinkFactorTimes2 = 2;
+                        while (true)
+                        {
+                            int newWidth = (int)Math.Floor(bitmap.Width / (shrinkFactorTimes2 / 2f));
+                            int newHeight = (int)Math.Floor(bitmap.Height / (shrinkFactorTimes2 / 2f));
+                            SmartBitmap bitmap2 = new SmartBitmap(ImageClient.ResizeGDI(profile, bitmap.AsManaged(profile), newWidth, newHeight));
+
+                            // invoke jpg compression to determine output file size
+                            Transforms.SaveImage(profile, bitmap2, tempFile, item.JpegQuality, item.JpegUseGdi, item.OutputFormat);
+
+                            long fileLength = FileSizeText.GetFileLength(tempFile);
+                            if (fileLength <= targetBytes)
+                            {
+                                // TODO: created compressed jpg file, any way to reuse to avoid redundant compression below?
+                                bitmap.Dispose();
+                                bitmap = bitmap2;
+                                break;
+                            }
+                            bitmap2.Dispose();
+
+                            shrinkFactorTimes2++;
+                        }
+                    }
 
                     Interlocked.Increment(ref stats.shrunk);
                 }
